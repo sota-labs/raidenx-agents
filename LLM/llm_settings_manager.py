@@ -7,7 +7,6 @@ import google.generativeai as genai
 from google.generativeai.types import HarmCategory, HarmBlockThreshold
 import logging
 
-# Cấu hình logging và environment
 load_dotenv()
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -83,7 +82,6 @@ class LLMSettings:
 
         candidate = response.candidates[0]
 
-        # Check for safety or recitation issues
         if hasattr(candidate, 'finish_reason'):
             if candidate.finish_reason == 'SAFETY':
                 return False, "Content blocked by safety filter"
@@ -125,7 +123,6 @@ class LLMSettings:
                 safety_settings=SAFETY_SETTINGS
             )
 
-            # Log any prompt feedback
             if hasattr(response, 'prompt_feedback') and response.prompt_feedback:
                 logger.warning(f"Prompt feedback issues: {response.prompt_feedback}")
 

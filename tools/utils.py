@@ -10,12 +10,9 @@ def json_to_dict(func):
     @wraps(func)
     def wrapper(input_str):
         try:
-            # Parse the JSON string into a dictionary
             input_dict = json.loads(input_str)
-            # Call the original function with the dictionary
             return func(**input_dict)
         except json.JSONDecodeError:
-            # Handle invalid JSON input
             raise ValueError("Invalid JSON input. Please provide a valid JSON string.")
     return wrapper
 

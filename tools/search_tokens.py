@@ -31,7 +31,6 @@ def search_token(query: str) -> dict:
         "page": 1,
         "limit": 3
     }
-    print(f"PARAMETER TO CALL API: {params}")
     response = requests.get(url, headers=headers, params=params)
     
     if response.status_code == 200:
@@ -62,11 +61,3 @@ search_tokens_tool = Tool(
         "- Retrieve a list of tokens matching the search query with basic details (address, name, symbol, priceUsd)."
     )
 )
-# Example usage
-if __name__ == "__main__":
-    try:
-        wallets = search_token(query="blue")
-        print(f"Search token:")
-        print(wallets)
-    except Exception as e:
-        print(f"Error: {e}") 
