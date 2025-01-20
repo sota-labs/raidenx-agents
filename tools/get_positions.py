@@ -8,7 +8,7 @@ from auth.jwt_generator import get_jwt
 
 from tools.utils import json_to_dict
 
-@json_to_dict
+# @json_to_dict
 def get_positions_by_token(userId: str, userName: str, displayName: str, token_address: str) -> dict:
     """
     Lấy thông tin positions của một token cụ thể trong các ví

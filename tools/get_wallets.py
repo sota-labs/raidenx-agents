@@ -7,7 +7,7 @@ from auth.jwt_generator import get_jwt
 from langchain.agents import Tool
 from tools.utils import json_to_dict
 
-@json_to_dict
+# @json_to_dict
 def get_wallets(userId: str, userName: str = None, displayName: str = None) -> dict:
     jwt_token = get_jwt(userId, userName, displayName)
     

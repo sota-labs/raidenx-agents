@@ -8,7 +8,7 @@ class SearchTokensInput(BaseModel):
     
     class Config:
         extra = "forbid"
-@json_to_dict
+# @json_to_dict
 def search_token(query: str) -> dict:
     """
     Search for tokens based on keywords
@@ -44,7 +44,7 @@ def search_token(query: str) -> dict:
                 'symbol': token_info.get('symbol'),
                 'priceUsd': token_info.get('priceUsd')
             })
-        return {'tokens': results}
+        return {'tokens': results[0:5]}
     else:
         raise Exception(f"Error searching tokens: {response.status_code} - {response.text}")
     

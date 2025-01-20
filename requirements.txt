@@ -5,3 +5,6 @@ langchain_google_genai
 langchain
 pyjwt
 requests
+nest_asyncio
+llama-index
+llama-index-llms-gemini
