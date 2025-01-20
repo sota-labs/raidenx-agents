@@ -24,7 +24,6 @@ from langchain_core.prompts import PromptTemplate
 
 from langchain_google_genai import ChatGoogleGenerativeAI
 
-# Fix lỗi event loop
 nest_asyncio.apply()
 load_dotenv()
 
@@ -145,19 +144,16 @@ HISTORY_FILE = "chat_history.json"
 
 
 def load_chat_history():
-    """Load lịch sử chat từ file JSON"""
     try:
         if os.path.exists(HISTORY_FILE) and os.path.getsize(HISTORY_FILE) > 0:
             with open(HISTORY_FILE, "r", encoding="utf-8") as f:
                 return json.load(f)
         else:
-            # Nếu file không tồn tại hoặc trống, tạo file mới với dict rỗng
             with open(HISTORY_FILE, "w", encoding="utf-8") as f:
                 json.dump({}, f)
             return {}
     except json.JSONDecodeError:
         print(f"Lỗi khi đọc file {HISTORY_FILE}. Tạo file mới.")
-        # Nếu file bị hỏng, tạo file mới với dict rỗng
         with open(HISTORY_FILE, "w", encoding="utf-8") as f:
             json.dump({}, f)
         return {}
@@ -169,15 +165,12 @@ def save_chat_history(history):
         json.dump(history, f, ensure_ascii=False, indent=2)
 
 
-# Load lịch sử chat khi khởi động
 chat_history = load_chat_history()
 
-# Khởi tạo LLM client
 llm_client = LLMSettings()
 
 
 def escape_markdown_v2(text: str) -> str:
-    """Escape các ký tự đặc biệt trong markdown v2"""
     SPECIAL_CHARS = [
         "_",
         "*",
@@ -212,28 +205,22 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_message = update.message.text
     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    # Khởi tạo lịch sử cho chat mới
     if chat_id not in chat_history:
         chat_history[chat_id] = []
 
-    # Lưu tin nhắn của user
     chat_history[chat_id].append(
         {"role": "user", "content": user_message, "time": current_time, "type": "user"}
     )
-    # Tạo prompt cho LLM với system prompt và lịch sử chat
-    # Take the last 10 messages
     last_five_messages = chat_history[chat_id][-10:]
 
-    # Convert to text-only format
     chat_history_text = "\n".join(
         [
             f"{msg['role'].capitalize()}: {msg['content']}"
             for msg in last_five_messages
-            if "role" in msg and "content" in msg  # Ensure the keys exist
+            if "role" in msg and "content" in msg
         ]
     )
 
-    # Lấy câu trả lời từ LLM
     bot_response = react_agent_executor.invoke(
         {
             "query": user_message,
@@ -246,26 +233,21 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     bot_response = bot_response["output"]
 
-    # Lưu câu trả lời của bot
     chat_history[chat_id].append(
         {"sender": "Bot", "message": bot_response, "time": current_time, "type": "bot"}
     )
 
-    # Giữ 50 tin nhắn gần nhất
     if len(chat_history[chat_id]) > 50:
         chat_history[chat_id] = chat_history[chat_id][-50:]
 
-    # Lưu vào file
     save_chat_history(chat_history)
 
-    # Escape ký tự đặc biệt và gửi tin nhắn
     try:
         escaped_response = escape_markdown_v2(bot_response)
         await update.message.reply_text(
             escaped_response, parse_mode=ParseMode.MARKDOWN_V2
         )
     except Exception as e:
-        # Fallback: gửi tin nhắn không có định dạng nếu có lỗi
         print(f"Lỗi khi gửi tin nhắn có định dạng: {e}")
         await update.message.reply_text(bot_response)
 
@@ -281,15 +263,12 @@ async def main():
 
 
 if __name__ == "__main__":
-    # Thay đổi cách chạy event loop
     try:
         import asyncio
 
         if asyncio._get_running_loop() is not None:
-            # Nếu event loop đang chạy, sử dụng nó
             asyncio.run_coroutine_threadsafe(main(), asyncio._get_running_loop())
         else:
-            # Nếu chưa có event loop nào chạy, tạo mới
             asyncio.run(main())
     except Exception as e:
         print(f"Lỗi khởi động bot: {e}")
