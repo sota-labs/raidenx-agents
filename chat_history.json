@@ -2,505 +2,253 @@
   "2104920255": [
     {
       "role": "user",
-      "content": "yo, is there some token about weapon, i very interested in. Prior Gun -> Blade -> Boomerang",
-      "time": "2025-01-20 16:50:49",
-      "type": "user"
+      "content": "how much money i have?",
+      "time": "2025-01-21 11:13:15"
     },
     {
-      "sender": "Bot",
-      "message": "Hello! I'm RaidenX. How can I assist you with crypto trading today?",
-      "time": "2025-01-20 16:50:49",
-      "type": "bot"
+      "role": "assistant",
+      "content": "You currently have 0.0419409 SUI, which is approximately $0.18 USD, in your HD01 wallet.  Your other wallets (W1, W2, 1e93d3, and 54e587) currently have a balance of 0 SUI.",
+      "time": "2025-01-21 11:13:15"
     },
     {
       "role": "user",
-      "content": "yo, is there some token about weapon, i very interested in. is there some token relate with keyword: 'Gun'",
-      "time": "2025-01-20 16:51:33",
-      "type": "user"
+      "content": "i want to buy TGB with amount 0.04 SUI",
+      "time": "2025-01-21 11:14:13"
     },
     {
-      "sender": "Bot",
-      "message": "Agent stopped due to iteration limit or time limit.",
-      "time": "2025-01-20 16:51:33",
-      "type": "bot"
+      "role": "assistant",
+      "content": "Your purchase of TGB tokens with 0.04 SUI was successful.  Please note that this feature is currently in beta.",
+      "time": "2025-01-21 11:14:13"
     },
     {
       "role": "user",
       "content": "hi",
-      "time": "2025-01-20 17:04:52",
-      "type": "user"
+      "time": "2025-01-21 11:25:36"
     },
     {
-      "sender": "Bot",
-      "message": "Hello! I'm RaidenX. How can I assist you with crypto trading today?",
-      "time": "2025-01-20 17:04:52",
-      "type": "bot"
+      "role": "assistant",
+      "content": "Hi there!\n",
+      "time": "2025-01-21 11:25:36"
+    },
+    {
+      "role": "user",
+      "content": "what can you do bro",
+      "time": "2025-01-21 11:25:46"
+    },
+    {
+      "role": "assistant",
+      "content": "Bro, I can help you buy and sell tokens, provide information about tokens (like their name, symbol, price, and contract address), show you your token holdings and balances in your wallets, and give you details about your wallet addresses.  I can also answer your questions about cryptocurrency, blockchain technology, trading, and market dynamics, to the best of my ability.\n",
+      "time": "2025-01-21 11:25:46"
+    },
+    {
+      "role": "user",
+      "content": "sound good. can you check my wallets balanced",
+      "time": "2025-01-21 11:26:10"
+    },
+    {
+      "role": "assistant",
+      "content": "You currently have 0.0419409 SUI, which is approximately $0.18 USD, in your HD01 wallet.  Your other wallets (W1, W2, 1e93d3, and 54e587) currently have a balance of 0 SUI.",
+      "time": "2025-01-21 11:26:10"
+    },
+    {
+      "role": "user",
+      "content": "is there some token good to buy? Trump...",
+      "time": "2025-01-21 11:26:45"
+    },
+    {
+      "role": "assistant",
+      "content": "I found several tokens related to \"Trump\":\n\n* **Trump Bull (TRUMPBULL):** Address: 0x4b0fc17c6057ac166032d3f8999a4212aa0d9ba2864acd957a47051e8c801acc::trumpbull::TRUMPBULL, Price: $0.00039499\n* **Official Trump 2.0 (TRUMP2):** Address: 0xf02cf0861dd476acaa5ca0b5e079669a444614b1f50e9478d64d8aae32148433::trump2::TRUMP2, Price: $0.00005883\n* **OFFICIAL TRUMP by SuiAI (TRUMPSUI):** Address: 0x74bb5f3ead1e9f12ce6d1cfd0b5fa0ba5766cf7439d64209d6bba7457dba2541::trumpsui::TRUMPSUI, Price: $0.00110099\n* **Trump Doge Meme (TROGE):** Address: 0x8062d25b33166aacf80d3e94b3d668a747b08fda8c2c68981314f8360e100a48::troge::TROGE, Price: $0.00015452\n* **Strategic Trump47 Reserve (STR47):** Address: 0x2f0b19032604ec79efb5c6c607d9c10399cc9d6b40790b766d71bcae1176b0af::str47::STR47, Price: $0.00009396\n\nPlease note that these prices are subject to change, and I cannot offer financial advice.  Do your own research before investing in any cryptocurrency.",
+      "time": "2025-01-21 11:26:45"
+    },
+    {
+      "role": "user",
+      "content": "token about joe biden",
+      "time": "2025-01-21 11:31:07"
+    },
+    {
+      "role": "assistant",
+      "content": "I found two tokens related to Joe Biden:\n\n* **Sad Joe Biden (SADJOE):**  Address: 0x7451fc914e4467694c891ee20ed9e169fdfb397572979e0de5aef656eda8e32c::sadjoe::SADJOE, Price: $2.4558176113882514E-7\n* **Official Bye Joe Biden (BYEBIDEN):** Address: 0xbdebf63a9e546e0a2c64e8be5cda0434d90390a56a0d10c69b1b315ed7ca3151::byebiden::BYEBIDEN, Price: $0.03015092557997327\n\nPlease remember that cryptocurrency prices are volatile, and this information is for informational purposes only and not financial advice.  Always conduct your own research before investing.",
+      "time": "2025-01-21 11:31:07"
+    },
+    {
+      "role": "user",
+      "content": "yo",
+      "time": "2025-01-21 11:36:32"
+    },
+    {
+      "role": "assistant",
+      "content": "Yo!\n",
+      "time": "2025-01-21 11:36:32"
+    },
+    {
+      "role": "user",
+      "content": "what is my wallet balanced",
+      "time": "2025-01-21 11:36:45"
+    },
+    {
+      "role": "assistant",
+      "content": "To check your wallet balance, please specify which wallet you'd like me to check.  I need more information to help you.",
+      "time": "2025-01-21 11:36:45"
+    },
+    {
+      "role": "user",
+      "content": "check all wallets",
+      "time": "2025-01-21 11:37:02"
+    },
+    {
+      "role": "assistant",
+      "content": "I need to know which tokens you want me to check the balance of in your wallets. Please provide the token names or addresses.",
+      "time": "2025-01-21 11:37:02"
+    },
+    {
+      "role": "user",
+      "content": "i mean check wallet not position",
+      "time": "2025-01-21 11:37:17"
+    },
+    {
+      "role": "assistant",
+      "content": "Sorry, I cannot answer your query.  I need more information about which specific wallets you want me to check.  Please provide wallet addresses or other identifying information.",
+      "time": "2025-01-21 11:37:17"
+    },
+    {
+      "role": "user",
+      "content": "token relate about Biden",
+      "time": "2025-01-21 11:37:37"
+    },
+    {
+      "role": "assistant",
+      "content": "I found several tokens related to \"Biden\".  To proceed, please tell me which token you'd like information on.  Here are the options:\n\n1. SIMPLE_TOKEN (FUCKBIDEN)\n2. Joy Biden (JOY)\n3. Sad Joe Biden (SADJOE)\n4. SIMPLE_TOKEN (GETOUTBIDEN)\n5. Biden You're Officially Fired (FIRED)\n\n\nPlease provide the number corresponding to your choice.",
+      "time": "2025-01-21 11:37:37"
+    },
+    {
+      "role": "user",
+      "content": "what is the cheapest token relate with Trump",
+      "time": "2025-01-21 11:38:46"
+    },
+    {
+      "role": "assistant",
+      "content": "Based on the provided data, the cheapest token related to Trump is Trumpius Maximus (TRUMPIUS) with a price of $0.00005326.",
+      "time": "2025-01-21 11:38:46"
+    },
+    {
+      "role": "user",
+      "content": "I want to buy this token",
+      "time": "2025-01-21 11:39:03"
+    },
+    {
+      "role": "assistant",
+      "content": "Multiple tokens match your query \"Trumpius Maximus\". Please select the token you wish to buy using the index number:\n\n1. address: 0xbd5ab5cfd235656c92bab73ec1fbdedb57e52b3ef1d601b59a38279faabf42b4::trumpius::TRUMPIUS, price: $0.00005326\n2. address: 0x0a88c3fbea9cce201621322d55011fbfb2708dfa3e53f1b7b140416754226854::trumpius::TRUMPIUS, price: $0.00010408\n3. address: 0x2c2ce03b4e8e92369d7ad279f146dedf6a8e14785fc2383b03c88f27baa58480::trumpius::TRUMPIUS, price: $0.00009596\n4. address: 0xe8b969c1bbbc12dcc2081651df27c55d374756a7e3b3503dd981c1cac402de46::trumpius::TRUMPIUS, price: $0.00013809\n\n\nAfter you choose, please specify the amount you wish to buy in SUI.",
+      "time": "2025-01-21 11:39:03"
+    },
+    {
+      "role": "user",
+      "content": "How much SUI i have in my wallets",
+      "time": "2025-01-21 11:39:25"
+    },
+    {
+      "role": "assistant",
+      "content": "To check your SUI balance, please provide the address(es) of the wallet(s) you want me to check.",
+      "time": "2025-01-21 11:39:25"
+    },
+    {
+      "role": "user",
+      "content": "function wallet check can check all walléts",
+      "time": "2025-01-21 11:39:55"
+    },
+    {
+      "role": "assistant",
+      "content": "Sorry, I cannot directly check your SUI balance across all your wallets with the tools I have available.  I need either the specific wallet addresses or a tool that can access all your wallets based on your user ID.",
+      "time": "2025-01-21 11:39:55"
     },
     {
       "role": "user",
       "content": "hi",
-      "time": "2025-01-20 17:08:13",
-      "type": "user"
-    },
-    {
-      "sender": "Bot",
-      "message": "Agent stopped due to iteration limit or time limit.",
-      "time": "2025-01-20 17:08:13",
-      "type": "bot"
-    },
-    {
-      "role": "user",
-      "content": "my wallets current status",
-      "time": "2025-01-20 17:16:21",
-      "type": "user"
-    },
-    {
-      "sender": "Bot",
-      "message": "You have 5 wallets.",
-      "time": "2025-01-20 17:16:21",
-      "type": "bot"
-    },
-    {
-      "role": "user",
-      "content": "my current position",
-      "time": "2025-01-20 17:16:40",
-      "type": "user"
-    },
-    {
-      "sender": "Bot",
-      "message": "Agent stopped due to iteration limit or time limit.",
-      "time": "2025-01-20 17:16:40",
-      "type": "bot"
-    },
-    {
-      "role": "user",
-      "content": "my wallets information",
-      "time": "2025-01-20 17:18:22",
-      "type": "user"
-    },
-    {
-      "sender": "Bot",
-      "message": "Here are your wallets: [{'",
-      "time": "2025-01-20 17:18:22",
-      "type": "bot"
-    },
-    {
-      "role": "user",
-      "content": "token relate with president donald trump.",
-      "time": "2025-01-20 17:19:13",
-      "type": "user"
-    },
-    {
-      "sender": "Bot",
-      "message": "I'm sorry, I don't have any information about tokens related to President Donald Trump.",
-      "time": "2025-01-20 17:19:13",
-      "type": "bot"
-    },
-    {
-      "role": "user",
-      "content": "Search me for some list token about predisent Trump",
-      "time": "2025-01-20 17:19:46",
-      "type": "user"
-    },
-    {
-      "sender": "Bot",
-      "message": "I'm sorry, I cannot find any tokens related to \"predisent Trump\".",
-      "time": "2025-01-20 17:19:46",
-      "type": "bot"
-    },
-    {
-      "role": "user",
-      "content": "or just 'Trump'",
-      "time": "2025-01-20 17:20:01",
-      "type": "user"
-    },
-    {
-      "sender": "Bot",
-      "message": "Here are some tokens related to President Donald Trump: Barron Trump Coin, OFFICIAL TRUMP by SuiAI, Barron Trump, TrumpAi, Trump Sons, OFFICIAL TRUMP, Trump Bull, SUITRUMP, SUITRUMP, Strategic Trump47 Reserve, TRUMP, TRUMP, Donald Trump by SuiAI, Agent Trump by SuiAI, Trumpius Maximus, TRUMPSUI, Official Trump 2.0, Trump AI  by SuiAI, TheTrumpPump by SuiAI, baby trump by SuiAI, UNOFFICIAL DONALD TRUMP by SuiAI, TRUMPSUI by SuiAI, Trump Wifhat  by SuiAI, Trump Nation Coin by SuiAI, TRUMP MITA by SuiAI, \"Trump's Elons Nutt Sack by SuiAI\", Patton Trumps Dog by SuiAI, TRUMP HAT by SuiAI, SUITRUMP, Donald Trump AI by SuiAI, Trump on sui by SuiAI, Eric Trump by SuiAI, Baby Trump by SuiAI, AI TRUMP by SuiAI, COMMUNITY TRUMP COIN by SuiAI, President TrumpAI by SuiAI, Trump0047AI by SuiAI, TrumpMAGA by SuiAI, Donald Trump AI by SuiAI, trump.sui by SuiAI, TRUMP TRACKER by SuiAI, Muscle Trump  by SuiAI, TRUMP, MELANIA TRUMP by SuiAI, Baby Trump on Sui, UnOfficial Melania Trump Coin by SuiAI, Tiffany Trump by SuiAI, TRUMPT, STRUMP, MELANIA TRUMP by SuiAI",
-      "time": "2025-01-20 17:20:01",
-      "type": "bot"
-    },
-    {
-      "role": "user",
-      "content": "my positions token status",
-      "time": "2025-01-20 17:20:34",
-      "type": "user"
-    },
-    {
-      "sender": "Bot",
-      "message": "Agent stopped due to iteration limit or time limit.",
-      "time": "2025-01-20 17:20:34",
-      "type": "bot"
-    },
-    {
-      "role": "user",
-      "content": "token position currently of mine, what is status is this",
-      "time": "2025-01-20 17:22:01",
-      "type": "user"
-    },
-    {
-      "sender": "Bot",
-      "message": "Hello! I'm RaidenX. How can I assist you with crypto trading today?",
-      "time": "2025-01-20 17:22:01",
-      "type": "bot"
-    },
-    {
-      "role": "user",
-      "content": "how to buy barron trump coin? what price and address is it?",
-      "time": "2025-01-20 17:22:55",
-      "type": "user"
-    },
-    {
-      "sender": "Bot",
-      "message": "Hello! I'm RaidenX. How can I assist you with crypto trading today?",
-      "time": "2025-01-20 17:22:55",
-      "type": "bot"
-    },
-    {
-      "role": "user",
-      "content": "Barron Trump Coin address and price",
-      "time": "2025-01-20 17:24:06",
-      "type": "user"
-    },
-    {
-      "sender": "Bot",
-      "message": "The address for Barron Trump Coin is 0x4ab947e18ea7d3d7beae1ab166c83eb92b23ff97ddae665dc6a5fd87b58f9814 and the current price is $0.00008831889580053545.",
-      "time": "2025-01-20 17:24:06",
-      "type": "bot"
-    },
-    {
-      "role": "user",
-      "content": "My positions about this coin",
-      "time": "2025-01-20 17:24:28",
-      "type": "user"
-    },
-    {
-      "sender": "Bot",
-      "message": "You do not have any positions for Barron Trump Coin.",
-      "time": "2025-01-20 17:24:28",
-      "type": "bot"
-    },
-    {
-      "role": "user",
-      "content": "ok thanks you.",
-      "time": "2025-01-20 17:24:48",
-      "type": "user"
-    },
-    {
-      "sender": "Bot",
-      "message": "You're welcome!",
-      "time": "2025-01-20 17:24:48",
-      "type": "bot"
-    },
-    {
-      "role": "user",
-      "content": "can you check do i have any positions about Biden token. i think first: you must check all biden token - then check each position for each token in the list.",
-      "time": "2025-01-20 17:26:23",
-      "type": "user"
-    },
-    {
-      "sender": "Bot",
-      "message": "I checked all Biden tokens and their positions, but it seems you don't have any holdings for them.",
-      "time": "2025-01-20 17:26:23",
-      "type": "bot"
-    },
-    {
-      "role": "user",
-      "content": "is there some token relate with spiderman",
-      "time": "2025-01-20 17:30:42",
-      "type": "user"
-    },
-    {
-      "sender": "Bot",
-      "message": "I'm sorry, I couldn't find any tokens related to Spiderman.",
-      "time": "2025-01-20 17:30:42",
-      "type": "bot"
-    },
-    {
-      "role": "user",
-      "content": "what about elon musk",
-      "time": "2025-01-20 17:31:06",
-      "type": "user"
-    },
-    {
-      "sender": "Bot",
-      "message": "I can help answer questions about:\n    \n1. Cryptocurrency basics and specific coins\n2. Blockchain technology and its applications\n3. Trading strategies and analysis\n4. Market trends and dynamics\n5. DeFi protocols and services\n6. Security and best practices\n\nPlease ask your specific question about any of these topics.",
-      "time": "2025-01-20 17:31:06",
-      "type": "bot"
-    },
-    {
-      "role": "user",
-      "content": "i mean token about elon musk",
-      "time": "2025-01-20 17:31:23",
-      "type": "user"
-    },
-    {
-      "sender": "Bot",
-      "message": "Agent stopped due to iteration limit or time limit.",
-      "time": "2025-01-20 17:31:23",
-      "type": "bot"
-    },
-    {
-      "role": "user",
-      "content": "token relate to 'Jack'",
-      "time": "2025-01-20 17:51:14",
-      "type": "user"
-    },
-    {
-      "sender": "Bot",
-      "message": "Hi there! I see you're interested in tokens related to 'Jack'. Which one would you like to know more about?",
-      "time": "2025-01-20 17:51:14",
-      "type": "bot"
-    },
-    {
-      "role": "user",
-      "content": "What is the most expensive token relate to 'Elon Musk'",
-      "time": "2025-01-20 17:57:30",
-      "type": "user"
-    },
-    {
-      "sender": "Bot",
-      "message": "The most expensive token related to 'Elon Musk' is 'Elon Musk Real' with the address '0xce64e14ce00456ef572d048afa17248a7e1d4f651be6db1f479b1af7c0a57727' and symbol 'ELON'. However, you do not have any of this token in your wallet.",
-      "time": "2025-01-20 17:57:30",
-      "type": "bot"
-    },
-    {
-      "role": "user",
-      "content": "how can i buy this",
-      "time": "2025-01-20 17:59:16",
-      "type": "user"
-    },
-    {
-      "sender": "Bot",
-      "message": "Agent stopped due to iteration limit or time limit.",
-      "time": "2025-01-20 17:59:16",
-      "type": "bot"
-    },
-    {
-      "role": "user",
-      "content": "what is my wallet status",
-      "time": "2025-01-20 18:01:32",
-      "type": "user"
-    },
-    {
-      "sender": "Bot",
-      "message": "You have 5 wallets associated with your account.",
-      "time": "2025-01-20 18:01:32",
-      "type": "bot"
-    },
-    {
-      "role": "user",
-      "content": "what is this",
-      "time": "2025-01-20 18:01:49",
-      "type": "user"
-    },
-    {
-      "sender": "Bot",
-      "message": "Agent stopped due to iteration limit or time limit.",
-      "time": "2025-01-20 18:01:49",
-      "type": "bot"
-    }
-  ],
-  "1636900643": [
-    {
-      "role": "user",
-      "content": "/start"
+      "time": "2025-01-21 13:56:12"
     },
     {
       "role": "assistant",
-      "content": "Hi there! I'm RaidenX, a professional trading bot specializing in meme coins. I can help you buy and sell meme coins. How can I assist you today?"
+      "content": "Hi there!\n",
+      "time": "2025-01-21 13:56:12"
     },
     {
       "role": "user",
-      "content": "xin chaof"
+      "content": "how much token relate to biden",
+      "time": "2025-01-21 14:29:29"
     },
     {
       "role": "assistant",
-      "content": "Xin chào! Tôi là RaidenX, một bot giao dịch chuyên nghiệp chuyên về tiền điện tử meme. Tôi có thể giúp bạn mua và bán tiền điện tử meme. Tôi có thể giúp gì cho bạn hôm nay?"
+      "content": "Based on the search results, there are several tokens related to Biden.  These include SADJOE,  tokens with \"biden\" in their name like  `btcethltcbushobamatrumpbidensui` and `btcethltcbushobamatrumpbiden`, GETOUTBIDEN, and FUCKBIDEN.  The prices vary significantly.  Note that the names and symbols suggest these tokens may be associated with political commentary rather than official endorsements.",
+      "time": "2025-01-21 14:29:29"
     },
     {
       "role": "user",
-      "content": "alo"
+      "content": "what price is it",
+      "time": "2025-01-21 14:30:15"
     },
     {
       "role": "assistant",
-      "content": "Hello! I'm RaidenX. How can I assist you with crypto trading today?"
+      "content": "Please specify which Biden-related token you are interested in.  For example, tell me the token's name or symbol.",
+      "time": "2025-01-21 14:30:15"
     },
     {
       "role": "user",
-      "content": "kiểm tra tài khoản"
+      "content": "price and address token of SADJOE",
+      "time": "2025-01-21 14:30:36"
     },
     {
       "role": "assistant",
-      "content": "I can help answer questions about:\n    \n1. Cryptocurrency basics and specific coins\n2. Blockchain technology and its applications\n3. Trading strategies and analysis\n4. Market trends and dynamics\n5. DeFi protocols and services\n6. Security and best practices\n\nPlease ask your specific question about any of these topics."
+      "content": "The SADJOE token (Sad Joe Biden), has a price of approximately $2.4558176113882514E-7 and its contract address is 0x7451fc914e4467694c891ee20ed9e169fdfb397572979e0de5aef656eda8e32c::sadjoe::SADJOE.  Please note that cryptocurrency prices are highly volatile and this price may change rapidly.",
+      "time": "2025-01-21 14:30:36"
     },
     {
       "role": "user",
-      "content": "bạn có thể làm gì"
+      "content": "what is my wallet balanced",
+      "time": "2025-01-21 14:30:58"
     },
     {
       "role": "assistant",
-      "content": "Agent stopped due to iteration limit or time limit."
-    },
-    {
-      "role": "user",
-      "content": "tôi đang có bao nhiêu SIU"
-    },
-    {
-      "role": "assistant",
-      "content": "Xin lỗi, tôi không thể cung cấp thông tin về số dư SUI của bạn. Tôi chỉ có thể hỗ trợ mua hoặc bán mã thông báo."
-    },
-    {
-      "role": "user",
-      "content": "tôi muốn mua PBTC"
-    },
-    {
-      "role": "assistant",
-      "content": "I'm sorry, but I cannot find any tokens matching your search query. Please try again with a different token name or symbol."
-    },
-    {
-      "role": "user",
-      "content": "tôi có những token gì"
-    },
-    {
-      "role": "assistant",
-      "content": "I'm sorry, I can't check your token balance because I don't have access to your wallet."
-    },
-    {
-      "role": "user",
-      "content": "what is my wallet"
-    },
-    {
-      "role": "assistant",
-      "content": "I'm sorry, I don't have access to your wallet information."
-    },
-    {
-      "role": "user",
-      "content": "tôi muốn mua 5 btc"
-    },
-    {
-      "role": "assistant",
-      "content": "Agent stopped due to iteration limit or time limit."
-    },
-    {
-      "role": "user",
-      "content": "danh sách ví của tôi"
-    },
-    {
-      "role": "assistant",
-      "content": "I'm sorry, I cannot assist with that. I can only help you buy or sell tokens."
-    },
-    {
-      "role": "user",
-      "content": "list Biden token"
-    },
-    {
-      "role": "assistant",
-      "content": "I'm sorry, but I cannot find any tokens matching your search query."
-    },
-    {
-      "role": "user",
-      "content": "good moring"
-    },
-    {
-      "role": "assistant",
-      "content": "Hello! I'm RaidenX. How can I assist you with crypto trading today?"
-    },
-    {
-      "role": "user",
-      "content": "hi"
-    },
-    {
-      "role": "assistant",
-      "content": "Hi there! Ready to help you with your crypto trading needs!"
-    },
-    {
-      "role": "user",
-      "content": "positions là gì"
-    },
-    {
-      "role": "assistant",
-      "content": "Positions are a way to describe the different ways that you can hold or trade cryptocurrencies. There are two main types of positions: long positions and short positions. A long position means that you are buying a cryptocurrency with the expectation that its price will go up. A short position means that you are selling a cryptocurrency with the expectation that its price will go down."
-    },
-    {
-      "role": "user",
-      "content": "positions hiện có của tôi"
-    },
-    {
-      "role": "assistant",
-      "content": "I can help answer questions about:\n    \n1. Cryptocurrency basics and specific coins\n2. Blockchain technology and its applications\n3. Trading strategies and analysis\n4. Market trends and dynamics\n5. DeFi protocols and services\n6. Security and best practices\n\nPlease ask your specific question about any of these topics."
-    },
-    {
-      "role": "user",
-      "content": "danh sách ví hiện có của tôi"
-    },
-    {
-      "role": "assistant",
-      "content": "Hello! I'm RaidenX. How can I assist you with crypto trading today?"
-    },
-    {
-      "role": "user",
-      "content": "list các token liên quan với Biden"
-    },
-    {
-      "role": "assistant",
-      "content": "There are no tokens related to Biden"
-    },
-    {
-      "role": "user",
-      "content": "token Trump"
-    },
-    {
-      "role": "assistant",
-      "content": "I couldn't find any tokens matching your search query."
+      "content": "Your current SUI balance across all your wallets is 0.0419409 SUI.  To check your token balances, please provide the token address.",
+      "time": "2025-01-21 14:30:58"
     },
     {
       "role": "user",
       "content": "hi",
-      "time": "2025-01-20 15:29:47",
-      "type": "user"
+      "time": "2025-01-21 14:39:54"
     },
     {
-      "sender": "Bot",
-      "message": "Hi there! Ready to help you with your crypto trading needs!",
-      "time": "2025-01-20 15:29:47",
-      "type": "bot"
-    },
-    {
-      "role": "user",
-      "content": "biden token",
-      "time": "2025-01-20 15:39:10",
-      "type": "user"
-    },
-    {
-      "sender": "Bot",
-      "message": "I'm sorry, I couldn't find any tokens matching your search query.",
-      "time": "2025-01-20 15:39:10",
-      "type": "bot"
+      "role": "assistant",
+      "content": "Hi there!\n",
+      "time": "2025-01-21 14:39:54"
     },
     {
       "role": "user",
-      "content": "Do you have any token like \"Biden\"",
-      "time": "2025-01-20 15:40:19",
-      "type": "user"
+      "content": "check my wallets",
+      "time": "2025-01-21 14:55:30"
     },
     {
-      "sender": "Bot",
-      "message": "Sorry, I couldn't find any tokens matching your search query.",
-      "time": "2025-01-20 15:40:19",
-      "type": "bot"
+      "role": "assistant",
+      "content": "You have five SUI wallets associated with your account.  Four of them currently have a balance of 0 SUI, while your wallet with the alias \"HD01\" has a balance of 0.0419409 SUI, which is approximately $0.18 USD.  Note that cryptocurrency prices are volatile, and this USD value is an approximation.",
+      "time": "2025-01-21 14:55:30"
     },
     {
       "role": "user",
-      "content": "today date?",
-      "time": "2025-01-20 15:42:10",
-      "type": "user"
+      "content": "check price of token SADJOE",
+      "time": "2025-01-21 14:55:55"
     },
     {
-      "sender": "Bot",
-      "message": "2025-01-20",
-      "time": "2025-01-20 15:42:10",
-      "type": "bot"
+      "role": "assistant",
+      "content": "The current price of SADJOE is approximately 2.4558176113882514E-7 USD.  Please note that cryptocurrency prices are highly volatile and this price may change rapidly.",
+      "time": "2025-01-21 14:55:55"
+    },
+    {
+      "role": "user",
+      "content": "I want to buy this with amout 0.004 SUI",
+      "time": "2025-01-21 14:56:20"
+    },
+    {
+      "role": "assistant",
+      "content": "Your purchase of SADJOE tokens with 0.004 SUI was successful.  Please note that this feature is currently in beta.",
+      "time": "2025-01-21 14:56:20"
     }
   ]
 }
