@@ -57,13 +57,10 @@ def parse_action_reasoning_step(output: str) -> ActionReasoningStep:
     """
     Parse an action reasoning step from the LLM output.
     """
-    # Weaker LLMs may generate ReActAgent steps whose Action Input are horrible JSON strings.
-    # `dirtyjson` is more lenient than `json` in parsing JSON strings.
     import dirtyjson as json
 
     thought, action, action_input = extract_tool_use(output)
     json_str = extract_json_str(action_input)
-    # First we try json, if this fails we use ast
     try:
         action_input_dict = json.loads(json_str)
     except Exception:
@@ -93,15 +90,12 @@ class ReActOutputParser(BaseOutputParser):
             ```
         """
         if "Thought:" not in output:
-            # NOTE: handle the case where the agent directly outputs the answer
-            # instead of following the thought-answer format
             return ResponseReasoningStep(
                 thought="(Implicit) I can answer without any more tools!",
                 response=output,
                 is_streaming=is_streaming,
             )
-
-        # An "Action" should take priority over an "Answer"
+            
         if "Action:" in output:
             return parse_action_reasoning_step(output)
 

@@ -2,7 +2,6 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from langchain.agents import Tool
 import requests
 from auth.jwt_generator import get_jwt
 
@@ -36,18 +35,3 @@ def get_positions_by_token(userId: str, userName: str, displayName: str, token_a
         return response.json()
     else:
         raise Exception(f"Error fetching positions: {response.status_code} - {response.text}")
-
-
-
-get_positions_tool = Tool(
-    name="Get_Token_Position",
-    func=get_positions_by_token,
-    description=(
-                "Return positions of a specific token in user's wallets."
-                """Input args: userId (str): The user's unique identifier.
-                userName (str): The user's username.
-                displayName (str): The user's display name.
-                token_address (str): The token's contract address."""
-                "Use this tool in crypto applications to check token balances, track holdings, or analyze wallet activity."
-            ),
-)

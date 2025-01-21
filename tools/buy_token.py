@@ -2,7 +2,6 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from langchain.agents import Tool
 import requests
 from auth.jwt_generator import get_jwt
 

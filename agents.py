@@ -1,62 +1,214 @@
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from typing import List, Optional, Sequence
 
-from tools.utils import get_today_date_tool
-from tools.get_wallets import get_wallets_tool
-from tools.get_positions import get_positions_tool
-from tools.search_tokens import search_tokens_tool
-
-
-from langchain import hub
-from langchain.agents import AgentExecutor, create_react_agent
-from langchain.agents import create_tool_calling_agent
-
-from langchain_google_genai import ChatGoogleGenerativeAI
-
-import os
-from dotenv import load_dotenv
-
-from prompts.react import prompt_react
-
-load_dotenv()
-
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-
-llm = ChatGoogleGenerativeAI(
-    google_api_key=GEMINI_API_KEY,
-    model="gemini-pro",
-    temperature=0,
-    timeout=30,
-    max_retries=2
+from llama_index.core import PromptTemplate
+from llama_index.core.agent import ReActAgent
+from llama_index.core.agent.react.formatter import (
+    ReActChatFormatter,
+    get_react_tool_descriptions,
+)
+from llama_index.core.agent.react.prompts import (
+    CONTEXT_REACT_CHAT_SYSTEM_HEADER,
+    REACT_CHAT_SYSTEM_HEADER,
+)
+from llama_index.core.agent.react.types import (
+    BaseReasoningStep,
+    ObservationReasoningStep,
+)
+from llama_index.core.base.llms.types import ChatMessage, MessageRole
+from llama_index.core.tools import BaseTool, FunctionTool
+from llama_index.llms.gemini import Gemini
+from llama_index.core.tools import BaseTool, ToolOutput
+from utils.output_parser import ReActOutputParser
+from tools import (
+    get_positions_by_token,
+    get_wallets,
+    search_token,
+    buy_token,
+    sell_token,
 )
 
-tools = [get_today_date_tool, get_wallets_tool, get_positions_tool, search_tokens_tool]
+from prompts.react import REACT_CHAT_SYSTEM_HEADER_CUSTOM
 
-for tool in tools:
-    print(f"Tool name: {tool.name}")
-    print(f"Tool description: {tool.description}")
-    print(f"Tool args: {tool.args}")
-    print(f"Tool args schema: {tool.args_schema}")
-
-# prompt_react = hub.pull("hwchase17/react")
-
-# react_agent = create_react_agent(llm, tools=tools, prompt=prompt_react)
-
-# react_agent_executor = AgentExecutor(
-#     agent=react_agent, 
-#     tools=tools, 
-#     verbose=True, 
-#     handle_parsing_errors=True
-# )
+llm = Gemini(
+    model="models/gemini-1.5-pro",
+)
 
 
+class CustomReActChatFormatter(ReActChatFormatter):
+    """ReAct chat formatter."""
+
+    def __init__(
+        self,
+        system_header: str = REACT_CHAT_SYSTEM_HEADER,  # default system header
+        context: str = "",  # default context (optional)
+        **kwargs,
+    ):
+        """
+        Initialize the CustomReActChatFormatter.
+
+        Args:
+            system_header (str): The system header template string.
+            context (str): Additional context to include in the format.
+            **kwargs: Additional keyword arguments to store and use in formatting.
+        """
+        super().__init__(system_header=system_header, context=context)
+        self._kwargs = kwargs
+
+    def format(
+        self,
+        tools: Sequence[BaseTool],
+        chat_history: List[ChatMessage],
+        current_reasoning: Optional[List[BaseReasoningStep]] = None,
+        **kwargs,
+    ) -> List[ChatMessage]:
+        """Format chat history into list of ChatMessage."""
+        current_reasoning = current_reasoning or []
+
+        format_args = {
+            "tool_desc": "\n".join(get_react_tool_descriptions(tools)),
+            "tool_names": ", ".join([tool.metadata.get_name() for tool in tools]),
+        }
+
+        if self.context:
+            format_args["context"] = self.context
+
+        combined_args = {**format_args, **self._kwargs}
+        fmt_sys_header = self.system_header.format(**combined_args)
+        reasoning_history = []
+        for reasoning_step in current_reasoning:
+            if isinstance(reasoning_step, ObservationReasoningStep):
+                message = ChatMessage(
+                    role=MessageRole.USER,
+                    content=reasoning_step.get_content(),
+                )
+            else:
+                message = ChatMessage(
+                    role=MessageRole.ASSISTANT,
+                    content=reasoning_step.get_content(),
+                )
+            reasoning_history.append(message)
+
+        return [
+            ChatMessage(role=MessageRole.SYSTEM, content=fmt_sys_header),
+            *chat_history,
+            *reasoning_history,
+        ]
+
+    @classmethod
+    def from_defaults(
+        cls,
+        system_header: Optional[str] = None,
+        context: Optional[str] = None,
+    ) -> "CustomReActChatFormatter":
+        """Create ReActChatFormatter from defaults."""
+        if not system_header:
+            system_header = (
+                REACT_CHAT_SYSTEM_HEADER
+                if not context
+                else CONTEXT_REACT_CHAT_SYSTEM_HEADER
+            )
+
+        return CustomReActChatFormatter(
+            system_header=system_header,
+            context=context or "",
+        )
+        
+def custom_failure_handler(callback_manager, exception):
+    error_message = f"The agent encountered an error: {str(exception)}"
+    return ToolOutput(content=error_message, tool_name="Error Handler")
 
 
+react_system_prompt = PromptTemplate(REACT_CHAT_SYSTEM_HEADER_CUSTOM)
+
+tools = [
+    FunctionTool.from_defaults(
+        fn=get_positions_by_token,
+        name="get_token_position",
+        description=(
+            "Return positions of a specific token in user's wallets."
+            """Input args: userId (str): The user's unique identifier.
+                userName (str): The user's username.
+                displayName (str): The user's display name.
+                token_address (str): The token's contract address."""
+            "Use this tool in crypto applications to check token balances, track holdings, or analyze wallet activity."
+        ),
+    ),
+    FunctionTool.from_defaults(
+        fn=get_wallets,
+        name="get_wallet",
+        description=(
+            "Useful for retrieving wallet information associated with a user."
+            """Input args: userId (str): The user's unique identifier.
+                userName (str): The user's username.
+                displayName (str): The user's display name."""
+            "Use this tool in crypto applications to fetch wallet details for analysis, tracking, or integration."
+        ),
+    ),
+    FunctionTool.from_defaults(
+        fn=search_token,
+        name="search_token",
+        description=(
+            "Useful for searching token/cryptocurrency information when buying or selling. Should response last user with Address token"
+            """Input args: query (str): Token name, symbol, or related keywords (e.g., 'Blue', 'Cook', 'Island boy')."""
+            "Use this tool in crypto applications to:"
+            "- Find detailed token information (name, symbol, contract address, price)."
+            "- Verify if a token exists and is tradeable on supported platforms."
+            "- Identify the correct token for trading based on user queries."
+            "- Retrieve a list of tokens matching the search query with basic details (address, name, symbol, priceUsd)."
+        ),
+    ),
+    FunctionTool.from_defaults(
+        fn=buy_token,
+        name="buy_token",
+        description=(
+            "Status of purchase"
+            """Input args: userId (str): The user's unique identifier.
+                userName (str): The user's username.
+                displayName (str): The user's display name.
+                token_address (str): The token's contract address.
+                amount (float): The Amount of token in SUI network want to buy."""
+            "Use this tool in crypto applications when user want to buy an token by token"
+        ),
+    ),
+    FunctionTool.from_defaults(
+        fn=sell_token,
+        name="sell_token",
+        description=(
+            "Status of purchase."
+            """Input args: userId (str): The user's unique identifier.
+                userName (str): The user's username.
+                displayName (str): The user's display name.
+                token_address (str): The token's contract address."""
+            "Use this tool in crypto applications when user want to sell a token"
+        ),
+    ),
+]
 
 
+def react_chat(
+    query: str,
+    llm=None,
+    chat_history: List[ChatMessage] = None,
+    max_iterations=10,
+    userId="2104920255",
+    userName="Harry Dang",
+    displayName="Harry Dang",
+):
+    formatter = CustomReActChatFormatter(
+        userId=userId, userName=userName, displayName=displayName
+    )
+    agent = ReActAgent.from_tools(
+        tools=tools,
+        llm=llm,
+        verbose=True,
+        chat_history=chat_history,
+        react_chat_formatter=formatter,
+        max_iterations=max_iterations,
+        output_parser=ReActOutputParser()
+    )
+    agent.update_prompts({"agent_worker:system_prompt": react_system_prompt})
+    response = agent.chat(query)
+    response = str(response)
 
-
-
-
-
+    agent.reset()
+    return response

@@ -1,5 +1,4 @@
 import requests
-from langchain.agents import Tool
 from pydantic import BaseModel, Field
 import json
 from tools.utils import json_to_dict
@@ -47,17 +46,3 @@ def search_token(query: str) -> dict:
         return {'tokens': results[0:5]}
     else:
         raise Exception(f"Error searching tokens: {response.status_code} - {response.text}")
-    
-search_tokens_tool = Tool(
-    name="Search Token",
-    func=search_token,
-    description=(
-        "Useful for searching token/cryptocurrency information when buying or selling."
-        """Input args: query (str): Token name, symbol, or related keywords (e.g., 'Blue', 'Cook', 'Island boy')."""
-        "Use this tool in crypto applications to:"
-        "- Find detailed token information (name, symbol, contract address, price)."
-        "- Verify if a token exists and is tradeable on supported platforms."
-        "- Identify the correct token for trading based on user queries."
-        "- Retrieve a list of tokens matching the search query with basic details (address, name, symbol, priceUsd)."
-    )
-)

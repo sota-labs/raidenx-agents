@@ -4,7 +4,6 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import requests
 from auth.jwt_generator import get_jwt
-from langchain.agents import Tool
 from tools.utils import json_to_dict
 
 # @json_to_dict
@@ -23,16 +22,3 @@ def get_wallets(userId: str, userName: str = None, displayName: str = None) -> d
         return response.json()
     else:
         raise Exception(f"Error fetching wallets: {response.status_code} - {response.text}")
-    
-    
-get_wallets_tool = Tool(
-    name="Get Wallet of user",
-    func=get_wallets,
-    description=(
-        "Useful for retrieving wallet information associated with a user."
-        """Input args: userId (str): The user's unique identifier.
-        userName (str): The user's username.
-        displayName (str): The user's display name."""
-        "Use this tool in crypto applications to fetch wallet details for analysis, tracking, or integration."
-    )
-) 
