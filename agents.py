@@ -121,18 +121,18 @@ def custom_failure_handler(callback_manager, exception):
 react_system_prompt = PromptTemplate(REACT_CHAT_SYSTEM_HEADER_CUSTOM)
 
 tools = [
-    FunctionTool.from_defaults(
-        fn=get_positions_by_token,
-        name="get_token_position",
-        description=(
-            "Return positions of a specific token in user's wallets."
-            """Input args: userId (str): The user's unique identifier.
-                userName (str): The user's username.
-                displayName (str): The user's display name.
-                token_address (str): The token's contract address."""
-            "Use this tool in crypto applications to check token balances, track holdings, or analyze wallet activity."
-        ),
-    ),
+    # FunctionTool.from_defaults(
+    #     fn=get_positions_by_token,
+    #     name="get_token_position",
+    #     description=(
+    #         "Return positions of a specific token in user's wallets."
+    #         """Input args: userId (str): The user's unique identifier.
+    #             userName (str): The user's username.
+    #             displayName (str): The user's display name.
+    #             token_address (str): The token's contract address."""
+    #         "Use this tool in crypto applications to check token balances, track holdings, or analyze wallet activity."
+    #     ),
+    # ),
     FunctionTool.from_defaults(
         fn=get_wallets,
         name="get_wallet",
@@ -144,44 +144,44 @@ tools = [
             "Use this tool in crypto applications to fetch wallet details for analysis, tracking, or integration."
         ),
     ),
-    FunctionTool.from_defaults(
-        fn=search_token,
-        name="search_token",
-        description=(
-            "Useful for searching token/cryptocurrency information when buying or selling. Should response last user with Address token"
-            """Input args: query (str): Token name, symbol, or related keywords (e.g., 'Blue', 'Cook', 'Island boy')."""
-            "Use this tool in crypto applications to:"
-            "- Find detailed token information (name, symbol, contract address, price)."
-            "- Verify if a token exists and is tradeable on supported platforms."
-            "- Identify the correct token for trading based on user queries."
-            "- Retrieve a list of tokens matching the search query with basic details (address, name, symbol, priceUsd)."
-        ),
-    ),
-    FunctionTool.from_defaults(
-        fn=buy_token,
-        name="buy_token",
-        description=(
-            "Status of purchase"
-            """Input args: userId (str): The user's unique identifier.
-                userName (str): The user's username.
-                displayName (str): The user's display name.
-                token_address (str): The token's contract address.
-                amount (float): The Amount of token in SUI network want to buy."""
-            "Use this tool in crypto applications when user want to buy an token by token"
-        ),
-    ),
-    FunctionTool.from_defaults(
-        fn=sell_token,
-        name="sell_token",
-        description=(
-            "Status of purchase."
-            """Input args: userId (str): The user's unique identifier.
-                userName (str): The user's username.
-                displayName (str): The user's display name.
-                token_address (str): The token's contract address."""
-            "Use this tool in crypto applications when user want to sell a token"
-        ),
-    ),
+    # FunctionTool.from_defaults(
+    #     fn=search_token,
+    #     name="search_token",
+    #     description=(
+    #         "Useful for searching token/cryptocurrency information when buying or selling. Should response last user with Address token"
+    #         """Input args: query (str): Token name, symbol, or related keywords (e.g., 'Blue', 'Cook', 'Island boy')."""
+    #         "Use this tool in crypto applications to:"
+    #         "- Find detailed token information (name, symbol, contract address, price)."
+    #         "- Verify if a token exists and is tradeable on supported platforms."
+    #         "- Identify the correct token for trading based on user queries."
+    #         "- Retrieve a list of tokens matching the search query with basic details (address, name, symbol, priceUsd)."
+    #     ),
+    # ),
+    # FunctionTool.from_defaults(
+    #     fn=buy_token,
+    #     name="buy_token",
+    #     description=(
+    #         "Status of purchase"
+    #         """Input args: userId (str): The user's unique identifier.
+    #             userName (str): The user's username.
+    #             displayName (str): The user's display name.
+    #             token_address (str): The token's contract address.
+    #             amount (float): The Amount of token in SUI network want to buy."""
+    #         "Use this tool in crypto applications when user want to buy an token by token"
+    #     ),
+    # ),
+    # FunctionTool.from_defaults(
+    #     fn=sell_token,
+    #     name="sell_token",
+    #     description=(
+    #         "Status of purchase."
+    #         """Input args: userId (str): The user's unique identifier.
+    #             userName (str): The user's username.
+    #             displayName (str): The user's display name.
+    #             token_address (str): The token's contract address."""
+    #         "Use this tool in crypto applications when user want to sell a token"
+    #     ),
+    # ),
 ]
 
 
@@ -191,8 +191,8 @@ def react_chat(
     chat_history: List[ChatMessage] = None,
     max_iterations=10,
     userId="2104920255",
-    userName="Harry Dang",
-    displayName="Harry Dang",
+    userName="RaidenX Agent",
+    displayName="RaidenX Agent",
 ):
     formatter = CustomReActChatFormatter(
         userId=userId, userName=userName, displayName=displayName
@@ -208,6 +208,7 @@ def react_chat(
     )
     agent.update_prompts({"agent_worker:system_prompt": react_system_prompt})
     response = agent.chat(query)
+    print(response)
     response = str(response)
 
     agent.reset()

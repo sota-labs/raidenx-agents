@@ -7,7 +7,7 @@ from auth.jwt_generator import get_jwt
 from tools.utils import json_to_dict
 
 # @json_to_dict
-def get_wallets(userId: str, userName: str = None, displayName: str = None) -> dict:
+def get_wallets(userId: str, userName: str = "", displayName: str = "") -> dict:
     jwt_token = get_jwt(userId, userName, displayName)
     
     url = "https://api-wallets.dextrade.bot/api/v1/sui/user-wallets"
@@ -22,3 +22,4 @@ def get_wallets(userId: str, userName: str = None, displayName: str = None) -> d
         return response.json()
     else:
         raise Exception(f"Error fetching wallets: {response.status_code} - {response.text}")
+    
