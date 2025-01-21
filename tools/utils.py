@@ -1,4 +1,3 @@
-from langchain.agents import Tool
 from datetime import datetime
 import json
 from functools import wraps
@@ -51,20 +50,4 @@ def crypto_knowledge(input: str) -> str:
 
 Please ask your specific question about any of these topics."""
 
-get_today_date_tool = Tool(
-    name="ottieni_data_tool",
-    func=get_today_date,
-    description="Useful for getting today's date"
-)
 
-greeting_tool = Tool(
-    name="greeting",
-    func=greeting,
-    description="Use this for handling greetings and basic conversations with users"
-)
-
-crypto_knowledge_tool = Tool(
-    name="crypto_knowledge",
-    func=crypto_knowledge,
-    description="Use this for providing information about cryptocurrency, blockchain, trading, and market dynamics"
-)
