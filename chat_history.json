@@ -19,68 +19,6 @@
       "role": "assistant",
       "content": "You have 5 wallets associated with your user ID.",
       "time": "2025-01-21 05:19:26"
-    },
-    {
-      "role": "user",
-      "content": "ví nào có tiền",
-      "time": "2025-01-21 05:19:56"
-    },
-    {
-      "role": "assistant",
-      "content": "You have 5 wallets, but only wallet with aliasName 'HD01' has a balance of 0.0419409 SUI, equivalent to 0.18340847805840235 USD. The other 4 wallets have a zero balance.",
-      "time": "2025-01-21 05:19:56"
-    },
-    {
-      "role": "user",
-      "content": "ok cảm ơn",
-      "time": "2025-01-21 05:20:33"
-    },
-    {
-      "role": "assistant",
-      "content": "Không có gì.  Vui lòng cho tôi biết nếu bạn cần hỗ trợ thêm.\n",
-      "time": "2025-01-21 05:20:33"
-    }
-  ],
-  "6409124772": [
-    {
-      "role": "user",
-      "content": "xin chào",
-      "time": "2025-01-21 05:22:20"
-    },
-    {
-      "role": "assistant",
-      "content": "xin chào",
-      "time": "2025-01-21 05:22:20"
-    },
-    {
-      "role": "user",
-      "content": "tôi có bao nhiêu ví",
-      "time": "2025-01-21 05:22:42"
-    },
-    {
-      "role": "assistant",
-      "content": "You have 3 wallets associated with your user ID.",
-      "time": "2025-01-21 05:22:42"
-    },
-    {
-      "role": "user",
-      "content": "ví nào của tôi có tiền, đổi ra tiền việt",
-      "time": "2025-01-21 05:23:11"
-    },
-    {
-      "role": "assistant",
-      "content": "You have 3 wallets with the following balances in SUI and USD:\n\n1. Snipe1: 1.996904655 SUI (8.756194910810276 USD)\n2. Snipe2: 0.469741798 SUI (2.0597632093969294 USD)\n3. 973e75: 0.00423024 SUI (0.018549110928636727 USD)",
-      "time": "2025-01-21 05:23:11"
-    },
-    {
-      "role": "user",
-      "content": "ví nào của tôi có tiền, đổi ra tiền việt",
-      "time": "2025-01-21 05:31:47"
-    },
-    {
-      "role": "assistant",
-      "content": "You have 3 wallets with the following balances in SUI and their approximate equivalent in Vietnamese đồng (VND), assuming an exchange rate of 23,500 VND/1 USD:\n\n1. Snipe1: 1.996904655 SUI (8.756194910810276 USD or approximately 205,768 VND)\n2. Snipe2: 0.469741798 SUI (2.0597632093969294 USD or approximately 48,430 VND)\n3. 973e75: 0.00423024 SUI (0.018549110928636727 USD or approximately 436 VND)\n\n\nPlease note that the VND amounts are approximate and depend on the current SUI/USD and USD/VND exchange rates.  You should consult a currency converter for the most up-to-date exchange rates.\n",
-      "time": "2025-01-21 05:31:47"
     }
   ]
 }

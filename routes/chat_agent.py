@@ -19,13 +19,55 @@ from agents import react_chat, llm
 router = APIRouter()
 
 class AgentRequest(BaseModel):
-    message: str
+    query: str
+    
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "query": "I want to buy 10 SUI of ELON token"
+            }
+        }
 
 class AgentResponse(BaseModel):
+    """Response model for agent interactions.
+    
+    Attributes:
+        message (str): The response message from the agent
+        timestamp (str): ISO format timestamp of the response
+        user (str): Username of the requesting user
+        chat_id (str): Unique identifier for the chat session
+        action (str): Type of action to be performed (e.g., "buy", "sell", "none")
+        action_input (dict): Parameters for the specified action
+            Example:
+            {
+                "token_address": "0xcce8036f36aefd05105c46c7245f3ba6203dde5a624c8319f120925903b541b7::elon::ELON",
+                "wallet_address": "0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
+                "amount": "10"
+            }
+    """
     message: str
     timestamp: str
     user: str
     chat_id: str
+    action: str = "none"
+    action_input: dict = {}
+
+    class Config:
+        """Pydantic model configuration."""
+        json_schema_extra = {
+            "example": {
+                "message": "Would you like to confirm buying 10 SUI of ELON token at address: 0xcce8036f36aefd05105c46c7245f3ba6203dde5a624c8319f120925903b541b7::elon::ELON?",
+                "timestamp": "2024-03-20 10:30:45",
+                "user": "john_doe",
+                "chat_id": "user123",
+                "action": "buy",
+                "action_input": {
+                    "token_address": "0xcce8036f36aefd05105c46c7245f3ba6203dde5a624c8319f120925903b541b7::elon::ELON",
+                    "wallet_address": "0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
+                    "amount": "10"
+                }
+            }
+        }
 
 @router.post("/agent-response", response_model=AgentResponse)
 async def generate_bot_response(request: AgentRequest,
@@ -35,7 +77,7 @@ async def generate_bot_response(request: AgentRequest,
     chat_id = session["userId"]
     user = session["userName"]
     
-    user_message = request.message
+    user_message = request.query
     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     chat_history = load_chat_history()
 
@@ -62,8 +104,8 @@ async def generate_bot_response(request: AgentRequest,
         {"role": "assistant", "content": bot_response, "time": current_time}
     )
 
-    if len(chat_history[chat_id]) > 50:
-        chat_history[chat_id] = chat_history[chat_id][-50:]
+    if len(chat_history[chat_id]) > 20:
+        chat_history[chat_id] = chat_history[chat_id][-20:]
 
     save_chat_history(chat_history)
         
@@ -71,6 +113,8 @@ async def generate_bot_response(request: AgentRequest,
         message=bot_response,
         timestamp=current_time,
         user=user,
-        chat_id=chat_id
+        chat_id=chat_id,
+        action="none",  # Using "none" as default action
+        action_input={}
     )
     

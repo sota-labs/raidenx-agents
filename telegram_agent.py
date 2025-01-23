@@ -26,8 +26,9 @@ client = TelegramClient('bot', API_ID, API_HASH).start(bot_token=BOT_TOKEN)
 @client.on(events.NewMessage(pattern='(?!/).+'))
 async def handle_message(event):
     try:
-        chat_id = "2104920255" 
-        user = "Harry Dang"    
+        chat_id = str(event.chat_id)
+        user = event.sender.first_name if event.sender else "Unknown User"
+        
         user_message = event.message.text
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         chat_history = load_chat_history()
@@ -63,8 +64,8 @@ async def handle_message(event):
             {"role": "assistant", "content": bot_response, "time": current_time}
         )
 
-        if len(chat_history[chat_id]) > 50:
-            chat_history[chat_id] = chat_history[chat_id][-50:]
+        if len(chat_history[chat_id]) > 20:
+            chat_history[chat_id] = chat_history[chat_id][-20:]
 
         save_chat_history(chat_history)
 

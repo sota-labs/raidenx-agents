@@ -1,0 +1,11 @@
+version: '3'
+services:
+  raidenx-agents:
+    build:
+      context: .
+    ports:
+      - "4009:4009"
+    volumes:
+      - ./:/app
+    env_file:
+      - .env
