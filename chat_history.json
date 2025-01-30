@@ -2,23 +2,35 @@
   "2104920255": [
     {
       "role": "user",
-      "content": "xin chào",
-      "time": "2025-01-21 05:18:59"
+      "content": "tôi muốn mua 10 sui 0xbf22770b3d5f08b5a2942f7071d9b0446aa80518d257d9fb55f6b08a3ab28f8d::atrump::ATRUMP",
+      "time": "2025-01-24 00:07:36"
     },
     {
       "role": "assistant",
-      "content": "xin chào",
-      "time": "2025-01-21 05:18:59"
+      "content": "Sorry, you do not have enough SUI to make this purchase. Your current balance is 3 SUI. You need 10 SUI to buy the requested amount of token.",
+      "time": "2025-01-24 00:07:36"
     },
     {
       "role": "user",
-      "content": "tôi có bao nhiêu ví",
-      "time": "2025-01-21 05:19:26"
+      "content": "thế mua 1 sui thôi",
+      "time": "2025-01-24 00:07:52"
     },
     {
       "role": "assistant",
-      "content": "You have 5 wallets associated with your user ID.",
-      "time": "2025-01-21 05:19:26"
+      "content": "Your purchase of 1 SUI worth of 0xbf22770b3d5f08b5a2942f7071d9b0446aa80518d257d9fb55f6b08a3ab28f8d::atrump::ATRUMP was successful.",
+      "time": "2025-01-24 00:07:52"
+    }
+  ],
+  "-4629506146": [
+    {
+      "role": "user",
+      "content": "h",
+      "time": "2025-01-24 00:12:40"
+    },
+    {
+      "role": "assistant",
+      "content": "Hello there! How can I help you today?",
+      "time": "2025-01-24 00:12:40"
     }
   ]
 }

@@ -14,21 +14,17 @@ from llama_index.core.types import BaseOutputParser
 
 def extract_tool_use(input_text: str) -> Tuple[str, str, str]:
     pattern = (
-        r"\s*Thought: (.*?)\n+Action: ([^\n\(\) ]+).*?\n+Action Input: .*?(\{.*\})"
+        r"Thought:\s*(.*?)[\n\r]+\s*Action:\s*([^\n\r]+)[\n\r]+\s*Action Input:\s*(\{[^}]+\})"
     )
+    print(f"input_text: {input_text}")
     match = re.search(pattern, input_text, re.DOTALL)
-    ## Retry
     if not match:
-        pattern = (
-            r"\s*Thought: (.*?)\n+Action: ([^\n\(\) ]+)\s*\n+Action Input:\s*\n*```json\s*(\{.*?\})\s*```"
-        )
-        match = re.search(pattern, input_text, re.DOTALL)
-        if not match:
-            raise ValueError(f"Could not extract tool use from input text: {input_text}")
+        raise ValueError(f"Could not parse output. Please follow the thought-action-input format: {input_text}")
 
     thought = match.group(1).strip()
     action = match.group(2).strip()
     action_input = match.group(3).strip()
+    
     return thought, action, action_input
 
 
@@ -96,14 +92,16 @@ class ReActOutputParser(BaseOutputParser):
                 is_streaming=is_streaming,
             )
             
-        if "Action:" in output:
-            return parse_action_reasoning_step(output)
-
         if "Answer:" in output:
             thought, answer = extract_final_response(output)
             return ResponseReasoningStep(
                 thought=thought, response=answer, is_streaming=is_streaming
             )
+            
+        if "Action:" in output:
+            return parse_action_reasoning_step(output)
+
+        
 
         raise ValueError(f"Could not parse output: {output}")
 
