@@ -32,6 +32,13 @@ def get_positions_by_token(userId: str, userName: str, displayName: str, token_a
     response = requests.get(url, headers=headers)
     
     if response.status_code == 200:
-        return response.json()
+        response_data = response.json()['docs'][0]
+        token_data = {}
+        token_data['symbol'] = response_data['token']['symbol']
+        token_data['name'] = response_data['token']['name']
+        token_data['address'] = response_data['token']['address']
+        token_data['balance'] = response_data['balance']
+        token_data['wallet_address'] = response_data['walletName']
+        return [token_data]
     else:
         raise Exception(f"Error fetching positions: {response.status_code} - {response.text}")

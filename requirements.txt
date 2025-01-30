@@ -10,3 +10,4 @@ requests
 nest_asyncio
 llama-index
 llama-index-llms-gemini
+python-telegram-bot

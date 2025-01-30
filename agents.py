@@ -21,7 +21,7 @@ from llama_index.core.tools import BaseTool, ToolOutput
 from utils.output_parser import ReActOutputParser
 from tools import (
     get_positions_by_token,
-    get_wallets,
+    get_wallet_balance,
     search_token,
     buy_token,
     sell_token,
@@ -121,27 +121,43 @@ def custom_failure_handler(callback_manager, exception):
 react_system_prompt = PromptTemplate(REACT_CHAT_SYSTEM_HEADER_CUSTOM)
 
 tools = [
-    # FunctionTool.from_defaults(
-    #     fn=get_positions_by_token,
-    #     name="get_token_position",
-    #     description=(
-    #         "Return positions of a specific token in user's wallets."
-    #         """Input args: userId (str): The user's unique identifier.
-    #             userName (str): The user's username.
-    #             displayName (str): The user's display name.
-    #             token_address (str): The token's contract address."""
-    #         "Use this tool in crypto applications to check token balances, track holdings, or analyze wallet activity."
-    #     ),
-    # ),
     FunctionTool.from_defaults(
-        fn=get_wallets,
-        name="get_wallet",
+        fn=get_positions_by_token,
+        name="get_token_position",
+        description=(
+            "Check specific token holdings in user's wallets. Returns detailed information including: "
+            "- Token name"
+            "- Token symbol"
+            "- Token contract address"
+            "- Token balance"
+            "- Wallet address holding the token"
+            """Input args: 
+                userId (str): User's unique identifier
+                userName (str): User's username
+                displayName (str): User's display name
+                token_address (str): Contract address of the token to check"""
+            "Use this tool when:"
+            "- Need to verify token balance before selling"
+            "- Want to track current token holdings"
+            "- Need to identify which wallet contains the token"
+            "- Analyzing token positions across wallets"
+            "- Preparing for token transactions"
+        ),
+    ),
+    FunctionTool.from_defaults(
+        fn=get_wallet_balance,
+        name="get_wallet_balance",
         description=(
             "Useful for retrieving wallet information associated with a user."
             """Input args: userId (str): The user's unique identifier.
                 userName (str): The user's username.
                 displayName (str): The user's display name."""
-            "Use this tool in crypto applications to fetch wallet details for analysis, tracking, or integration."
+            "Use this tool in crypto applications to:"
+            "- Fetch wallet addresses and their associated balances"
+            "- Check native token (SUI) and other token balances in each wallet"
+            "- Track wallet activities and holdings"
+            "- Analyze wallet details for portfolio management"
+            "- Monitor wallet balances for trading decisions"
         ),
     ),
     # FunctionTool.from_defaults(
@@ -157,31 +173,34 @@ tools = [
     #         "- Retrieve a list of tokens matching the search query with basic details (address, name, symbol, priceUsd)."
     #     ),
     # ),
-    # FunctionTool.from_defaults(
-    #     fn=buy_token,
-    #     name="buy_token",
-    #     description=(
-    #         "Status of purchase"
-    #         """Input args: userId (str): The user's unique identifier.
-    #             userName (str): The user's username.
-    #             displayName (str): The user's display name.
-    #             token_address (str): The token's contract address.
-    #             amount (float): The Amount of token in SUI network want to buy."""
-    #         "Use this tool in crypto applications when user want to buy an token by token"
-    #     ),
-    # ),
-    # FunctionTool.from_defaults(
-    #     fn=sell_token,
-    #     name="sell_token",
-    #     description=(
-    #         "Status of purchase."
-    #         """Input args: userId (str): The user's unique identifier.
-    #             userName (str): The user's username.
-    #             displayName (str): The user's display name.
-    #             token_address (str): The token's contract address."""
-    #         "Use this tool in crypto applications when user want to sell a token"
-    #     ),
-    # ),
+    FunctionTool.from_defaults(
+        fn=buy_token,
+        name="buy_token",
+        description=(
+            "Status of purchase"
+            """Input args: userId (str): The user's unique identifier.
+                userName (str): The user's username.
+                displayName (str): The user's display name.
+                token_address (str): The token's contract address.
+                amount (float): The Amount of token in SUI network want to buy.
+                wallet_address (str): The user's wallet address."""
+            "Use this tool in crypto applications when user want to buy an token by token"
+        ),
+    ),
+    FunctionTool.from_defaults(
+        fn=sell_token,
+        name="sell_token",
+        description=(
+            "Status of purchase."
+            """Input args: userId (str): The user's unique identifier.
+                userName (str): The user's username.
+                displayName (str): The user's display name.
+                token_address (str): The token's contract address.
+                percent (float): Percent of token want to sell.
+                wallet_address (str): The user's wallet address."""
+            "Use this tool in crypto applications when user want to sell a token"
+        ),
+    ),
 ]
 
 
