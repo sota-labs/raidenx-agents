@@ -74,10 +74,10 @@ async def handle_message(event):
         save_chat_history(chat_history)
 
         try:
-            escaped_response = escape_markdown_v2(bot_response)
-            await event.reply(escaped_response, parse_mode='markdown')
+            # Bỏ việc escape và gửi tin nhắn thông thường
+            await event.reply(bot_response)
         except Exception as e:
-            print(f"Error sending formatted message: {e}")
+            print(f"Error sending message: {e}")
             await event.reply(bot_response)
 
     except Exception as e:

@@ -172,4 +172,5 @@ cython_debug/
 
 bot.session
 bot_session/
-
+bot_session.session
+chat_history.json

@@ -2,35 +2,43 @@
   "2104920255": [
     {
       "role": "user",
-      "content": "tôi muốn mua 10 sui 0xbf22770b3d5f08b5a2942f7071d9b0446aa80518d257d9fb55f6b08a3ab28f8d::atrump::ATRUMP",
-      "time": "2025-01-24 00:07:36"
+      "content": "xin chào",
+      "time": "2025-02-02 21:30:50"
     },
     {
       "role": "assistant",
-      "content": "Sorry, you do not have enough SUI to make this purchase. Your current balance is 3 SUI. You need 10 SUI to buy the requested amount of token.",
-      "time": "2025-01-24 00:07:36"
+      "content": "Xin chào! How can I assist you today?",
+      "time": "2025-02-02 21:30:50"
     },
     {
       "role": "user",
-      "content": "thế mua 1 sui thôi",
-      "time": "2025-01-24 00:07:52"
+      "content": "tôi muốn mua 0xbf22770b3d5f08b5a2942f7071d9b0446aa80518d257d9fb55f6b08a3ab28f8d::atrump::ATRUMP",
+      "time": "2025-02-02 21:31:14"
     },
     {
       "role": "assistant",
-      "content": "Your purchase of 1 SUI worth of 0xbf22770b3d5f08b5a2942f7071d9b0446aa80518d257d9fb55f6b08a3ab28f8d::atrump::ATRUMP was successful.",
-      "time": "2025-01-24 00:07:52"
-    }
-  ],
-  "-4629506146": [
+      "content": "How much SUI do you want to spend on ATRUMP?",
+      "time": "2025-02-02 21:31:14"
+    },
     {
       "role": "user",
-      "content": "h",
-      "time": "2025-01-24 00:12:40"
+      "content": "4",
+      "time": "2025-02-02 21:33:10"
     },
     {
       "role": "assistant",
-      "content": "Hello there! How can I help you today?",
-      "time": "2025-01-24 00:12:40"
+      "content": "You currently have 3 SUI in your wallet, which is not enough to buy ATRUMP for 4 SUI. Please top up your wallet and try again.",
+      "time": "2025-02-02 21:33:10"
+    },
+    {
+      "role": "user",
+      "content": "thế mua 3 thôi",
+      "time": "2025-02-02 21:33:24"
+    },
+    {
+      "role": "assistant",
+      "content": "Your purchase of 0xbf22770b3d5f08b5a2942f7071d9b0446aa80518d257d9fb55f6b08a3ab28f8d::atrump::ATRUMP for 3 SUI was successful.",
+      "time": "2025-02-02 21:33:24"
     }
   ]
 }
