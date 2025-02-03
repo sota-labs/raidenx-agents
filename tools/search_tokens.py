@@ -7,7 +7,7 @@ class SearchTokensInput(BaseModel):
     
     class Config:
         extra = "forbid"
-# @json_to_dict
+
 def search_token(query: str) -> dict:
     """
     Search for tokens based on keywords

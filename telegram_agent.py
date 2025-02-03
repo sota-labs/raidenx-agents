@@ -26,9 +26,8 @@ client = TelegramClient('bot', API_ID, API_HASH).start(bot_token=BOT_TOKEN)
 @client.on(events.NewMessage(pattern='(?!/).+'))
 async def handle_message(event):
     try:
-        # Kiểm tra xem tin nhắn có phải từ chat riêng tư không
         if not event.is_private:
-            return  # Bỏ qua tin nhắn nếu không phải chat riêng tư
+            return
             
         chat_id = str(event.chat_id)
         user = event.sender.first_name if event.sender else "Unknown User"
@@ -74,7 +73,6 @@ async def handle_message(event):
         save_chat_history(chat_history)
 
         try:
-            # Bỏ việc escape và gửi tin nhắn thông thường
             await event.reply(bot_response)
         except Exception as e:
             print(f"Error sending message: {e}")

@@ -148,16 +148,20 @@ tools = [
         fn=get_wallet_balance,
         name="get_wallet_balance",
         description=(
-            "Useful for retrieving wallet information associated with a user."
-            """Input args: userId (str): The user's unique identifier.
+            "Retrieves wallet addresses and their current balances for a given user."
+            """Input args: 
+                userId (str): The user's unique identifier.
                 userName (str): The user's username.
                 displayName (str): The user's display name."""
-            "Use this tool in crypto applications to:"
-            "- Fetch wallet addresses and their associated balances"
-            "- Check native token (SUI) and other token balances in each wallet"
-            "- Track wallet activities and holdings"
-            "- Analyze wallet details for portfolio management"
-            "- Monitor wallet balances for trading decisions"
+            "Returns:"
+            "- List of wallet addresses owned by the user"
+            "- Current SUI balance for each wallet"
+            "- Total balance across all wallets"
+            "\nUse this tool when you need to:"
+            "- Check available SUI balance before executing trades"
+            "- Verify which wallet has sufficient funds"
+            "- Get an overview of user's total holdings in SUI"
+            "- Select appropriate wallet for transactions"
         ),
     ),
     # FunctionTool.from_defaults(

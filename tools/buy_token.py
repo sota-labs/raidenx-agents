@@ -31,9 +31,9 @@ def buy_token(userId: str, userName: str, displayName: str, token_address: str, 
     """
     jwt_token = get_jwt(userId, userName, displayName)
     
-    wallet_balance = get_wallet_balance(userId, userName, displayName)
-    if wallet_balance['balance'] < amount:
-        return f"You do not have enough SUI to buy {amount} SUI worth of {token_address}. Your current balance is {wallet_balance['balance']} SUI. Please top up your wallet and try again."
+    # wallet_balance = get_wallet_balance(userId, userName, displayName)
+    # if wallet_balance['balance'] < amount:
+    #     return f"You do not have enough SUI to buy {amount} SUI worth of {token_address}. Your current balance is {wallet_balance['balance']} SUI. Please top up your wallet and try again."
     
     response = f"Successfully purchased {token_address} token for {amount} SUI from wallet {wallet_address}. Feature is currently in Beta."
     
