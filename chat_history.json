@@ -2,33 +2,33 @@
   "2104920255": [
     {
       "role": "user",
-      "content": "xin chào",
-      "time": "2025-02-03 03:05:14"
+      "content": "bán 0x6b71e07221ff6c071b19b00c77d6161ec947ce66407836e15ff830b6c5d02a10::fine::FINE",
+      "time": "2025-02-04 04:13:05"
     },
     {
       "role": "assistant",
-      "content": "Xin chào! How can I help you today?",
-      "time": "2025-02-03 03:05:14"
+      "content": "What percentage of 0x6b71e07221ff6c071b19b00c77d6161ec947ce66407836e15ff830b6c5d02a10::fine::FINE do you want to sell? (e.g., 50 for 50%)",
+      "time": "2025-02-04 04:13:05"
     },
     {
       "role": "user",
-      "content": "kiểm tra ví tôi có bao tền",
-      "time": "2025-02-03 03:05:31"
+      "content": "10 thôi",
+      "time": "2025-02-04 04:13:23"
+    },
+    {
+      "role": "assistant",
+      "content": "You do not have any 0x6b71e07221ff6c071b19b00c77d6161ec947ce66407836e15ff830b6c5d02a10::fine::FINE tokens in your wallet.",
+      "time": "2025-02-04 04:13:23"
+    },
+    {
+      "role": "user",
+      "content": "kiểm tra ví tôi có bao tiền",
+      "time": "2025-02-04 04:16:39"
     },
     {
       "role": "assistant",
       "content": "Your wallet (0xea1bc45a51e0051b6a7b53c3ce4f0a45d416b985042ff51f73ca8155452daf7f) has a balance of 0.0419409 SUI.",
-      "time": "2025-02-03 03:05:31"
-    },
-    {
-      "role": "user",
-      "content": "mua 0.01 sui 0x6b71e07221ff6c071b19b00c77d6161ec947ce66407836e15ff830b6c5d02a10::fine::FINE",
-      "time": "2025-02-03 03:05:51"
-    },
-    {
-      "role": "assistant",
-      "content": "You have successfully purchased 0x6b71e07221ff6c071b19b00c77d6161ec947ce66407836e15ff830b6c5d02a10::fine::FINE for 0.01 SUI.",
-      "time": "2025-02-03 03:05:51"
+      "time": "2025-02-04 04:16:39"
     }
   ]
 }
