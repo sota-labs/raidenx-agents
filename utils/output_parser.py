@@ -85,6 +85,9 @@ class ReActOutputParser(BaseOutputParser):
             Answer: <answer>
             ```
         """
+        
+        print(f"output-ReActOutputParser: {output}")
+        
         if "Thought:" not in output:
             return ResponseReasoningStep(
                 thought="(Implicit) I can answer without any more tools!",

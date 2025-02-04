@@ -22,7 +22,6 @@ def get_wallet_balance(userId: str, userName: str = "", displayName: str = "") -
     if response.status_code == 200:
         wallets = response.json()
         wallet_data['address'] = wallets[0]['address']
-        # wallet_data['balance'] = 0.0419409
         wallet_data['balance'] = wallets[0]['balance']
         wallet_data['network'] = wallets[0]['network']
         return wallet_data
