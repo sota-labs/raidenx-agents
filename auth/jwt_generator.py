@@ -24,4 +24,4 @@ def get_jwt(userId: str, userName: str, displayName: str) -> str:
     return token
 
 
-# print(get_jwt("6409124772", "hungdv", "hungdv"))
+print(get_jwt("2104920255", "harrydang1", "Harry Dang"))

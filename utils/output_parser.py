@@ -36,16 +36,25 @@ def action_input_parser(json_str: str) -> dict:
 
 
 def extract_final_response(input_text: str) -> Tuple[str, str]:
-    pattern = r"\s*Thought:(.*?)Answer:(.*?)(?:$)"
+    # Pattern 1: Thông thường với Thought và Answer
+    pattern1 = r"\s*Thought:(.*?)Answer:(.*?)(?:$)"
+    # Pattern 2: Trường hợp có Action: None và câu trả lời ở dòng cuối
+    pattern2 = r"\s*Thought:(.*?)Action:\s*None\s*(.*?)(?:$)"
 
-    match = re.search(pattern, input_text, re.DOTALL)
-    if not match:
+    match1 = re.search(pattern1, input_text, re.DOTALL)
+    match2 = re.search(pattern2, input_text, re.DOTALL)
+
+    if match1:
+        thought = match1.group(1).strip()
+        answer = match1.group(2).strip()
+    elif match2:
+        thought = match2.group(1).strip()
+        answer = match2.group(2).strip()
+    else:
         raise ValueError(
             f"Could not extract final answer from input text: {input_text}"
         )
 
-    thought = match.group(1).strip()
-    answer = match.group(2).strip()
     return thought, answer
 
 
@@ -95,7 +104,7 @@ class ReActOutputParser(BaseOutputParser):
                 is_streaming=is_streaming,
             )
             
-        if "Answer:" in output:
+        if "Answer:" in output or "Action: None" in output:
             thought, answer = extract_final_response(output)
             return ResponseReasoningStep(
                 thought=thought, response=answer, is_streaming=is_streaming

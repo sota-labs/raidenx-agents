@@ -2,6 +2,7 @@ import requests
 from pydantic import BaseModel, Field
 import json
 from tools.utils import json_to_dict
+from config import config
 class SearchTokensInput(BaseModel):
     search_query: str = Field(..., description="Search keyword (e.g., 'BTC')")
     
@@ -20,7 +21,7 @@ def search_token(query: str) -> dict:
     Returns:
         dict: List of tokens with basic information (address, name, symbol, priceUsd)
     """
-    url = "https://api.dextrade.bot/api/v1/search"
+    url = f"{config.RAIDENX_CONFIG['api_common_url']}/api/v1/search"
     headers = {
         "accept": "application/json"
     }

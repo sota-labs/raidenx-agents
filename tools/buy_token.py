@@ -12,8 +12,13 @@ from tools.utils import json_to_dict
 from tools.get_wallets import get_wallet_balance
 from dotenv import load_dotenv
 from commons.send_telegram import TelegramMessenger
+from tools.get_top_pair import fetch_top_pair
+from tools.check_order import OrderChecker
+from config import config
 
 load_dotenv()
+
+checker = OrderChecker()
 
 def buy_token(userId: str, userName: str, displayName: str, token_address: str, amount: float, wallet_address: str) -> str:
     """
@@ -29,18 +34,62 @@ def buy_token(userId: str, userName: str, displayName: str, token_address: str, 
     Returns:
         str: Transaction result message
     """
-    jwt_token = get_jwt(userId, userName, displayName)
-    
-    # wallet_balance = get_wallet_balance(userId, userName, displayName)
-    # if wallet_balance['balance'] < amount:
-    #     return f"You do not have enough SUI to buy {amount} SUI worth of {token_address}. Your current balance is {wallet_balance['balance']} SUI. Please top up your wallet and try again."
-    
-    response = f"Successfully purchased {token_address} token for {amount} SUI from wallet {wallet_address}. Feature is currently in Beta."
-    
-    messenger = TelegramMessenger()
-    asyncio.run(messenger.send_message(f"🟢 Buy Alert: User {displayName} ({userName}) has purchased {token_address} token for {amount} SUI • ⚠️ Feature is currently in Beta"))
-    
-    return response 
+    try:
+        jwt_token = get_jwt(userId, userName, displayName)
+        
+        network, pair_id = fetch_top_pair(token_address)
+        if network is None or pair_id is None:
+            return f"Failed to fetch top pair information for {token_address}. Please try again later."
+        
+        headers = {
+            "accept": "application/json",
+            "Authorization": f"Bearer {jwt_token}",
+            "Content-Type": "application/json"
+        }
+        
+        payload = {
+            "buyAmount": str(amount),
+            "tokenAddress": token_address,
+            "orderSetting": {
+                "priorityFee": "0",
+                "slippage": 40
+            },
+            "pairId": pair_id,
+            "wallets": [wallet_address]
+        }
+        
+        response = requests.post(
+            f"{config.RAIDENX_CONFIG['api_orders_url']}/api/v1/sui/orders/quick-buy",
+            headers=headers,
+            json=payload
+        )
+        response.raise_for_status()
+        
+        result = response.json()
+        if not result:
+            return "⚠️ Failed to purchase: Insufficient liquidity in this pair. Please try another token or wait for more liquidity."
+            
+        order_id = result[0]["order"]["id"]
+        status = asyncio.run(checker.check_order_status(order_id, jwt_token))
+        
+        explorer_url = f"https://suivision.xyz/txblock/{status['hash']}"
+        message = (
+            f"✅ I've successfully purchased the token for you:\n"
+            f"💰 Spent: {status['amountIn']} SUI\n"
+            f"📈 Received: {status['amountOut']} tokens\n" 
+            f"👛 To wallet: {wallet_address}\n"
+            f"🔍 Transaction: {explorer_url}"
+        )
+        
+        # messenger = TelegramMessenger()
+        # asyncio.run(messenger.send_message(
+        #     f"🟢 Buy Alert: User {displayName} ({userName}) has purchased {token_address} token for {amount} SUI"
+        # ))
+        
+        return message
+        
+    except requests.exceptions.RequestException as e:
+        return f"Error occurred while making the purchase: {str(e)}"
 
 
 # if __name__ == "__main__":
