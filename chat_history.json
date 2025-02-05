@@ -1,34 +1,34 @@
 {
-  "2104920255": [
+  "6409124772": [
     {
       "role": "user",
-      "content": "bán 0x6b71e07221ff6c071b19b00c77d6161ec947ce66407836e15ff830b6c5d02a10::fine::FINE",
-      "time": "2025-02-04 04:13:05"
+      "content": "xin chào, bạn là ai",
+      "time": "2025-02-04 23:31:09"
     },
     {
       "role": "assistant",
-      "content": "What percentage of 0x6b71e07221ff6c071b19b00c77d6161ec947ce66407836e15ff830b6c5d02a10::fine::FINE do you want to sell? (e.g., 50 for 50%)",
-      "time": "2025-02-04 04:13:05"
+      "content": "Xin chào! Tôi là RaidenX Bot Assistant, rất vui được giúp bạn.\n",
+      "time": "2025-02-04 23:31:09"
     },
     {
       "role": "user",
-      "content": "10 thôi",
-      "time": "2025-02-04 04:13:23"
+      "content": "bạn giúp gì được cho tôi",
+      "time": "2025-02-04 23:31:42"
     },
     {
       "role": "assistant",
-      "content": "You do not have any 0x6b71e07221ff6c071b19b00c77d6161ec947ce66407836e15ff830b6c5d02a10::fine::FINE tokens in your wallet.",
-      "time": "2025-02-04 04:13:23"
+      "content": "Tôi có thể giúp bạn mua, bán và quản lý token.  Tôi cũng có thể cung cấp thông tin về token, hiển thị vị thế nắm giữ token của bạn và truy xuất chi tiết ví của bạn.  Bạn cần tôi giúp gì?\n",
+      "time": "2025-02-04 23:31:42"
     },
     {
       "role": "user",
-      "content": "kiểm tra ví tôi có bao tiền",
-      "time": "2025-02-04 04:16:39"
+      "content": "kiểm tra xem tôi còn bao tiền",
+      "time": "2025-02-04 23:32:09"
     },
     {
       "role": "assistant",
-      "content": "Your wallet (0xea1bc45a51e0051b6a7b53c3ce4f0a45d416b985042ff51f73ca8155452daf7f) has a balance of 0.0419409 SUI.",
-      "time": "2025-02-04 04:16:39"
+      "content": "Bạn hiện có 0.387653805 SUI trong ví 0x5300ccbb61ca3d8665c1bdb57da71dd221cf65e78f960bd23a8aea83d10559ca.\n",
+      "time": "2025-02-04 23:32:09"
     }
   ]
 }
