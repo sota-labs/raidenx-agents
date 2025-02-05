@@ -3,6 +3,8 @@ from fastapi.responses import StreamingResponse, HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from datetime import datetime
+import json
+import asyncio
 
 from auth.authorization import verify_token
 
@@ -14,7 +16,7 @@ from utils.chat_session import (
     convert_dict_to_chat_messages,
     escape_markdown_v2,
 )
-from agents import react_chat, llm
+from agents import react_chat, llm, react_chat_stream
 
 router = APIRouter()
 
@@ -116,5 +118,72 @@ async def generate_bot_response(request: AgentRequest,
         chat_id=chat_id,
         action="none",  # Using "none" as default action
         action_input={}
+    )
+
+@router.post("/agent-stream")
+async def generate_bot_response_stream(
+    request: AgentRequest,
+    session: dict = Depends(verify_token)
+):
+    chat_id = session["userId"]
+    user = session["userName"]
+    
+    user_message = request.query
+    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    chat_history = load_chat_history()
+
+    if chat_id not in chat_history:
+        chat_history[chat_id] = []
+
+    chat_history[chat_id].append(
+        {"role": "user", "content": user_message, "time": current_time}
+    )
+    last_five_messages = chat_history[chat_id][-10:]
+    chat_history_message = convert_dict_to_chat_messages(last_five_messages)
+    
+    async def process_stream():
+        full_response = ""
+        buffer = ""
+        
+        async for token in react_chat_stream(
+            query=user_message,
+            llm=llm,
+            chat_history=chat_history_message,
+            userId=chat_id,
+            userName=user,
+            displayName=user,
+        ):
+            full_response += token
+            buffer += token
+            
+            while buffer:
+                char = buffer[0]
+                buffer = buffer[1:]
+                yield f"data: {char}\n\n"
+                await asyncio.sleep(0.01)  # 10ms delay
+        
+        # Send [DONE] signal
+        yield "data: [DONE]\n\n"
+        
+        # Save the complete response to chat history
+        chat_history[chat_id].append(
+            {"role": "assistant", "content": full_response, "time": current_time}
+        )
+
+        if len(chat_history[chat_id]) > 20:
+            chat_history[chat_id] = chat_history[chat_id][-20:]
+
+        save_chat_history(chat_history)
+    
+    return StreamingResponse(
+        process_stream(),
+        media_type='text/event-stream',
+        headers={
+            'Cache-Control': 'no-cache',
+            'Connection': 'keep-alive',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST',
+            'Access-Control-Allow-Headers': 'Content-Type',
+        }
     )
     
