@@ -4,8 +4,9 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import requests
 from auth.jwt_generator import get_jwt
-
+from config import config
 from tools.utils import json_to_dict
+
 
 # @json_to_dict
 def get_positions_by_token(userId: str, userName: str, displayName: str, token_address: str) -> dict:
@@ -24,7 +25,7 @@ def get_positions_by_token(userId: str, userName: str, displayName: str, token_a
     try:
         jwt_token = get_jwt(userId, userName, displayName)
         
-        url = f"https://api-insight.dextrade.bot/sui/api/v1/my/positions/{token_address}"
+        url = f"{config.RAIDENX_CONFIG['api_insight_url']}/sui/api/v1/my/positions/{token_address}"
         headers = {
             "accept": "application/json",
             "Authorization": f"Bearer {jwt_token}"

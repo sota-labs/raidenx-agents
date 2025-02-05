@@ -30,7 +30,7 @@ from tools import (
 from prompts.react import REACT_CHAT_SYSTEM_HEADER_CUSTOM
 
 llm = Gemini(
-    model="models/gemini-1.5-flash",
+    model="models/gemini-1.5-pro",
 )
 
 
@@ -231,7 +231,6 @@ def react_chat(
     )
     agent.update_prompts({"agent_worker:system_prompt": react_system_prompt})
     response = agent.chat(query)
-    print(response)
     response = str(response)
 
     agent.reset()
@@ -261,6 +260,7 @@ async def react_chat_stream(
     agent.update_prompts({"agent_worker:system_prompt": react_system_prompt})
     
     response = agent.stream_chat(query)
+    print(response)
     for token in response.response_gen:
         yield str(token)
 

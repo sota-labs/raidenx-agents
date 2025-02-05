@@ -6,11 +6,13 @@ import requests
 from auth.jwt_generator import get_jwt
 from tools.utils import json_to_dict
 import random
+from config import config
+
 
 def get_wallet_balance(userId: str, userName: str = "", displayName: str = "") -> dict:
     jwt_token = get_jwt(userId, userName, displayName)
     
-    url = "https://api-wallets.dextrade.bot/api/v1/sui/user-wallets"
+    url = f"{config.RAIDENX_CONFIG['api_wallets_url']}/api/v1/sui/user-wallets"
     headers = {
         "accept": "application/json",
         "Authorization": f"Bearer {jwt_token}"
