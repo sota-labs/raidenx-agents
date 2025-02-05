@@ -175,3 +175,5 @@ bot_session/
 bot_session.session
 chat_history.json
 bot.session-journal
+
+.vscode/
