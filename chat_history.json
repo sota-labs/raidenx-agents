@@ -1,1 +1,24 @@
-{}
+{
+  "2104920255": [
+    {
+      "role": "user",
+      "content": "xin chào",
+      "time": "2025-02-06 03:15:24"
+    },
+    {
+      "role": "assistant",
+      "content": "Xin chào! I'm RaidenX Bot Assistant. How can I help you with your token trading today? I can assist you with buying or selling tokens, checking your wallet balance, or viewing your token positions.",
+      "time": "2025-02-06 03:15:24"
+    },
+    {
+      "role": "user",
+      "content": "bạn có thể làm được gì",
+      "time": "2025-02-06 03:31:47"
+    },
+    {
+      "role": "assistant",
+      "content": "Xin chào! Tôi là RaidenX Bot Assistant và tôi có thể giúp bạn với các dịch vụ sau:\n\n1. Giao dịch Token:\n   - Mua token (Buy)\n   - Bán token (Sell)\n\n2. Kiểm tra thông tin:\n   - Xem số dư ví của bạn (Check wallet balance)\n   - Xem các token bạn đang nắm giữ (View token positions)\n   - Kiểm tra thông tin chi tiết về một token cụ thể\n\n3. Quản lý ví:\n   - Xem địa chỉ ví của bạn\n   - Kiểm tra số dư SUI trong ví\n\nBạn muốn thực hiện giao dịch nào? Tôi sẽ hướng dẫn bạn từng bước một cách chi tiết và đảm bảo an toàn.",
+      "time": "2025-02-06 03:31:47"
+    }
+  ]
+}

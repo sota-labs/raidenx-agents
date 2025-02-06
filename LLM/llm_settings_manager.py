@@ -1,140 +1,94 @@
-#File: LLM/llm_settings_manager.py
-
+from llama_index.llms.gemini import Gemini
+from llama_index.llms.deepseek import DeepSeek
+from llama_index.llms.anthropic import Anthropic
 import os
-from typing import Optional, Dict, Any, Tuple
 from dotenv import load_dotenv
-import google.generativeai as genai
-from google.generativeai.types import HarmCategory, HarmBlockThreshold
-import logging
 
 load_dotenv()
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
-# Constants
-ENVIRONMENT = os.getenv("ENVIRONMENT", "PRODUCT")
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-GEMINI_MODEL_DEFAULT = "gemini-1.5-pro"
-
-# Model configurations
-MODEL_SETTINGS = {
-    "gemini-1.5-pro": {
-        "model": "gemini-1.5-pro-002",
-        "max_tokens": 8192,
-        "temperature": 0.7,
-        "candidate_count": 1,
-    },
-    "gemini-1.5-flash": {
-        "model": "gemini-1.5-flash-002",
-        "max_tokens": 4096,
-        "temperature": 0.7,
-        "candidate_count": 1,
-    },
-    "gemini-1.0-pro": {
-        "model": "gemini-1.0-pro-002",
-        "max_tokens": 2048,
-        "temperature": 0.7,
-        "candidate_count": 1,
-    }
-}
-
-# Safety settings
-SAFETY_SETTINGS = {
-    HarmCategory.HARM_CATEGORY_HARASSMENT: HarmBlockThreshold.BLOCK_NONE,
-    HarmCategory.HARM_CATEGORY_HATE_SPEECH: HarmBlockThreshold.BLOCK_NONE,
-    HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: HarmBlockThreshold.BLOCK_NONE,
-    HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_NONE,
-}
-
-class LLMSettings:
-    def __init__(self) -> None:
-        self.client: Optional[genai.GenerativeModel] = None
-        self.current_model: str = GEMINI_MODEL_DEFAULT
-        self._setup_client()
-
-    def _setup_client(self) -> None:
-        """Initialize the Gemini client with API key."""
-        if not GEMINI_API_KEY:
-            raise ValueError("Gemini API key not found in environment variables")
+class LLMSettingsManager:
+    """Manages settings and initialization of different LLM models."""
+    
+    def __init__(self):
+        self.api_keys = {
+            "deepseek": os.getenv("DEEPSEEK_API_KEY"),
+            "anthropic": os.getenv("ANTHROPIC_API_KEY"),
+        }
         
-        genai.configure(api_key=GEMINI_API_KEY)
-        model_name = MODEL_SETTINGS[self.current_model]["model"]
-        self.client = genai.GenerativeModel(model_name)
-
-    def _ensure_client(self) -> None:
-        """Ensure client is initialized."""
-        if self.client is None:
-            self._setup_client()
-
-    def _create_generation_config(self, model: str, max_tokens: Optional[int], temperature: Optional[float]) -> genai.types.GenerationConfig:
-        """Create generation configuration for the model."""
-        settings = MODEL_SETTINGS[model]
-        return genai.types.GenerationConfig(
-            temperature=temperature if temperature is not None else settings['temperature'],
-            candidate_count=settings['candidate_count'],
-            max_output_tokens=max_tokens or settings['max_tokens'],
-        )
-
-    def _process_response(self, response) -> Tuple[bool, str]:
-        """Process and validate the response from Gemini."""
-        if not response.candidates:
-            return False, "No candidates generated"
-
-        candidate = response.candidates[0]
-
-        if hasattr(candidate, 'finish_reason'):
-            if candidate.finish_reason == 'SAFETY':
-                return False, "Content blocked by safety filter"
-            if candidate.finish_reason == 'RECITATION':
-                return False, "Content is a recitation"
-
-        # Extract content
-        if hasattr(candidate, 'content') and candidate.content and candidate.content.parts:
-            return True, candidate.content.parts[0].text
-
-        return False, "No content generated"
-
-    def get_response(self, prompt: str, model: Optional[str] = None, 
-                    max_tokens: Optional[int] = None, temperature: Optional[float] = None) -> str:
+        self.available_models = {
+            "gemini": [
+                "models/gemini-1.5-pro",
+                "models/gemini-1.0-pro",
+                "models/gemini-1.5-flash"
+            ],
+            "deepseek": [
+                "deepseek-chat",
+                "deepseek-coder",
+                "deepseek-67b-chat"
+            ],
+            "anthropic": [
+                "claude-3-5-sonnet-20241022",
+                "claude-3-5-haiku-20241022",
+                "claude-3-sonnet-20240229",
+                "claude-3-haiku-20240307"
+            ]
+        }
+        
+    def get_available_models(self, provider: str = None):
         """
-        Get response from Gemini model.
+        Get the list of available models.
         
         Args:
-            prompt: Input text prompt
-            model: Model name (optional)
-            max_tokens: Maximum tokens for response (optional)
-            temperature: Temperature for response generation (optional)
-        
+            provider (str, optional): Specific provider name. If None, returns all.
+            
         Returns:
-            Generated response text
+            dict or list of available models
         """
-        try:
-            self._ensure_client()
-            model_name = model or self.current_model
+        if provider:
+            provider = provider.lower()
+            if provider in self.available_models:
+                return self.available_models[provider]
+            raise ValueError(f"Invalid provider: {provider}")
+        return self.available_models
+    
+    def get_llm(self, provider: str, **kwargs):
+        """
+        Initialize and return an LLM instance based on the chosen provider.
+        
+        Args:
+            provider (str): LLM provider name ("gemini", "deepseek", "anthropic")
+            **kwargs: Additional parameters for LLM initialization
             
-            if model_name not in MODEL_SETTINGS:
-                raise ValueError(f"Unsupported model: {model_name}")
-
-            generation_config = self._create_generation_config(model_name, max_tokens, temperature)
+        Returns:
+            Corresponding LLM instance
+        """
+        provider = provider.lower()
+        if provider not in self.available_models:
+            raise ValueError(f"Invalid provider: {provider}")
             
-            response = self.client.generate_content(
-                prompt,
-                generation_config=generation_config,
-                safety_settings=SAFETY_SETTINGS
+        # Get default model (first one in the list)
+        default_model = self.available_models[provider][0]
+        model = kwargs.get("model", default_model)
+        
+        # Check if model is valid
+        if model not in self.available_models[provider]:
+            raise ValueError(f"Invalid model for {provider}: {model}")
+            
+        if provider == "gemini":
+            return Gemini(model=model)
+            
+        elif provider == "deepseek":
+            return DeepSeek(
+                model=model,
+                api_key=self.api_keys["deepseek"],
             )
-
-            if hasattr(response, 'prompt_feedback') and response.prompt_feedback:
-                logger.warning(f"Prompt feedback issues: {response.prompt_feedback}")
-
-            success, result = self._process_response(response)
-            if not success:
-                error_msg = f"Gemini failed to respond. Error: {result}"
-                logger.error(error_msg)
-                return error_msg
-
-            return result
-
-        except Exception as e:
-            error_msg = f"Error generating response: {str(e)}"
-            logger.error(error_msg)
-            return error_msg
+            
+        elif provider == "anthropic":
+            return Anthropic(
+                model=model,
+                api_key=self.api_keys["anthropic"],
+            )
+    
+    def get_default_llm(self):
+        """Returns the default LLM instance (Anthropic Claude)"""
+        return self.get_llm("anthropic")
