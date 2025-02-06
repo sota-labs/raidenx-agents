@@ -1,5 +1,5 @@
 import requests
-from config import config
+from config import settings
 
 def get_chat_histories(thread_id: str) -> dict:
     """
@@ -31,9 +31,9 @@ def get_chat_histories(thread_id: str) -> dict:
     }
     """
     try:
-        url = f"{config.AGENTFAI_CONFIG['api_url']}/api/v1/backend/thread/{thread_id}/messages"
+        url = f"{settings.agent.api_url}/api/v1/backend/thread/{thread_id}/messages"
         headers = {
-            "X-API-KEY": config.AGENTFAI_CONFIG['api_key']
+            "X-API-KEY": settings.agent.api_key
         }
         response = requests.get(url, headers=headers)
         return response.json()

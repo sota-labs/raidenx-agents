@@ -1,6 +1,8 @@
 import sys
-import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from pathlib import Path
+
+project_root = Path(__file__).parent.parent
+sys.path.insert(0, str(project_root))
 
 import requests
 from auth.jwt_generator import get_jwt
@@ -14,7 +16,7 @@ from dotenv import load_dotenv
 from commons.send_telegram import TelegramMessenger
 from tools.get_top_pair import fetch_top_pair
 from tools.check_order import OrderChecker
-from config import config
+from config import settings
 
 load_dotenv()
 
@@ -23,6 +25,7 @@ checker = OrderChecker()
 def buy_token(userId: str, userName: str, displayName: str, token_address: str, amount: float, wallet_address: str) -> str:
     """
     Buy a token with a specified amount of SUI from a user's wallet
+
     Args:
         userId (str): User's ID
         userName (str): Username
@@ -32,7 +35,15 @@ def buy_token(userId: str, userName: str, displayName: str, token_address: str, 
         wallet_address (str): User's wallet address
         
     Returns:
-        str: Transaction result message
+        str: Transaction result message containing:
+            - Amount spent in SUI
+            - Amount of tokens received
+            - Destination wallet address
+            - Transaction explorer URL
+            
+    Raises:
+        RequestException: If API request fails
+        Exception: If any other error occurs during the purchase
     """
     try:
         jwt_token = get_jwt(userId, userName, displayName)
@@ -59,10 +70,11 @@ def buy_token(userId: str, userName: str, displayName: str, token_address: str, 
         }
         
         response = requests.post(
-            f"{config.RAIDENX_CONFIG['api_orders_url']}/api/v1/sui/orders/quick-buy",
+            f"{settings.raiden.api_orders_url}/api/v1/sui/orders/quick-buy",
             headers=headers,
             json=payload
         )
+        
         response.raise_for_status()
         
         result = response.json()
@@ -93,4 +105,4 @@ def buy_token(userId: str, userName: str, displayName: str, token_address: str, 
 
 
 # if __name__ == "__main__":
-#     print(buy_token("2104920255", "hungdv", "hungdv", "0xbf22770b3d5f08b5a2942f7071d9b0446aa80518d257d9fb55f6b08a3ab28f8d::atrump::ATRUMP", 1, "0xbf22770b3d5f08b5a2942f7071d9b0446aa80518d257d9fb55f6b08a3ab28f8d"))
+#     print(buy_token("2104920255", "hungdv", "hungdv", "0x1974ea7ea3bd5290f7f9fdf69e9f8aac766a55a3783d18431a7a1358418eb9f4::ppei::PPEI", 0.003, "0xea1bc45a51e0051b6a7b53c3ce4f0a45d416b985042ff51f73ca8155452daf7f"))
