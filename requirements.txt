@@ -13,3 +13,5 @@ llama-index-llms-gemini
 python-telegram-bot
 asyncio
 aiohttp
+llama-index-llms-anthropic
+llama-index-llms-deepseek
