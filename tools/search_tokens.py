@@ -1,27 +1,26 @@
 import requests
-from pydantic import BaseModel, Field
-import json
-from tools.utils import json_to_dict
-from config import config
-class SearchTokensInput(BaseModel):
-    search_query: str = Field(..., description="Search keyword (e.g., 'BTC')")
-    
-    class Config:
-        extra = "forbid"
+from config import settings
 
 def search_token(query: str) -> dict:
     """
     Search for tokens based on keywords
-    
+
     Args:
-        input: Can be either SearchTokensInput object or string
-            - If SearchTokensInput: Object containing search information
-            - If string: Direct search query
+        query (str): Search keyword (e.g., 'BTC', 'ETH')
         
     Returns:
-        dict: List of tokens with basic information (address, name, symbol, priceUsd)
+        dict: Dictionary containing list of tokens with:
+            - tokens (list): List of token information:
+                - address (str): Token contract address
+                - name (str): Token name
+                - symbol (str): Token symbol
+                - priceUsd (float): Current token price in USD
+                
+    Raises:
+        RequestException: If API request fails
+        Exception: If search operation fails with status code and error message
     """
-    url = f"{config.RAIDENX_CONFIG['api_common_url']}/api/v1/search"
+    url = f"{settings.raiden.api_common_url}/api/v1/search"
     headers = {
         "accept": "application/json"
     }

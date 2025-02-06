@@ -1,23 +1,24 @@
 import sys
-import os
-import asyncio
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from pathlib import Path
+
+project_root = Path(__file__).parent.parent
+sys.path.insert(0, str(project_root))
 
 import requests
+import asyncio
 from auth.jwt_generator import get_jwt
 from commons.send_telegram import TelegramMessenger
 from tools.utils import json_to_dict
 from tools.get_top_pair import fetch_top_pair
 from tools.check_order import OrderChecker
-from config import config
+from config import settings
 
 checker = OrderChecker()
 
-# @json_to_dict
 def sell_token(userId: str, userName: str, displayName: str, token_address: str, percent: float, wallet_address: str) -> str:
     """
     Sell a percentage of a token from a user's wallet
-    
+
     Args:
         userId (str): User's ID
         userName (str): Username
@@ -27,7 +28,17 @@ def sell_token(userId: str, userName: str, displayName: str, token_address: str,
         wallet_address (str): User's wallet address
         
     Returns:
-        str: Transaction result message
+        str: Transaction result message containing:
+            - Amount of tokens sold
+            - Amount of SUI received
+            - Sell percentage
+            - Source wallet address
+            - Transaction explorer URL
+            
+    Raises:
+        RequestException: If API request fails
+        ValueError: If percent is not between 0 and 100
+        Exception: If sale operation fails with error message
     """
     try:
         jwt_token = get_jwt(userId, userName, displayName)
@@ -57,7 +68,7 @@ def sell_token(userId: str, userName: str, displayName: str, token_address: str,
         }
         
         response = requests.post(
-            f"{config.RAIDENX_CONFIG['api_orders_url']}/api/v1/sui/orders/quick-sell",
+            f"{settings.raiden.api_orders_url}/api/v1/sui/orders/quick-sell",
             headers=headers,
             json=payload
         )

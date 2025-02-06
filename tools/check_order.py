@@ -1,11 +1,11 @@
 import requests
 import asyncio
 from typing import Dict
-from config import config
+from config import settings
 
 class OrderChecker:
     def __init__(self):
-        self.base_url = f"{config.RAIDENX_CONFIG['api_orders_url']}/api/v1/sui/orders"
+        self.base_url = f"{settings.raiden.api_orders_url}/api/v1/sui/orders"
         self.MAX_RETRIES = 3
         self.RETRY_DELAY = 1
 

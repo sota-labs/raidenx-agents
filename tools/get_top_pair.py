@@ -1,21 +1,35 @@
+import sys
+from pathlib import Path
+
+project_root = Path(__file__).parent.parent
+sys.path.insert(0, str(project_root))
+
 import requests
 from typing import Dict, Any, Optional, Tuple, Union
-from config import config
+from config import settings
 
 def fetch_top_pair(token_address: str) -> Union[Tuple[str, str], Dict[str, str]]:
     """
     Fetch network and pairId information of top pair from Dextrade API
     
     Args:
-        token_address (str): Token address to query
+        token_address (str): Token contract address to query
         
     Returns:
-        Union[Tuple[str, str], Dict[str, str]]: 
-            - Success: Tuple containing (network, pairId)
-            - Error: Dict with error information {'error': error_message}
+        Union[Tuple[str, str], Dict[str, str]]:
+            - Success: Tuple containing:
+                - network (str): Network identifier
+                - pairId (str): Trading pair identifier
+            - Error: Dict containing:
+                - error (str): Error message describing the failure
+                
+    Raises:
+        RequestException: If API request fails
+        ValueError: If response data is invalid
+        KeyError: If required fields are missing in response
     """
     try:
-        url = f"{config.RAIDENX_CONFIG['api_common_url']}/api/v1/sui/tokens/{token_address}/top-pair"
+        url = f"{settings.raiden.api_common_url}/api/v1/sui/tokens/{token_address}/top-pair"
         response = requests.get(url)
         
         # Handle 502 Bad Gateway - Invalid token address
