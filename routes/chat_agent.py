@@ -24,12 +24,14 @@ router = APIRouter()
 class AgentRequest(BaseModel):
     content: str
     message_id: str = None
+    thread_id: str
     
     class Config:
         json_schema_extra = {
             "example": {
                 "content": "hi",
-                "message_id": "msg_123"
+                "message_id": "msg_123",
+                "thread_id": "thread_123"
             }
         }
 
@@ -65,17 +67,17 @@ class AgentResponse(BaseModel):
             }
         }
 
-@router.post("/threads/{thread_id}/messages", response_model=AgentResponse)
+@router.post("/threads/messages", response_model=AgentResponse)
 async def create_message(
     request: AgentRequest,
     session: dict = Depends(verify_token),
-    thread_id: str = Path(...)
 ):
     chat_id = session["userId"]
     user = session["userName"]
     
     user_message = request.content
     message_id = request.message_id
+    thread_id = request.thread_id
     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     chat_history = load_chat_history()
 
