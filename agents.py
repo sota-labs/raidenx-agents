@@ -16,9 +16,6 @@ from llama_index.core.agent.react.types import (
 )
 from llama_index.core.base.llms.types import ChatMessage, MessageRole
 from llama_index.core.tools import BaseTool, FunctionTool
-from llama_index.llms.gemini import Gemini
-from llama_index.llms.deepseek import DeepSeek
-from llama_index.llms.anthropic import Anthropic
 from llama_index.core.tools import BaseTool, ToolOutput
 from utils.output_parser import ReActOutputParser
 from tools import (
@@ -30,21 +27,10 @@ from tools import (
 )
 
 from prompts.react import REACT_CHAT_SYSTEM_HEADER_CUSTOM
+from LLM.llm_settings_manager import LLMSettingsManager
 
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-
-DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
-ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
-
-# llm = Gemini(
-#     model="models/gemini-1.5-pro",
-# )
-
-# llm = DeepSeek(model="deepseek-chat", api_key=DEEPSEEK_API_KEY)
-llm = Anthropic(model="claude-3-5-sonnet-20241022", api_key=ANTHROPIC_API_KEY)
+llm_manager = LLMSettingsManager()
+llm = llm_manager.get_llm("anthropic", model="claude-3-5-sonnet-20241022")
 
 
 
