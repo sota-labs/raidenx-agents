@@ -23,13 +23,13 @@ router = APIRouter()
 
 class AgentRequest(BaseModel):
     content: str
-    messageId: str = None
+    message_id: str = None
     
     class Config:
         json_schema_extra = {
             "example": {
                 "content": "hi",
-                "messageId": "msg_123"
+                "message_id": "msg_123"
             }
         }
 
@@ -75,7 +75,7 @@ async def create_message(
     user = session["userName"]
     
     user_message = request.content
-    message_id = request.messageId
+    message_id = request.message_id
     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     chat_history = load_chat_history()
 
@@ -86,8 +86,8 @@ async def create_message(
         "role": "user", 
         "content": user_message, 
         "time": current_time,
-        "messageId": message_id,
-        "threadId": thread_id
+        "message_id": message_id,
+        "thread_id": thread_id
     })
     last_five_messages = chat_history[chat_id][-10:]
 
@@ -106,8 +106,8 @@ async def create_message(
         "role": "assistant", 
         "content": bot_response, 
         "time": current_time,
-        "messageId": None,
-        "threadId": thread_id
+        "message_id": message_id,
+        "thread_id": thread_id
     })
 
     if len(chat_history[chat_id]) > 20:
