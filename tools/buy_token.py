@@ -82,7 +82,8 @@ def buy_token(userId: str, userName: str, displayName: str, token_address: str, 
             return "⚠️ Failed to purchase: Insufficient liquidity in this pair. Please try another token or wait for more liquidity."
             
         order_id = result[0]["order"]["id"]
-        status = asyncio.run(checker.check_order_status(order_id, jwt_token))
+        
+        status = checker.check_order_status(order_id, jwt_token)
         
         explorer_url = f"https://suivision.xyz/txblock/{status['hash']}"
         message = (

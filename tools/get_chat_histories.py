@@ -1,7 +1,13 @@
+import sys
+from pathlib import Path
+
+project_root = Path(__file__).parent.parent
+sys.path.insert(0, str(project_root))
+
 import requests
 from config import settings
 
-def get_chat_histories(thread_id: str) -> dict:
+def fetch_thread_messages(thread_id: str) -> dict:
     """
     Get chat histories for a specific thread
     
@@ -41,3 +47,6 @@ def get_chat_histories(thread_id: str) -> dict:
         raise Exception(f"API connection error: {str(e)}")
     except Exception as e:
         raise Exception(f"Error getting chat histories: {str(e)}")
+    
+    
+# print(fetch_thread_messages("67a34762cb3fce146d63ba27"))
