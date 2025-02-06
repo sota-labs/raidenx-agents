@@ -1,5 +1,11 @@
+import sys
+from pathlib import Path
+
+project_root = Path(__file__).parent.parent
+sys.path.insert(0, str(project_root))
+
 import requests
-import asyncio
+import time
 from typing import Dict
 from config import settings
 
@@ -9,7 +15,7 @@ class OrderChecker:
         self.MAX_RETRIES = 3
         self.RETRY_DELAY = 1
 
-    async def get_order_details(self, result: Dict) -> Dict:
+    def get_order_details(self, result: Dict) -> Dict:
         """
         Extract relevant order details from the response
         """
@@ -22,7 +28,7 @@ class OrderChecker:
             "error": result.get("error")
         }
 
-    async def check_order_status(
+    def check_order_status(
         self, 
         order_id: str,
         jwt_token: str
@@ -46,31 +52,28 @@ class OrderChecker:
                 response = requests.get(url, headers=headers)
                 response.raise_for_status()
                 result = response.json()
-                order_details = await self.get_order_details(result)
+                order_details = self.get_order_details(result)
                 
                 if order_details["status"] == "success":
                     return order_details
                 if attempt < self.MAX_RETRIES - 1:
-                    await asyncio.sleep(self.RETRY_DELAY)
+                    time.sleep(self.RETRY_DELAY)
                     continue
                 return order_details
                 
             except requests.exceptions.RequestException as e:
                 if attempt < self.MAX_RETRIES - 1:
-                    await asyncio.sleep(self.RETRY_DELAY)
+                    time.sleep(self.RETRY_DELAY)
                     continue
                 return {"error": f"Failed to get order status: {str(e)}"}
 
 # Example usage
-# async def main():
+# if __name__ == "__main__":
 #     checker = OrderChecker()
 #     jwt_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyMTA0OTIwMjU1IiwidXNlck5hbWUiOiJoYXJyeWRhbmcxIiwiZGlzcGxheU5hbWUiOiJIYXJyeSBEYW5nIiwiaWFwIjpudWxsLCJpYXQiOjE3Mzg3MzgwOTYsImV4cCI6MTc0MTMzMDA5Nn0.e13mInVvyZlhJMrHH7y6OF7trNZ18KbCCEojrTPK1LM"
     
-#     status = await checker.check_order_status(
+#     status = checker.check_order_status(
 #         "67a33734119889f149a5e2bc",
 #         jwt_token
 #     )
-#     print("Order Details:", status)
-
-# if __name__ == "__main__":
-#     asyncio.run(main()) 
+#     print("Order Details:", status) 

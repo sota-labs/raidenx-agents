@@ -17,16 +17,19 @@ from utils.chat_session import (
     escape_markdown_v2,
 )
 from agents import react_chat, llm, react_chat_stream
+from tools.get_chat_histories import fetch_thread_messages
 
 router = APIRouter()
 
 class AgentRequest(BaseModel):
-    query: str
+    content: str
+    messageId: str = None
     
     class Config:
         json_schema_extra = {
             "example": {
-                "query": "I want to buy 10 SUI of ELON token"
+                "content": "hi",
+                "messageId": "msg_123"
             }
         }
 
@@ -38,8 +41,6 @@ class AgentResponse(BaseModel):
         timestamp (str): ISO format timestamp of the response
         user (str): Username of the requesting user
         chat_id (str): Unique identifier for the chat session
-        action (str): Type of action to be performed (e.g., "buy", "sell", "none")
-        action_input (dict): Parameters for the specified action
             Example:
             {
                 "token_address": "0xcce8036f36aefd05105c46c7245f3ba6203dde5a624c8319f120925903b541b7::elon::ELON",
@@ -51,8 +52,7 @@ class AgentResponse(BaseModel):
     timestamp: str
     user: str
     chat_id: str
-    action: str = "none"
-    action_input: dict = {}
+   
 
     class Config:
         """Pydantic model configuration."""
@@ -62,33 +62,33 @@ class AgentResponse(BaseModel):
                 "timestamp": "2024-03-20 10:30:45",
                 "user": "john_doe",
                 "chat_id": "user123",
-                "action": "buy",
-                "action_input": {
-                    "token_address": "0xcce8036f36aefd05105c46c7245f3ba6203dde5a624c8319f120925903b541b7::elon::ELON",
-                    "wallet_address": "0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
-                    "amount": "10"
-                }
             }
         }
 
-@router.post("/agent-response", response_model=AgentResponse)
-async def generate_bot_response(request: AgentRequest,
-                                session: dict = Depends(verify_token)
-    ):
-    
+@router.post("/threads/{thread_id}/messages", response_model=AgentResponse)
+async def create_message(
+    request: AgentRequest,
+    session: dict = Depends(verify_token),
+    thread_id: str = Path(...)
+):
     chat_id = session["userId"]
     user = session["userName"]
     
-    user_message = request.query
+    user_message = request.content
+    message_id = request.messageId
     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     chat_history = load_chat_history()
 
     if chat_id not in chat_history:
         chat_history[chat_id] = []
 
-    chat_history[chat_id].append(
-        {"role": "user", "content": user_message, "time": current_time}
-    )
+    chat_history[chat_id].append({
+        "role": "user", 
+        "content": user_message, 
+        "time": current_time,
+        "messageId": message_id,
+        "threadId": thread_id
+    })
     last_five_messages = chat_history[chat_id][-10:]
 
     chat_history_message = convert_dict_to_chat_messages(last_five_messages)
@@ -102,9 +102,13 @@ async def generate_bot_response(request: AgentRequest,
         displayName=user,
     )
     
-    chat_history[chat_id].append(
-        {"role": "assistant", "content": bot_response, "time": current_time}
-    )
+    chat_history[chat_id].append({
+        "role": "assistant", 
+        "content": bot_response, 
+        "time": current_time,
+        "messageId": None,
+        "threadId": thread_id
+    })
 
     if len(chat_history[chat_id]) > 20:
         chat_history[chat_id] = chat_history[chat_id][-20:]
@@ -115,75 +119,73 @@ async def generate_bot_response(request: AgentRequest,
         message=bot_response,
         timestamp=current_time,
         user=user,
-        chat_id=chat_id,
-        action="none",  # Using "none" as default action
-        action_input={}
+        chat_id=chat_id
     )
 
-@router.post("/agent-stream")
-async def generate_bot_response_stream(
-    request: AgentRequest,
-    session: dict = Depends(verify_token)
-):
-    chat_id = session["userId"]
-    user = session["userName"]
+# @router.post("/agent-stream")
+# async def generate_bot_response_stream(
+#     request: AgentRequest,
+#     session: dict = Depends(verify_token)
+# ):
+#     chat_id = session["userId"]
+#     user = session["userName"]
     
-    user_message = request.query
-    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    chat_history = load_chat_history()
+#     user_message = request.content
+#     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+#     chat_history = load_chat_history()
 
-    if chat_id not in chat_history:
-        chat_history[chat_id] = []
+#     if chat_id not in chat_history:
+#         chat_history[chat_id] = []
 
-    chat_history[chat_id].append(
-        {"role": "user", "content": user_message, "time": current_time}
-    )
-    last_five_messages = chat_history[chat_id][-10:]
-    chat_history_message = convert_dict_to_chat_messages(last_five_messages)
+#     chat_history[chat_id].append(
+#         {"role": "user", "content": user_message, "time": current_time}
+#     )
+#     last_five_messages = chat_history[chat_id][-10:]
+#     chat_history_message = convert_dict_to_chat_messages(last_five_messages)
     
-    async def process_stream():
-        full_response = ""
-        buffer = ""
+#     async def process_stream():
+#         full_response = ""
+#         buffer = ""
         
-        async for token in react_chat_stream(
-            query=user_message,
-            llm=llm,
-            chat_history=chat_history_message,
-            userId=chat_id,
-            userName=user,
-            displayName=user,
-        ):
-            full_response += token
-            buffer += token
+#         async for token in react_chat_stream(
+#             query=user_message,
+#             llm=llm,
+#             chat_history=chat_history_message,
+#             userId=chat_id,
+#             userName=user,
+#             displayName=user,
+#         ):
+#             full_response += token
+#             buffer += token
             
-            while buffer:
-                char = buffer[0]
-                buffer = buffer[1:]
-                yield f"data: {char}\n\n"
-                await asyncio.sleep(0.01)  # 10ms delay
+#             while buffer:
+#                 char = buffer[0]
+#                 buffer = buffer[1:]
+#                 yield f"data: {char}\n\n"
+#                 await asyncio.sleep(0.01)  # 10ms delay
         
-        # Send [DONE] signal
-        yield "data: [DONE]\n\n"
+#         # Send [DONE] signal
+#         yield "data: [DONE]\n\n"
         
-        # Save the complete response to chat history
-        chat_history[chat_id].append(
-            {"role": "assistant", "content": full_response, "time": current_time}
-        )
+#         # Save the complete response to chat history
+#         chat_history[chat_id].append(
+#             {"role": "assistant", "content": full_response, "time": current_time}
+#         )
 
-        if len(chat_history[chat_id]) > 20:
-            chat_history[chat_id] = chat_history[chat_id][-20:]
+#         if len(chat_history[chat_id]) > 20:
+#             chat_history[chat_id] = chat_history[chat_id][-20:]
 
-        save_chat_history(chat_history)
+#         save_chat_history(chat_history)
     
-    return StreamingResponse(
-        process_stream(),
-        media_type='text/event-stream',
-        headers={
-            'Cache-Control': 'no-cache',
-            'Connection': 'keep-alive',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'POST',
-            'Access-Control-Allow-Headers': 'Content-Type',
-        }
-    )
+#     return StreamingResponse(
+#         process_stream(),
+#         media_type='text/event-stream',
+#         headers={
+#             'Cache-Control': 'no-cache',
+#             'Connection': 'keep-alive',
+#             'Access-Control-Allow-Origin': '*',
+#             'Access-Control-Allow-Methods': 'POST',
+#             'Access-Control-Allow-Headers': 'Content-Type',
+#         }
+#     )
     
