@@ -159,19 +159,20 @@ tools = [
             "- Select appropriate wallet for transactions"
         ),
     ),
-    # FunctionTool.from_defaults(
-    #     fn=search_token,
-    #     name="search_token",
-    #     description=(
-    #         "Useful for searching token/cryptocurrency information when buying or selling. Should response last user with Address token"
-    #         """Input args: query (str): Token name, symbol, or related keywords (e.g., 'Blue', 'Cook', 'Island boy')."""
-    #         "Use this tool in crypto applications to:"
-    #         "- Find detailed token information (name, symbol, contract address, price)."
-    #         "- Verify if a token exists and is tradeable on supported platforms."
-    #         "- Identify the correct token for trading based on user queries."
-    #         "- Retrieve a list of tokens matching the search query with basic details (address, name, symbol, priceUsd)."
-    #     ),
-    # ),
+    FunctionTool.from_defaults(
+        fn=search_token,
+        name="search_token",
+        description=(
+            "Retrieves the token address based on the token name, symbol, or ticker."
+            """Input args: query (str): Token name, symbol, or ticker (e.g., 'SUDENG', 'hippo')."""
+            "Output: Returns token information including:"
+            "- Token address (contract address)"
+            "- Token name"
+            "- Token symbol"
+            "- Token price"
+            "- Liquidity (liquidityUsd)"
+        ),
+    ),
     FunctionTool.from_defaults(
         fn=buy_token,
         name="buy_token",

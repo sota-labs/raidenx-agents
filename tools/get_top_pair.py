@@ -8,49 +8,51 @@ import requests
 from typing import Dict, Any, Optional, Tuple, Union
 from config import settings
 
-def fetch_top_pair(token_address: str) -> Union[Tuple[str, str], Dict[str, str]]:
+def fetch_top_pair(token_address: str):
     """
-    Fetch network and pairId information of top pair from Dextrade API
+    Lấy thông tin về cặp giao dịch hàng đầu cho một token cụ thể
     
     Args:
-        token_address (str): Token contract address to query
+        token_address (str): Địa chỉ của token
         
     Returns:
-        Union[Tuple[str, str], Dict[str, str]]:
-            - Success: Tuple containing:
-                - network (str): Network identifier
-                - pairId (str): Trading pair identifier
-            - Error: Dict containing:
-                - error (str): Error message describing the failure
-                
-    Raises:
-        RequestException: If API request fails
-        ValueError: If response data is invalid
-        KeyError: If required fields are missing in response
+        tuple: (network, pair_id) hoặc None nếu có lỗi
     """
     try:
         url = f"{settings.raiden.api_common_url}/api/v1/sui/tokens/{token_address}/top-pair"
+        
         response = requests.get(url)
         
-        # Handle 502 Bad Gateway - Invalid token address
-        if response.status_code == 502:
-            return {'error': 'Invalid token address'}
+        if response.status_code == 404:
+            print(f"Token not found: {token_address}")
+            return None
+        elif response.status_code == 502:
+            print(f"Invalid token address: {token_address}")
+            return None
             
-        response.raise_for_status()  # Raise exception cho các status code lỗi
+        response.raise_for_status()
         
         data = response.json()
-        # Chỉ trả về network và pairId
-        return data['network'], data['pairId']
+        if not data:
+            print(f"No data returned for token {token_address}")
+            return None
         
-    except requests.RequestException as e:
-        return {'error': f'API request error: {str(e)}'}
-    except (ValueError, KeyError) as e:
-        return {'error': f'Data processing error: {str(e)}'}
+        network = data.get("network")
+        pair_id = data.get("pairId")
+        
+        if network is None or pair_id is None:
+            print(f"Missing network or pair_id in response: {data}")
+            return None
+            
+        return (network, pair_id)
+        
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching top pair: {str(e)}")
+        return None
 
 # Example usage:
 # if __name__ == "__main__":
-#     # Token address mẫu
-#     sample_token = "0x058af7f23d1341e30a2138053f3bb1e6bb5c5be4a60b56e6e81814364b8425d0::impakaia::IMPAKAIA"
+#     sample_token = "0x9467f809de80564fa198b2c9a27557bf4ffcf1aa506f28547661b96d8f84a1dc::prez::PREZ"
     
 #     result = fetch_top_pair(sample_token)
 #     if isinstance(result, tuple):

@@ -1,3 +1,9 @@
+import sys
+from pathlib import Path
+
+project_root = Path(__file__).parent.parent
+sys.path.insert(0, str(project_root))
+
 import requests
 from config import settings
 
@@ -28,7 +34,7 @@ def search_token(query: str) -> dict:
     params = {
         "search": query,
         "page": 1,
-        "limit": 3
+        "limit": 5
     }
     response = requests.get(url, headers=headers, params=params)
     
@@ -36,13 +42,23 @@ def search_token(query: str) -> dict:
         data = response.json()
         results = []
         for doc in data.get('docs', []):
-            token_info = doc.get('tokenBase', {})
-            results.append({
-                'address': token_info.get('address'),
-                'name': token_info.get('name'),
-                'symbol': token_info.get('symbol'),
-                'priceUsd': token_info.get('priceUsd')
-            })
+            liquidityUsd = float(doc.get('liquidityUsd', 0))
+            if liquidityUsd > 10000:
+                token_info = doc.get('tokenBase', {})
+                results.append({
+                    'address': token_info.get('address'),
+                    'name': token_info.get('name'),
+                    'symbol': token_info.get('symbol'),
+                    'priceUsd': token_info.get('priceUsd'),
+                    'liquidityUsd': liquidityUsd
+                })
+                
+        if not results:
+            return f'No tokens found for {query}'
+        
+        results.sort(key=lambda x: float(x['liquidityUsd'] or 0), reverse=True)
         return {'tokens': results[0:5]}
     else:
         raise Exception(f"Error searching tokens: {response.status_code} - {response.text}")
+
+# print(search_token('huu'))

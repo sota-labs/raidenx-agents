@@ -5,6 +5,7 @@ from pydantic import BaseModel
 from datetime import datetime
 import json
 import asyncio
+import aiohttp
 
 from auth.authorization import verify_token
 
@@ -18,6 +19,7 @@ from utils.chat_session import (
 )
 from agents import react_chat, llm
 from tools.get_chat_histories import fetch_thread_messages
+from config.settings import settings
 
 router = APIRouter()
 
@@ -67,15 +69,56 @@ class AgentResponse(BaseModel):
             }
         }
 
-@router.post("/threads/messages", response_model=AgentResponse)
-async def create_message(
+class WebhookResponse(BaseModel):
+    """Response model for webhook confirmation
+    
+    Attributes:
+        status (str): Status of the webhook request
+        message_id (str): ID of the message being processed
+        thread_id (str): ID of the thread
+    """
+    status: str
+    message_id: str
+    thread_id: str
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "status": "processing",
+                "message_id": "msg_123",
+                "thread_id": "thread_123"
+            }
+        }
+
+class WebhookTriggerRequest(BaseModel):
+    """Request model for webhook trigger
+    
+    Attributes:
+        answer (str): Response message from backend
+        messageId (str): ID of the message
+    """
+    answer: str
+    messageId: str
+
+class WebhookTriggerResponse(BaseModel):
+    """Response model for webhook trigger
+    
+    Attributes:
+        status (str): Status of the operation
+        messageId (str): ID of the message processed
+    """
+    status: str
+    messageId: str
+
+@router.post("/threads/messages/sync", response_model=AgentResponse)
+async def create_message_sync(
     request: AgentRequest,
     session: dict = Depends(verify_token),
-    authorization: str = Header(None)
+    authorization: str = Header(None, description="Bearer token")
 ):    
+    jwt_token = authorization.replace("Bearer ", "") if authorization else None
     chat_id = session["userId"]
     user = session["userName"]
-    jwt_token = authorization.replace("Bearer ", "") if authorization else None
     user_message = request.content
     message_id = request.message_id
     thread_id = request.thread_id
@@ -122,6 +165,113 @@ async def create_message(
         user=user,
         chat_id=chat_id
     )
+
+@router.post("/threads/messages", response_model=WebhookResponse)
+async def create_message_async(
+    request: AgentRequest,
+    session: dict = Depends(verify_token),
+    authorization: str = Header(None, description="Bearer token")
+):    
+    asyncio.create_task(
+        process_message_webhook(
+            request=request,
+            session=session,
+            jwt_token=authorization.replace("Bearer ", "") if authorization else None,
+            webhook_url=f"{settings.agent.api_url}/api/v1/backend/message/agent-webhook-trigger"
+        )
+    )
+    
+    return WebhookResponse(
+        status="processing",
+        message_id=request.message_id,
+        thread_id=request.thread_id
+    )
+
+async def process_message_webhook(
+    request: AgentRequest,
+    session: dict,
+    jwt_token: str,
+    webhook_url: str
+):
+    try:
+        chat_id = session["userId"]
+        user = session["userName"]
+        user_message = request.content
+        message_id = request.message_id
+        thread_id = request.thread_id
+        current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        chat_history = load_chat_history()
+
+        if chat_id not in chat_history:
+            chat_history[chat_id] = []
+
+        chat_history[chat_id].append({
+            "role": "user", 
+            "content": user_message, 
+            "time": current_time,
+            "message_id": message_id,
+            "thread_id": thread_id
+        })
+        last_five_messages = chat_history[chat_id][-10:]
+
+        chat_history_message = convert_dict_to_chat_messages(last_five_messages)
+        
+        bot_response = react_chat(
+            query=user_message,
+            llm=llm,
+            chat_history=chat_history_message,
+            jwt_token=jwt_token
+        )
+        
+        chat_history[chat_id].append({
+            "role": "assistant", 
+            "content": bot_response, 
+            "time": current_time,
+            "message_id": message_id,
+            "thread_id": thread_id
+        })
+
+        if len(chat_history[chat_id]) > 20:
+            chat_history[chat_id] = chat_history[chat_id][-20:]
+
+        save_chat_history(chat_history)
+        
+        webhook_response = WebhookTriggerRequest(
+            answer=bot_response,
+            messageId=message_id
+        )
+        
+        async with aiohttp.ClientSession() as session:
+            response = await session.post(
+                webhook_url,
+                json=webhook_response.dict(),
+                headers={
+                    "Content-Type": "application/json",
+                    "X-API-KEY": settings.agent.api_key
+                }
+            )
+            response_text = await response.text()
+            print(f"Webhook Response: Status={response.status}, Body={response_text}")
+            
+    except Exception as e:
+        print(f"Error occurred: {str(e)}")
+        error_response = {
+            "error": str(e),
+            "message_id": message_id,
+            "thread_id": thread_id
+        }
+        async with aiohttp.ClientSession() as session:
+            response = await session.post(
+                webhook_url,
+                json=error_response,
+                headers={
+                    "Content-Type": "application/json",
+                    "X-API-KEY": settings.agent.api_key
+                }
+            )
+            response_text = await response.text()
+            print(f"Error Webhook Response: Status={response.status}, Body={response_text}")
+
 
 # @router.post("/agent-stream")
 # async def generate_bot_response_stream(
