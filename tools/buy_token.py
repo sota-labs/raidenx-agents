@@ -22,17 +22,15 @@ load_dotenv()
 
 checker = OrderChecker()
 
-def buy_token(userId: str, userName: str, displayName: str, token_address: str, amount: float, wallet_address: str) -> str:
+def buy_token(token_address: str, amount: float, wallet_address: str, jwt_token: str) -> str:
     """
     Buy a token with a specified amount of SUI from a user's wallet
 
     Args:
-        userId (str): User's ID
-        userName (str): Username
-        displayName (str): Display name
         token_address (str): Token contract address
         amount (float): Amount in SUI to spend
         wallet_address (str): User's wallet address
+        jwt_token (str): Authorization token
         
     Returns:
         str: Transaction result message containing:
@@ -46,8 +44,6 @@ def buy_token(userId: str, userName: str, displayName: str, token_address: str, 
         Exception: If any other error occurs during the purchase
     """
     try:
-        jwt_token = get_jwt(userId, userName, displayName)
-        
         network, pair_id = fetch_top_pair(token_address)
         if network is None or pair_id is None:
             return f"Failed to fetch top pair information for {token_address}. Please try again later."

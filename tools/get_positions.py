@@ -8,15 +8,13 @@ import requests
 from auth.jwt_generator import get_jwt
 from config import settings
 
-def get_positions_by_token(userId: str, userName: str, displayName: str, token_address: str) -> list:
+def get_positions_by_token(token_address: str, jwt_token: str) -> list:
     """
     Get token positions from a user's wallet for a specific token address
     
     Args:
-        userId (str): User's ID
-        userName (str): Username
-        displayName (str): Display name
         token_address (str): Token contract address
+        jwt_token (str): Authorization token
         
     Returns:
         list: List of positions containing:
@@ -27,8 +25,6 @@ def get_positions_by_token(userId: str, userName: str, displayName: str, token_a
             - wallet_address (str): Wallet address holding the token
     """
     try:
-        jwt_token = get_jwt(userId, userName, displayName)
-        
         url = f"{settings.raiden.api_insight_url}/sui/api/v1/my/positions/{token_address}"
         headers = {
             "accept": "application/json",

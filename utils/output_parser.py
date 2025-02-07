@@ -116,7 +116,7 @@ class ReActOutputParser(BaseOutputParser):
                 thought=thought, response=answer, is_streaming=is_streaming
             )
             
-        if "Action:" in output:
+        if "Action Input:" in output:
             return parse_action_reasoning_step(output)
         
         if "Thought:" in output:

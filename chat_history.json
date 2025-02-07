@@ -2,23 +2,103 @@
   "2104920255": [
     {
       "role": "user",
-      "content": "xin chào",
-      "time": "2025-02-06 03:15:24"
+      "content": "kiểm tra ví tôi xme tôi có bao tiền",
+      "time": "2025-02-06 22:41:18"
     },
     {
       "role": "assistant",
-      "content": "Xin chào! I'm RaidenX Bot Assistant. How can I help you with your token trading today? I can assist you with buying or selling tokens, checking your wallet balance, or viewing your token positions.",
-      "time": "2025-02-06 03:15:24"
+      "content": "Your wallet balance is 0.012510535 SUI.",
+      "time": "2025-02-06 22:41:18"
     },
     {
       "role": "user",
-      "content": "bạn có thể làm được gì",
-      "time": "2025-02-06 03:31:47"
+      "content": "mua token này cho tôi 0x49099066ce96efb96af8cdcf25c818ccd63967546b2f3d32cfb9d1eb8b47d6e2::viper::VIPER",
+      "time": "2025-02-06 22:44:37"
     },
     {
       "role": "assistant",
-      "content": "Xin chào! Tôi là RaidenX Bot Assistant và tôi có thể giúp bạn với các dịch vụ sau:\n\n1. Giao dịch Token:\n   - Mua token (Buy)\n   - Bán token (Sell)\n\n2. Kiểm tra thông tin:\n   - Xem số dư ví của bạn (Check wallet balance)\n   - Xem các token bạn đang nắm giữ (View token positions)\n   - Kiểm tra thông tin chi tiết về một token cụ thể\n\n3. Quản lý ví:\n   - Xem địa chỉ ví của bạn\n   - Kiểm tra số dư SUI trong ví\n\nBạn muốn thực hiện giao dịch nào? Tôi sẽ hướng dẫn bạn từng bước một cách chi tiết và đảm bảo an toàn.",
-      "time": "2025-02-06 03:31:47"
+      "content": "How much SUI would you like to spend on VIPER?",
+      "time": "2025-02-06 22:44:37"
+    },
+    {
+      "role": "user",
+      "content": "0.0005 sui",
+      "time": "2025-02-06 22:44:57"
+    },
+    {
+      "role": "assistant",
+      "content": "Your purchase of 0x49099066ce96efb96af8cdcf25c818ccd63967546b2f3d32cfb9d1eb8b47d6e2::viper::VIPER has been completed successfully. You spent 0.0005 SUI and received 0.002525074 tokens. The tokens have been sent to your wallet at 0xea1bc45a51e0051b6a7b53c3ce4f0a45d416b985042ff51f73ca8155452daf7f. You can view the transaction details here: https://suivision.xyz/txblock/HviDCJ26cu6i1NmrdqmGwad9mQHB6oJTyJxZUJh9db38",
+      "time": "2025-02-06 22:44:57"
+    },
+    {
+      "role": "user",
+      "content": "hi",
+      "time": "2025-02-06 22:45:58"
+    },
+    {
+      "role": "assistant",
+      "content": "Hi! How can I help you today?\n",
+      "time": "2025-02-06 22:45:58"
+    },
+    {
+      "role": "user",
+      "content": "Buy this token for me 0x49099066CEFB96AF8AF8CDCF28C218CD63967546B2F3D32CFB9D1EB8B47D6E2 :: Viper :: Viper",
+      "time": "2025-02-06 22:46:02"
+    },
+    {
+      "role": "assistant",
+      "content": "How much SUI would you like to spend?\n\n",
+      "time": "2025-02-06 22:46:02"
+    },
+    {
+      "role": "user",
+      "content": "0.004",
+      "time": "2025-02-06 22:46:10"
+    },
+    {
+      "role": "assistant",
+      "content": "I'm sorry, there was an error processing your purchase request. Please try again later.",
+      "time": "2025-02-06 22:46:10"
+    },
+    {
+      "role": "user",
+      "content": "0x49099066ce96efb96af8cdcf25c818ccd63967546b2f3d32cfb9d1eb8b47d6e2::viper::VIPER",
+      "time": "2025-02-06 22:48:12"
+    },
+    {
+      "role": "assistant",
+      "content": "It seems you've provided the same token address twice.  Do you want to buy or sell this token (0x49099066ce96efb96af8cdcf25c818ccd63967546b2f3d32cfb9d1eb8b47d6e2::viper::VIPER)?",
+      "time": "2025-02-06 22:48:12"
+    },
+    {
+      "role": "user",
+      "content": "buy 0.005",
+      "time": "2025-02-06 22:48:28"
+    },
+    {
+      "role": "assistant",
+      "content": "Your purchase request for 0x49099066ce96efb96af8cdcf25c818ccd63967546b2f3d32cfb9d1eb8b47d6e2::viper::VIPER failed due to insufficient liquidity in the market. Please try again later or consider a different token.",
+      "time": "2025-02-06 22:48:28"
+    },
+    {
+      "role": "user",
+      "content": "sell 10%",
+      "time": "2025-02-06 22:49:02"
+    },
+    {
+      "role": "assistant",
+      "content": "You do not have any balance of 0x49099066ce96efb96af8cdcf25c818ccd63967546b2f3d32cfb9d1eb8b47d6e2::viper::VIPER to sell.",
+      "time": "2025-02-06 22:49:02"
+    },
+    {
+      "role": "user",
+      "content": "buy 0.0002",
+      "time": "2025-02-06 22:49:30"
+    },
+    {
+      "role": "assistant",
+      "content": "Your purchase request for 0x49099066ce96efb96af8cdcf25c818ccd63967546b2f3d32cfb9d1eb8b47d6e2::viper::VIPER failed due to insufficient liquidity in the market. Please try again later or consider a different token.",
+      "time": "2025-02-06 22:49:30"
     }
   ]
 }

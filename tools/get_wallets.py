@@ -11,14 +11,12 @@ import random
 from config import settings
 
 
-def get_wallet_balance(userId: str, userName: str = "", displayName: str = "") -> dict:
+def get_wallet_balance(jwt_token: str = "") -> dict:
     """
     Get wallet balance and information from user's wallet
 
     Args:
-        userId (str): User's ID
-        userName (str, optional): Username. Defaults to empty string
-        displayName (str, optional): Display name. Defaults to empty string
+        jwt_token (str): Authorization token
         
     Returns:
         dict: Wallet information containing:
@@ -30,8 +28,6 @@ def get_wallet_balance(userId: str, userName: str = "", displayName: str = "") -
         RequestException: If API request fails
         Exception: If wallet data cannot be retrieved
     """
-
-    jwt_token = get_jwt(userId, userName, displayName)
     
     url = f"{settings.raiden.api_wallets_url}/api/v1/sui/user-wallets"
     headers = {
