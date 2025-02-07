@@ -3,7 +3,6 @@ import os
 from dataclasses import dataclass
 from typing import Dict
 
-# Load environment variables from .env file
 load_dotenv()
 
 @dataclass

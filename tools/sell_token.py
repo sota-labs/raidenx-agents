@@ -15,17 +15,15 @@ from config import settings
 
 checker = OrderChecker()
 
-def sell_token(userId: str, userName: str, displayName: str, token_address: str, percent: float, wallet_address: str) -> str:
+def sell_token(token_address: str, percent: float, wallet_address: str, jwt_token: str) -> str:
     """
     Sell a percentage of a token from a user's wallet
 
     Args:
-        userId (str): User's ID
-        userName (str): Username
-        displayName (str): Display name
         token_address (str): Token contract address
         percent (float): Percentage of tokens to sell (0-100)
         wallet_address (str): User's wallet address
+        jwt_token (str): Authorization token
         
     Returns:
         str: Transaction result message containing:
@@ -41,7 +39,6 @@ def sell_token(userId: str, userName: str, displayName: str, token_address: str,
         Exception: If sale operation fails with error message
     """
     try:
-        jwt_token = get_jwt(userId, userName, displayName)
         percent = float(percent)
         if not (0 <= percent <= 100):
             return f"Error: Percent must be a percentage between 0 and 100. Received: {percent}"

@@ -10,6 +10,7 @@ from utils.chat_session import (
 )
 from agents import react_chat, llm
 from datetime import datetime
+from auth.jwt_generator import get_jwt
 
 nest_asyncio.apply()
 load_dotenv()
@@ -45,15 +46,15 @@ async def handle_message(event):
         last_five_messages = chat_history[chat_id][-10:]
 
         chat_history_message = convert_dict_to_chat_messages(last_five_messages)
+        
+        jwt_token=get_jwt(chat_id, user, user)
 
         try:
             bot_response = react_chat(
                 query=user_message,
                 llm=llm,
                 chat_history=chat_history_message,
-                userId=chat_id,
-                userName=user,
-                displayName=user,
+                jwt_token=jwt_token,
             )
         except ValueError as e:
             if "Reached max iterations" in str(e):

@@ -74,19 +74,23 @@ class LLMSettingsManager:
         if model not in self.available_models[provider]:
             raise ValueError(f"Invalid model for {provider}: {model}")
             
+        temperature = kwargs.get("temperature", 0.1)
+            
         if provider == "gemini":
-            return Gemini(model=model)
+            return Gemini(model=model, temperature=temperature)
             
         elif provider == "deepseek":
             return DeepSeek(
                 model=model,
                 api_key=self.api_keys["deepseek"],
+                temperature=temperature,
             )
             
         elif provider == "anthropic":
             return Anthropic(
                 model=model,
                 api_key=self.api_keys["anthropic"],
+                temperature=temperature,
             )
     
     def get_default_llm(self):

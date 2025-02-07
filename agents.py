@@ -30,7 +30,8 @@ from prompts.react import REACT_CHAT_SYSTEM_HEADER_CUSTOM
 from LLM.llm_settings_manager import LLMSettingsManager
 
 llm_manager = LLMSettingsManager()
-llm = llm_manager.get_llm("anthropic", model="claude-3-5-sonnet-20241022")
+# llm = llm_manager.get_llm("anthropic", model="claude-3-5-sonnet-20241022")
+llm = llm_manager.get_llm("gemini", model="models/gemini-1.5-pro")
 
 
 
@@ -125,23 +126,19 @@ tools = [
         fn=get_positions_by_token,
         name="get_token_position",
         description=(
-            "Check specific token holdings in user's wallets. Returns detailed information including: "
+            "Check token balance in wallets before executing a sell order. Returns detailed information including:"
             "- Token name"
             "- Token symbol"
             "- Token contract address"
             "- Token balance"
             "- Wallet address holding the token"
             """Input args: 
-                userId (str): User's unique identifier
-                userName (str): User's username
-                displayName (str): User's display name
+                token (str): User's token
                 token_address (str): Contract address of the token to check"""
             "Use this tool when:"
-            "- Need to verify token balance before selling"
-            "- Want to track current token holdings"
-            "- Need to identify which wallet contains the token"
-            "- Analyzing token positions across wallets"
-            "- Preparing for token transactions"
+            "- Need to verify token balance before executing a sell order"
+            "- Need to identify which wallet contains the tokens to sell"
+            "- Need to check available token amount for selling"
         ),
     ),
     FunctionTool.from_defaults(
@@ -150,9 +147,7 @@ tools = [
         description=(
             "Retrieves wallet addresses and their current balances for a given user."
             """Input args: 
-                userId (str): The user's unique identifier.
-                userName (str): The user's username.
-                displayName (str): The user's display name."""
+                jwt_token (str): User's authorization token"""
             "Returns:"
             "- List of wallet addresses owned by the user"
             "- Current SUI balance for each wallet"
@@ -182,9 +177,8 @@ tools = [
         name="buy_token",
         description=(
             "Status of purchase"
-            """Input args: userId (str): The user's unique identifier.
-                userName (str): The user's username.
-                displayName (str): The user's display name.
+            """Input args: 
+                jwt_token (str): User's authorization token
                 token_address (str): The token's contract address.
                 amount (float): The Amount of token in SUI network want to buy.
                 wallet_address (str): The user's wallet address."""
@@ -196,9 +190,8 @@ tools = [
         name="sell_token",
         description=(
             "Status of purchase."
-            """Input args: userId (str): The user's unique identifier.
-                userName (str): The user's username.
-                displayName (str): The user's display name.
+            """Input args: 
+                jwt_token (str): User's authorization token
                 token_address (str): The token's contract address.
                 percent (float): Percent of token want to sell.
                 wallet_address (str): The user's wallet address."""
@@ -213,13 +206,74 @@ def react_chat(
     llm=None,
     chat_history: List[ChatMessage] = None,
     max_iterations=10,
-    userId="2104920255",
-    userName="RaidenX Agent",
-    displayName="RaidenX Agent",
+    jwt_token=None,
 ):
-    formatter = CustomReActChatFormatter(
-        userId=userId, userName=userName, displayName=displayName
-    )
+    # tools_with_auth = [
+    #     FunctionTool.from_defaults(
+    #         fn=lambda *args, **kwargs: get_positions_by_token(*args, **kwargs, token=token),
+    #         name="get_token_position",
+    #         description=(
+    #             "Check specific token holdings in user's wallets. Returns detailed information including: "
+    #             "- Token name"
+    #             "- Token symbol"
+    #             "- Token contract address"
+    #             "- Token balance"
+    #             "- Wallet address holding the token"
+    #             """Input args: 
+    #                 token_address (str): Contract address of the token to check"""
+    #             "Use this tool when:"
+    #             "- Need to verify token balance before selling"
+    #             "- Want to track current token holdings"
+    #             "- Need to identify which wallet contains the token"
+    #             "- Analyzing token positions across wallets"
+    #             "- Preparing for token transactions"
+    #         ),
+    #     ),
+    #     FunctionTool.from_defaults(
+    #         fn=lambda *args, **kwargs: get_wallet_balance(*args, **kwargs, token=token),
+    #         name="get_wallet_balance",
+    #         description=(
+    #             "Retrieves wallet addresses and their current balances for a given user."
+    #             """Input args: 
+    #                 token (str): User's token"""
+    #             "Returns:"
+    #             "- List of wallet addresses owned by the user"
+    #             "- Current SUI balance for each wallet"
+    #             "- Total balance across all wallets"
+    #             "\nUse this tool when you need to:"
+    #             "- Check available SUI balance before executing trades"
+    #             "- Verify which wallet has sufficient funds"
+    #             "- Get an overview of user's total holdings in SUI"
+    #             "- Select appropriate wallet for transactions"
+    #         ),
+    #     ),
+    #     FunctionTool.from_defaults(
+    #         fn=lambda *args, **kwargs: buy_token(*args, **kwargs, token=token),
+    #         name="buy_token",
+    #         description=(
+    #             "Status of purchase"
+    #             """Input args:
+    #                 token_address (str): The token's contract address.
+    #                 amount (float): The Amount of token in SUI network want to buy.
+    #                 wallet_address (str): The user's wallet address."""
+    #             "Use this tool in crypto applications when user want to buy an token by token"
+    #         ),
+    #     ),
+    #     FunctionTool.from_defaults(
+    #         fn=lambda *args, **kwargs: sell_token(*args, **kwargs, token=token),
+    #         name="sell_token",
+    #         description=(
+    #             "Status of purchase."
+    #             """Input args:
+    #                 token_address (str): The token's contract address.
+    #                 percent (float): Percent of token want to sell.
+    #                 wallet_address (str): The user's wallet address."""
+    #             "Use this tool in crypto applications when user want to sell a token"
+    #         ),
+    #     ),
+    # ]
+
+    formatter = CustomReActChatFormatter(jwt_token=jwt_token)
     agent = ReActAgent.from_tools(
         tools=tools,
         llm=llm,
@@ -236,32 +290,32 @@ def react_chat(
     agent.reset()
     return response
 
-async def react_chat_stream(
-    query: str,
-    llm=None,
-    chat_history: List[ChatMessage] = None,
-    max_iterations=10,
-    userId="2104920255",
-    userName="RaidenX Agent",
-    displayName="RaidenX Agent",
-):
-    formatter = CustomReActChatFormatter(
-        userId=userId, userName=userName, displayName=displayName
-    )
-    agent = ReActAgent.from_tools(
-        tools=tools,
-        llm=llm,
-        verbose=True,
-        chat_history=chat_history,
-        react_chat_formatter=formatter,
-        max_iterations=max_iterations,
-        output_parser=ReActOutputParser()
-    )
-    agent.update_prompts({"agent_worker:system_prompt": react_system_prompt})
+# async def react_chat_stream(
+#     query: str,
+#     llm=None,
+#     chat_history: List[ChatMessage] = None,
+#     max_iterations=10,
+#     userId="2104920255",
+#     userName="RaidenX Agent",
+#     displayName="RaidenX Agent",
+# ):
+#     formatter = CustomReActChatFormatter(
+#         userId=userId, userName=userName, displayName=displayName
+#     )
+#     agent = ReActAgent.from_tools(
+#         tools=tools,
+#         llm=llm,
+#         verbose=True,
+#         chat_history=chat_history,
+#         react_chat_formatter=formatter,
+#         max_iterations=max_iterations,
+#         output_parser=ReActOutputParser()
+#     )
+#     agent.update_prompts({"agent_worker:system_prompt": react_system_prompt})
     
-    response = agent.stream_chat(query)
-    print(response)
-    for token in response.response_gen:
-        yield str(token)
+#     response = agent.stream_chat(query)
+#     print(response)
+#     for token in response.response_gen:
+#         yield str(token)
 
-    agent.reset()
+#     agent.reset()

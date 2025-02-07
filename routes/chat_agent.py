@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, APIRouter, Path, Query, Body, Depends
+from fastapi import FastAPI, HTTPException, APIRouter, Path, Query, Body, Depends, Header
 from fastapi.responses import StreamingResponse, HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -16,7 +16,7 @@ from utils.chat_session import (
     convert_dict_to_chat_messages,
     escape_markdown_v2,
 )
-from agents import react_chat, llm, react_chat_stream
+from agents import react_chat, llm
 from tools.get_chat_histories import fetch_thread_messages
 
 router = APIRouter()
@@ -71,10 +71,11 @@ class AgentResponse(BaseModel):
 async def create_message(
     request: AgentRequest,
     session: dict = Depends(verify_token),
-):
+    authorization: str = Header(None)
+):    
     chat_id = session["userId"]
     user = session["userName"]
-    
+    jwt_token = authorization.replace("Bearer ", "") if authorization else None
     user_message = request.content
     message_id = request.message_id
     thread_id = request.thread_id
@@ -99,9 +100,7 @@ async def create_message(
         query=user_message,
         llm=llm,
         chat_history=chat_history_message,
-        userId=chat_id,
-        userName=user,
-        displayName=user,
+        jwt_token=jwt_token
     )
     
     chat_history[chat_id].append({

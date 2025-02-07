@@ -247,7 +247,7 @@ Answer: Sorry, I cannot answer your query.
 - Before executing any buying or selling action, you **MUST** check the user's wallet balance for sufficient funds or token.
 
 ## Here is User informations:
-userId: {userId}, userName: {userName}, displayName: {displayName}
+jwt_token: {jwt_token}
 
 ## Current Conversation
 Below is the current conversation consisting of interleaving human and assistant messages.
