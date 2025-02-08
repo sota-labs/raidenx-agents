@@ -6,8 +6,9 @@ sys.path.insert(0, str(project_root))
 
 import requests
 from config import settings
+from tools.get_positions import get_all_positions
 
-def search_token(query: str) -> dict:
+def search_token(query: str, jwt_token: str) -> dict:
     """
     Search for tokens based on keywords
 
@@ -26,6 +27,13 @@ def search_token(query: str) -> dict:
         RequestException: If API request fails
         Exception: If search operation fails with status code and error message
     """
+    
+    try:
+        positions = get_all_positions(jwt_token)
+    except Exception as e:
+        positions = []
+        print(f"Error getting positions: {str(e)}")
+    
     url = f"{settings.raiden.api_common_url}/api/v1/search"
     headers = {
         "accept": "application/json"
@@ -43,8 +51,9 @@ def search_token(query: str) -> dict:
         results = []
         for doc in data.get('docs', []):
             liquidityUsd = float(doc.get('liquidityUsd', 0))
-            if liquidityUsd > 10000:
-                token_info = doc.get('tokenBase', {})
+            token_info = doc.get('tokenBase', {})
+            position_token_addresses = [pos['token_address'] for pos in positions]
+            if liquidityUsd > 10000 or token_info.get('address') in position_token_addresses:
                 results.append({
                     'address': token_info.get('address'),
                     'name': token_info.get('name'),

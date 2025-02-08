@@ -85,6 +85,8 @@ def buy_token(token_address: str, amount: float, wallet_address: str, jwt_token:
         
         status = checker.check_order_status(order_id, jwt_token)
         
+        print(f"status-buy-token: {status}")
+        
         explorer_url = f"https://suivision.xyz/txblock/{status['hash']}"
         message = (
             f"✅ I've successfully purchased the token for you:\n"
