@@ -20,12 +20,12 @@ class OrderChecker:
         Extract relevant order details from the response
         """
         return {
-            "status": result.get("status"),
+            "status": result.get("status", "pending"),
             "amountIn": result.get("amountIn"),
             "amountOut": result.get("amountOut"),
-            "hash": result.get("hash"),
+            "hash": result.get("hash", ""),
             "sellPercent": result.get("sellPercent"),
-            "error": result.get("error")
+            "error": result.get("error", "")
         }
 
     def check_order_status(
@@ -52,6 +52,10 @@ class OrderChecker:
                 response = requests.get(url, headers=headers)
                 response.raise_for_status()
                 result = response.json()
+                
+                if not result:
+                    return {"status": "error", "error": "Empty response from server"}
+                    
                 order_details = self.get_order_details(result)
                 
                 if order_details["status"] == "success":

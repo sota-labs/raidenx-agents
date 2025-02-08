@@ -25,7 +25,7 @@ router = APIRouter()
 
 class AgentRequest(BaseModel):
     content: str
-    message_id: str = None
+    message_id: str
     thread_id: str
     
     class Config:
@@ -116,55 +116,81 @@ async def create_message_sync(
     session: dict = Depends(verify_token),
     authorization: str = Header(None, description="Bearer token")
 ):    
-    jwt_token = authorization.replace("Bearer ", "") if authorization else None
-    chat_id = session["userId"]
-    user = session["userName"]
-    user_message = request.content
-    message_id = request.message_id
-    thread_id = request.thread_id
-    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    chat_history = load_chat_history()
-
-    if chat_id not in chat_history:
-        chat_history[chat_id] = []
-
-    chat_history[chat_id].append({
-        "role": "user", 
-        "content": user_message, 
-        "time": current_time,
-        "message_id": message_id,
-        "thread_id": thread_id
-    })
-    last_five_messages = chat_history[chat_id][-10:]
-
-    chat_history_message = convert_dict_to_chat_messages(last_five_messages)
-    
-    bot_response = react_chat(
-        query=user_message,
-        llm=llm,
-        chat_history=chat_history_message,
-        jwt_token=jwt_token
-    )
-    
-    chat_history[chat_id].append({
-        "role": "assistant", 
-        "content": bot_response, 
-        "time": current_time,
-        "message_id": message_id,
-        "thread_id": thread_id
-    })
-
-    if len(chat_history[chat_id]) > 20:
-        chat_history[chat_id] = chat_history[chat_id][-20:]
-
-    save_chat_history(chat_history)
+    try:
+        jwt_token = authorization.replace("Bearer ", "") if authorization else None
         
-    return AgentResponse(
-        message=bot_response,
-        timestamp=current_time,
-        user=user,
-        chat_id=chat_id
-    )
+        if not request.content.strip():
+            raise HTTPException(status_code=400, detail="Message content cannot be empty")
+            
+        user = session["userName"]
+        user_message = request.content
+        message_id = request.message_id
+        thread_id = request.thread_id
+        current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        try:
+            chat_history = load_chat_history()
+        except Exception as e:
+            raise HTTPException(status_code=500, detail="Failed to load chat history")
+            
+        chat_id = thread_id
+        messages = fetch_thread_messages(thread_id)
+        
+
+        if chat_id not in chat_history:
+            chat_history[chat_id] = []
+
+        chat_history[chat_id].append({
+            "role": "user", 
+            "content": user_message, 
+            "time": current_time,
+            "message_id": message_id,
+            "thread_id": thread_id
+        })
+        
+        # last_five_messages = chat_history[chat_id][-10:]
+        
+        last_five_messages = messages[-10:]
+
+        chat_history_message = convert_dict_to_chat_messages(last_five_messages)
+        
+        try:
+            bot_response = react_chat(
+                query=user_message,
+                llm=llm,
+                chat_history=chat_history_message,
+                jwt_token=jwt_token
+            )
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Chat processing failed: {str(e)}")
+        
+        chat_history[chat_id].append({
+            "role": "assistant", 
+            "content": bot_response, 
+            "time": current_time,
+            "message_id": message_id,
+            "thread_id": thread_id
+        })
+
+        if len(chat_history[chat_id]) > 20:
+            chat_history[chat_id] = chat_history[chat_id][-20:]
+
+        try:
+            save_chat_history(chat_history)
+        except Exception as e:
+            print(f"Warning: Failed to save chat history: {str(e)}")
+            
+        return AgentResponse(
+            message=bot_response,
+            timestamp=current_time,
+            user=user,
+            chat_id=chat_id
+        )
+            
+    except HTTPException as he:
+        raise he
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
 @router.post("/threads/messages", response_model=WebhookResponse)
 async def create_message_async(
@@ -194,13 +220,16 @@ async def process_message_webhook(
     webhook_url: str
 ):
     try:
-        chat_id = session["userId"]
+        
         user = session["userName"]
         user_message = request.content
         message_id = request.message_id
         thread_id = request.thread_id
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         chat_history = load_chat_history()
+        
+        chat_id = thread_id
+        messages = fetch_thread_messages(thread_id)
 
         if chat_id not in chat_history:
             chat_history[chat_id] = []
@@ -212,7 +241,9 @@ async def process_message_webhook(
             "message_id": message_id,
             "thread_id": thread_id
         })
-        last_five_messages = chat_history[chat_id][-10:]
+        # last_five_messages = chat_history[chat_id][-10:]
+        
+        last_five_messages = messages[-10:]
 
         chat_history_message = convert_dict_to_chat_messages(last_five_messages)
         

@@ -7,6 +7,11 @@ sys.path.insert(0, str(project_root))
 import requests
 from config import settings
 
+import json
+import os
+from typing import List
+from llama_index.core.llms import ChatMessage, MessageRole
+
 def fetch_thread_messages(thread_id: str) -> dict:
     """
     Get chat histories for a specific thread
@@ -15,7 +20,7 @@ def fetch_thread_messages(thread_id: str) -> dict:
         thread_id (str): Thread ID
         
     Returns:
-        dict: Chat histories
+        dict: Chat histories sorted by creation time
 
     The API returns a paginated list of chat messages with the following structure:
     {
@@ -42,11 +47,51 @@ def fetch_thread_messages(thread_id: str) -> dict:
             "X-API-KEY": settings.agent.api_key
         }
         response = requests.get(url, headers=headers)
-        return response.json()
+        data = response.json()
+        
+        if 'docs' in data:
+            data['docs'] = sorted(data['docs'], key=lambda x: x['createdAt'])
+            
+        return data
     except requests.exceptions.RequestException as e:
         raise Exception(f"API connection error: {str(e)}")
     except Exception as e:
         raise Exception(f"Error getting chat histories: {str(e)}")
     
     
-# print(fetch_thread_messages("67a34762cb3fce146d63ba27"))
+# def convert_dict_to_chat_messages(
+#     chat_dicts: List[dict[str, str]],
+#     ) -> List[ChatMessage]:
+#     """
+#     Convert a list of dictionaries to a list of ChatMessage objects.
+
+#     Args:
+#         chat_dicts (List[Dict[str, str]]): A list of dictionaries with "role" and "content" keys.
+
+#     Returns:
+#         List[ChatMessage]: A list of ChatMessage objects.
+#     """
+#     chat_messages = []
+#     for chat_dict in chat_dicts:
+#         # Ensure the dictionary has the required keys
+#         if "role" not in chat_dict or "content" not in chat_dict:
+#             raise ValueError("Each dictionary must contain 'role' and 'content' keys.")
+
+#         # Normalize the role to match the MessageRole class
+#         role = chat_dict["role"].lower()
+#         if role not in [MessageRole.ASSISTANT, MessageRole.USER]:
+#             raise ValueError(
+#                 f"Invalid role: {role}. Role must be 'assistant' or 'user'."
+#             )
+
+#         # Create a ChatMessage object and add it to the list
+#         chat_message = ChatMessage(role=role, content=chat_dict["content"])
+#         chat_messages.append(chat_message)
+
+#     return chat_messages   
+    
+    
+# messages = fetch_thread_messages("67a34762cb3fce146d63ba27")
+# print(messages)
+# chat_history_message = convert_dict_to_chat_messages(messages)
+# print(chat_history_message)
