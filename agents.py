@@ -24,6 +24,7 @@ from tools import (
     search_token,
     buy_token,
     sell_token,
+    get_all_positions,
 )
 
 from prompts.react import REACT_CHAT_SYSTEM_HEADER_CUSTOM
@@ -122,25 +123,25 @@ def custom_failure_handler(callback_manager, exception):
 react_system_prompt = PromptTemplate(REACT_CHAT_SYSTEM_HEADER_CUSTOM)
 
 tools = [
-    FunctionTool.from_defaults(
-        fn=get_positions_by_token,
-        name="get_token_position",
-        description=(
-            "Check token balance in wallets before executing a sell order. Returns detailed information including:"
-            "- Token name"
-            "- Token symbol"
-            "- Token contract address"
-            "- Token balance"
-            "- Wallet address holding the token"
-            """Input args: 
-                token (str): User's token
-                token_address (str): Contract address of the token to check"""
-            "Use this tool when:"
-            "- Need to verify token balance before executing a sell order"
-            "- Need to identify which wallet contains the tokens to sell"
-            "- Need to check available token amount for selling"
-        ),
-    ),
+    # FunctionTool.from_defaults(
+    #     fn=get_positions_by_token,
+    #     name="get_token_position",
+    #     description=(
+    #         "Check token balance in wallets before executing a sell order. Returns detailed information including:"
+    #         "- Token name"
+    #         "- Token symbol"
+    #         "- Token contract address"
+    #         "- Token balance"
+    #         "- Wallet address holding the token"
+    #         """Input args: 
+    #             token (str): User's token
+    #             token_address (str): Contract address of the token to check"""
+    #         "Use this tool when:"
+    #         "- Need to verify token balance before executing a sell order"
+    #         "- Need to identify which wallet contains the tokens to sell"
+    #         "- Need to check available token amount for selling"
+    #     ),
+    # ),
     FunctionTool.from_defaults(
         fn=get_wallet_balance,
         name="get_wallet_balance",
@@ -197,6 +198,25 @@ tools = [
                 percent (float): Percent of token want to sell.
                 wallet_address (str): The user's wallet address."""
             "Use this tool in crypto applications when user want to sell a token"
+        ),
+    ),
+    FunctionTool.from_defaults(
+        fn=get_all_positions,
+        name="get_all_positions",
+        description=(
+            "Get all positions from user's wallets. Returns detailed information including:"
+            "- Token symbol"
+            "- Token name" 
+            "- Token contract address"
+            "- Token balance"
+            "- Wallet address holding the token"
+            """Input args:
+                jwt_token (str): User's authorization token"""
+            "Use this tool when:"
+            "- Need an overview of all tokens in wallets"
+            "- Want to check balances of multiple tokens at once"
+            "- Analyzing investment portfolio"
+            "- Preparing for multi-token management"
         ),
     ),
 ]
@@ -273,6 +293,11 @@ def react_chat(
     #         ),
     #     ),
     # ]
+    
+    # wallet_info = get_wallet_balance(jwt_token=jwt_token)
+    # wallet_address = wallet_info['address']
+    # wallet_balance = wallet_info['balance']
+
 
     formatter = CustomReActChatFormatter(jwt_token=jwt_token)
     agent = ReActAgent.from_tools(

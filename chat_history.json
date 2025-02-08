@@ -1,336 +1,46 @@
 {
-  "5627558166": [
-    {
-      "role": "user",
-      "content": "by lowkey",
-      "time": "2025-02-07 04:15:26"
-    },
-    {
-      "role": "assistant",
-      "content": "I couldn't find a token with the name \"lowkey\". Could you please double-check the name or provide the token address?",
-      "time": "2025-02-07 04:15:26"
-    },
-    {
-      "role": "user",
-      "content": "0x82968cd1140fb2bef75d37da1cfc3d2913be5c8d1631e6f7a2f8a0bc9e3c4c98::lowkey::LOWKEY",
-      "time": "2025-02-07 04:18:13"
-    },
-    {
-      "role": "assistant",
-      "content": "I need to know how much SUI the user wants to spend to buy LOWKEY.\nHow much SUI do you want to spend?",
-      "time": "2025-02-07 04:18:13"
-    },
-    {
-      "role": "user",
-      "content": "0.00003",
-      "time": "2025-02-07 04:18:28"
-    },
-    {
-      "role": "assistant",
-      "content": "Your purchase of 198.465143 LOWKEY tokens for 0.00003 SUI has been completed successfully. The tokens have been sent to your wallet at 0x4fa1d22fc78c75de53f133dd116f7f6a8ac64524784b757a81e7d65c22b7c27a. You can view the transaction details here: https://suivision.xyz/txblock/AfEd4B9KSqvAfXm8ZqKYdc7R6Yzqzb4VLFhAtEsbHpvH",
-      "time": "2025-02-07 04:18:28"
-    },
-    {
-      "role": "user",
-      "content": "trong ví của tôi có bao nhiêu loại token",
-      "time": "2025-02-07 04:19:22"
-    },
-    {
-      "role": "assistant",
-      "content": "I need a token address to check your holdings of that specific token.  Do you have a particular token in mind?",
-      "time": "2025-02-07 04:19:22"
-    },
-    {
-      "role": "user",
-      "content": "giba",
-      "time": "2025-02-07 04:22:19"
-    },
-    {
-      "role": "assistant",
-      "content": "You have 0.787984639 GIBA in your wallet at address 0x4fa1d22fc78c75de53f133dd116f7f6a8ac64524784b757a81e7d65c22b7c27a.",
-      "time": "2025-02-07 04:22:19"
-    },
-    {
-      "role": "user",
-      "content": "tôi muốn bán tất cả",
-      "time": "2025-02-07 04:23:01"
-    },
-    {
-      "role": "assistant",
-      "content": "You have successfully sold 100% of your GIBA holdings (0.787984639 GIBA) for 4.5256e-05 SUI. The transaction details are available at https://suivision.xyz/txblock/B5jeLVZoNKgVvU8gdfkYjBWehsXPUXvPTP4PdD6ahYWp",
-      "time": "2025-02-07 04:23:01"
-    },
-    {
-      "role": "user",
-      "content": "token giá cao nhất trên sàn",
-      "time": "2025-02-07 04:24:46"
-    },
-    {
-      "role": "assistant",
-      "content": "Sorry, I cannot answer your query.  Could you please specify the exchange or platform you are interested in?  For example, are you asking about the highest-priced token on a specific decentralized exchange on the Sui network?",
-      "time": "2025-02-07 04:24:46"
-    },
-    {
-      "role": "user",
-      "content": "yes on the sui network",
-      "time": "2025-02-07 04:25:40"
-    },
-    {
-      "role": "assistant",
-      "content": "Sorry, I cannot answer your query.  The available tools do not allow me to retrieve a list of all tokens on the Sui network and compare their prices.",
-      "time": "2025-02-07 04:25:40"
-    },
-    {
-      "role": "user",
-      "content": "oki",
-      "time": "2025-02-07 04:25:51"
-    },
-    {
-      "role": "assistant",
-      "content": "Is there anything else I can help you with?\n",
-      "time": "2025-02-07 04:25:51"
-    },
-    {
-      "role": "user",
-      "content": "check my wallet",
-      "time": "2025-02-07 04:26:09"
-    },
-    {
-      "role": "assistant",
-      "content": "Your wallet address is 0x4fa1d22fc78c75de53f133dd116f7f6a8ac64524784b757a81e7d65c22b7c27a and your current SUI balance is 0.149836117 SUI.",
-      "time": "2025-02-07 04:26:09"
-    }
-  ],
-  "2104920255": [
-    {
-      "role": "user",
-      "content": "kiểm tra xem còn bao tiền",
-      "time": "2025-02-07 03:17:22"
-    },
-    {
-      "role": "assistant",
-      "content": "You have 0.009023535 SUI in your wallet.",
-      "time": "2025-02-07 03:17:22"
-    },
-    {
-      "role": "user",
-      "content": "buy prez",
-      "time": "2025-02-07 03:17:55"
-    },
-    {
-      "role": "assistant",
-      "content": "How much SUI do you want to spend to buy prez?\n\n",
-      "time": "2025-02-07 03:17:55"
-    },
-    {
-      "role": "user",
-      "content": "0.0003",
-      "time": "2025-02-07 03:18:08"
-    },
-    {
-      "role": "assistant",
-      "content": "I'm sorry, I couldn't buy prez due to insufficient liquidity. Please try again later or with a different amount.",
-      "time": "2025-02-07 03:18:08"
-    },
+  "thread_123": [
     {
       "role": "user",
       "content": "hi",
-      "time": "2025-02-07 04:06:52",
+      "time": "2025-02-07 22:45:51",
       "message_id": "msg_123",
       "thread_id": "thread_123"
     },
     {
       "role": "assistant",
-      "content": "Hi there! How can I help you today?\n\n",
-      "time": "2025-02-07 04:06:52",
+      "content": "Hi there! How can I help you today?",
+      "time": "2025-02-07 22:45:51",
       "message_id": "msg_123",
       "thread_id": "thread_123"
     },
     {
       "role": "user",
-      "content": "hi",
-      "time": "2025-02-07 04:12:34",
+      "content": "kiểm tra xem ví tôi có bao tiền",
+      "time": "2025-02-07 22:46:58",
       "message_id": "msg_123",
       "thread_id": "thread_123"
     },
     {
       "role": "assistant",
-      "content": "Hi there! How can I help you today?\n",
-      "time": "2025-02-07 04:12:34",
+      "content": "Your wallet balance is 0.009023535 SUI.",
+      "time": "2025-02-07 22:46:58",
       "message_id": "msg_123",
       "thread_id": "thread_123"
     },
     {
       "role": "user",
-      "content": "hi",
-      "time": "2025-02-07 04:13:19",
-      "message_id": "67a58c10fa2ac04557c35f6b",
-      "thread_id": "hungdv"
-    },
-    {
-      "role": "assistant",
-      "content": "Hi there! How can I help you today?\n",
-      "time": "2025-02-07 04:13:19",
-      "message_id": "67a58c10fa2ac04557c35f6b",
-      "thread_id": "hungdv"
-    },
-    {
-      "role": "user",
-      "content": "hello",
-      "time": "2025-02-07 04:13:39",
-      "message_id": "67a58c10fa2ac04557c35f6b",
-      "thread_id": "hungdv"
-    },
-    {
-      "role": "assistant",
-      "content": "Hello! How can I assist you?\n",
-      "time": "2025-02-07 04:13:39",
-      "message_id": "67a58c10fa2ac04557c35f6b",
-      "thread_id": "hungdv"
-    },
-    {
-      "role": "user",
-      "content": "xin chào",
-      "time": "2025-02-07 04:21:25",
-      "message_id": "67a58c10fa2ac04557c35f6b",
-      "thread_id": "hungdv"
-    },
-    {
-      "role": "assistant",
-      "content": "Hello! How can I assist you today?\n",
-      "time": "2025-02-07 04:21:25",
-      "message_id": "67a58c10fa2ac04557c35f6b",
-      "thread_id": "hungdv"
-    },
-    {
-      "role": "user",
-      "content": "hi",
-      "time": "2025-02-07 04:27:50",
+      "content": "tôi có những token nào",
+      "time": "2025-02-07 22:47:26",
       "message_id": "msg_123",
       "thread_id": "thread_123"
     },
     {
       "role": "assistant",
-      "content": "Hi there! How can I help you today?\n\n\n",
-      "time": "2025-02-07 04:27:50",
+      "content": "You currently hold the following tokens in your wallet (0xea1bc45a51e0051b6a7b53c3ce4f0a45d416b985042ff51f73ca8155452daf7f):\n- PPEI (PEI O N SUI): 537137.665449\n- BGL (BiggleLove): 31744.063345\n- SIGMA (Sigma): 783.127149657\n- LUNA (Lynk's Cat): 13.310222122\n- ImpakAI (Impak AI): 0.002525074\n- Viper (Viper): 0.002525074",
+      "time": "2025-02-07 22:47:26",
       "message_id": "msg_123",
       "thread_id": "thread_123"
-    },
-    {
-      "role": "user",
-      "content": "hi",
-      "time": "2025-02-07 04:28:05",
-      "message_id": "msg_123",
-      "thread_id": "thread_123"
-    },
-    {
-      "role": "assistant",
-      "content": "Hi there! How can I help you today?\n",
-      "time": "2025-02-07 04:28:05",
-      "message_id": "msg_123",
-      "thread_id": "thread_123"
-    }
-  ],
-  "7549374603": [
-    {
-      "role": "user",
-      "content": "0x90a8cfb2252a81d907ff2efabc6bf6018b50b5c3aca18c659ea99eaf17a9b671::girl::GIRL",
-      "time": "2025-02-07 03:23:55"
-    },
-    {
-      "role": "assistant",
-      "content": "How much SUI do you want to spend buying Cosmic Girl?",
-      "time": "2025-02-07 03:23:55"
-    },
-    {
-      "role": "user",
-      "content": "0.00001",
-      "time": "2025-02-07 03:24:06"
-    },
-    {
-      "role": "assistant",
-      "content": "Your purchase of Cosmic Girl was successful. You spent 0.00001 SUI and received 63.535523 tokens. The tokens have been sent to your wallet at 0x7b2845c33cb7df13ed37cfc320c18bbe77a66e34635ae1e2b1761c67e4f5110f. You can view the transaction details here: https://suivision.xyz/txblock/A6gzjskUyqqpe1r5T24uEGyCSvgQ3AGvc4H5rA3iFRdJ",
-      "time": "2025-02-07 03:24:06"
-    },
-    {
-      "role": "user",
-      "content": "buy hippo",
-      "time": "2025-02-07 03:25:43"
-    },
-    {
-      "role": "assistant",
-      "content": "There are multiple tokens that match \"hippo\". I need to ask the user which one they want to buy.\nWhich of these tokens did you want to buy?\n1. SUDENG (HIPPO) - 0x8993129d72e733985f7f1a00396cbd055bad6f817fee36576ce483c8bbb8b87b::sudeng::SUDENG\n2. HIPPO (SUIDENG) - 0x6c0849057abf14099570ca03cd40ea1aea38aab54589b6b8f48aba8c89871df2::suideng::SUIDENG\n3. SUI SLEEPING HIPPO (SSH) - 0xf9e2685aea1ad0c3822bf5fdffe8762f759c4166b7c1e51e58b2a7dd3cfe526a::ssh::SSH\n4. HIPPOPUMP (HIPPOPUMP) - 0x2f53595316c5f213bf81acab0195564cd728a7c5eeaf98c4fdea38bc82cb05f2::hippopump::HIPPOPUMP",
-      "time": "2025-02-07 03:25:43"
-    },
-    {
-      "role": "user",
-      "content": "SUDENG (HIPPO",
-      "time": "2025-02-07 03:26:02"
-    },
-    {
-      "role": "assistant",
-      "content": "How much SUI would you like to spend on SUDENG (HIPPO)?\n\n",
-      "time": "2025-02-07 03:26:02"
-    },
-    {
-      "role": "user",
-      "content": "0.001",
-      "time": "2025-02-07 03:26:09"
-    },
-    {
-      "role": "assistant",
-      "content": "Your purchase of SUDENG (HIPPO) was successful. You spent 0.001 SUI and received 0.648295831 tokens. The tokens have been sent to your wallet at 0x7b2845c33cb7df13ed37cfc320c18bbe77a66e34635ae1e2b1761c67e4f5110f. You can view the transaction details here: https://suivision.xyz/txblock/8UNePM5XhXW2bhdxrHymqBMEKNS4D9Jb3At4Rr3DG8Es",
-      "time": "2025-02-07 03:26:09"
-    },
-    {
-      "role": "user",
-      "content": "Show token in my wallet",
-      "time": "2025-02-07 03:26:56"
-    },
-    {
-      "role": "assistant",
-      "content": "Please specify the token you are interested in.",
-      "time": "2025-02-07 03:26:56"
-    },
-    {
-      "role": "user",
-      "content": "show balance of hippo in my wallet",
-      "time": "2025-02-07 03:27:36"
-    },
-    {
-      "role": "assistant",
-      "content": "There are multiple tokens that match \"hippo\". I need to ask the user which one they want to check the balance of.\nWhich of these tokens did you want to check the balance of?\n1. SUDENG (HIPPO) - 0x8993129d72e733985f7f1a00396cbd055bad6f817fee36576ce483c8bbb8b87b::sudeng::SUDENG\n2. HIPPO (SUIDENG) - 0x6c0849057abf14099570ca03cd40ea1aea38aab54589b6b8f48aba8c89871df2::suideng::SUIDENG\n3. SUI SLEEPING HIPPO (SSH) - 0xf9e2685aea1ad0c3822bf5fdffe8762f759c4166b7c1e51e58b2a7dd3cfe526a::ssh::SSH\n4. HIPPOPUMP (HIPPOPUMP) - 0x2f53595316c5f213bf81acab0195564cd728a7c5eeaf98c4fdea38bc82cb05f2::hippopump::HIPPOPUMP",
-      "time": "2025-02-07 03:27:36"
-    },
-    {
-      "role": "user",
-      "content": "SUDENG (HIPPO)",
-      "time": "2025-02-07 03:27:50"
-    },
-    {
-      "role": "assistant",
-      "content": "You have 0.648295831 SUDENG (HIPPO) in your wallet at address 0x7b2845c33cb7df13ed37cfc320c18bbe77a66e34635ae1e2b1761c67e4f5110f.",
-      "time": "2025-02-07 03:27:50"
-    },
-    {
-      "role": "user",
-      "content": "sell 100% hippo",
-      "time": "2025-02-07 03:28:13"
-    },
-    {
-      "role": "assistant",
-      "content": "There are multiple tokens with \"hippo\" in their name. I need to ask the user which one they want to sell.\nWhich of these tokens did you want to sell?\n1. SUDENG (HIPPO) - 0x8993129d72e733985f7f1a00396cbd055bad6f817fee36576ce483c8bbb8b87b::sudeng::SUDENG\n2. HIPPO (SUIDENG) - 0x6c0849057abf14099570ca03cd40ea1aea38aab54589b6b8f48aba8c89871df2::suideng::SUIDENG\n3. SUI SLEEPING HIPPO (SSH) - 0xf9e2685aea1ad0c3822bf5fdffe8762f759c4166b7c1e51e58b2a7dd3cfe526a::ssh::SSH\n4. HIPPOPUMP (HIPPOPUMP) - 0x2f53595316c5f213bf81acab0195564cd728a7c5eeaf98c4fdea38bc82cb05f2::hippopump::HIPPOPUMP",
-      "time": "2025-02-07 03:28:13"
-    },
-    {
-      "role": "user",
-      "content": "SUDENG (HIPPO)",
-      "time": "2025-02-07 03:28:32"
-    },
-    {
-      "role": "assistant",
-      "content": "You have successfully sold 100% of your SUDENG (HIPPO) holdings. You sold 0.648295831 tokens and received 0.000994825 SUI. The transaction details can be found here: https://suivision.xyz/txblock/2Q7Lbm8wCw1FQRTueFC36pyfSDLMv9tBJrVr17YU8t3W",
-      "time": "2025-02-07 03:28:32"
     }
   ]
 }

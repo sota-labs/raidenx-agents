@@ -43,9 +43,11 @@ def sell_token(token_address: str, percent: float, wallet_address: str, jwt_toke
         if not (0 <= percent <= 100):
             return f"Error: Percent must be a percentage between 0 and 100. Received: {percent}"
         
-        network, pair_id = fetch_top_pair(token_address)
-        if network is None or pair_id is None:
+        result = fetch_top_pair(token_address)
+        if result is None:
             return f"Failed to fetch top pair information for {token_address}. Please try again later."
+        
+        network, pair_id = result
         
         headers = {
             "accept": "application/json",

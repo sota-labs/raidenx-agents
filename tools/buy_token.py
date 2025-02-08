@@ -44,11 +44,11 @@ def buy_token(token_address: str, amount: float, wallet_address: str, jwt_token:
         Exception: If any other error occurs during the purchase
     """
     try:
-        pair_info = fetch_top_pair(token_address)
-        if pair_info is None:
+        result = fetch_top_pair(token_address)
+        if result is None:
             return f"Failed to fetch top pair information for {token_address}. Please try again later."
             
-        network, pair_id = pair_info
+        network, pair_id = result  # Chỉ unpack khi chắc chắn result không phải None
         if not pair_id:
             return f"No trading pair found for token {token_address}"
         
