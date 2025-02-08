@@ -1,46 +1,34 @@
 {
-  "thread_123": [
-    {
-      "role": "user",
-      "content": "hi",
-      "time": "2025-02-07 22:45:51",
-      "message_id": "msg_123",
-      "thread_id": "thread_123"
-    },
-    {
-      "role": "assistant",
-      "content": "Hi there! How can I help you today?",
-      "time": "2025-02-07 22:45:51",
-      "message_id": "msg_123",
-      "thread_id": "thread_123"
-    },
-    {
-      "role": "user",
-      "content": "kiểm tra xem ví tôi có bao tiền",
-      "time": "2025-02-07 22:46:58",
-      "message_id": "msg_123",
-      "thread_id": "thread_123"
-    },
-    {
-      "role": "assistant",
-      "content": "Your wallet balance is 0.009023535 SUI.",
-      "time": "2025-02-07 22:46:58",
-      "message_id": "msg_123",
-      "thread_id": "thread_123"
-    },
+  "2104920255": [
     {
       "role": "user",
       "content": "tôi có những token nào",
-      "time": "2025-02-07 22:47:26",
-      "message_id": "msg_123",
-      "thread_id": "thread_123"
+      "time": "2025-02-08 00:09:27"
     },
     {
       "role": "assistant",
-      "content": "You currently hold the following tokens in your wallet (0xea1bc45a51e0051b6a7b53c3ce4f0a45d416b985042ff51f73ca8155452daf7f):\n- PPEI (PEI O N SUI): 537137.665449\n- BGL (BiggleLove): 31744.063345\n- SIGMA (Sigma): 783.127149657\n- LUNA (Lynk's Cat): 13.310222122\n- ImpakAI (Impak AI): 0.002525074\n- Viper (Viper): 0.002525074",
-      "time": "2025-02-07 22:47:26",
-      "message_id": "msg_123",
-      "thread_id": "thread_123"
+      "content": "You currently hold the following tokens:\\n- PPEI (PEI O N SUI): 537137.665449\\n- BGL (BiggleLove): 31744.063345\\n- SIGMA (Sigma): 783.127149657\\n- LUNA (Lynk's Cat): 13.310222122\\n- ImpakAI (Impak AI): 0.002525074\\n- Viper (Viper): 0.002525074",
+      "time": "2025-02-08 00:09:27"
+    },
+    {
+      "role": "user",
+      "content": "bán PPEI",
+      "time": "2025-02-08 00:09:44"
+    },
+    {
+      "role": "assistant",
+      "content": "What percentage of your PPEI holdings do you want to sell? (e.g., 50 for 50%)",
+      "time": "2025-02-08 00:09:44"
+    },
+    {
+      "role": "user",
+      "content": "2%",
+      "time": "2025-02-08 00:09:54"
+    },
+    {
+      "role": "assistant",
+      "content": "Your sell order for 2% of your PPEI holdings failed due to insufficient liquidity. Please try again later or with a smaller percentage.",
+      "time": "2025-02-08 00:09:54"
     }
   ]
 }

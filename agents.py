@@ -165,7 +165,9 @@ tools = [
         name="search_token",
         description=(
             "Retrieves the token address based on the token name, symbol, or ticker."
-            """Input args: query (str): Token name, symbol, or ticker (e.g., 'SUDENG', 'hippo')."""
+            """Input args: 
+                query (str): Token name, symbol, or ticker (e.g., 'SUDENG', 'hippo').
+                jwt_token (str): User's authorization token"""
             "Output: Returns token information including:"
             "- Token address (contract address)"
             "- Token name"
