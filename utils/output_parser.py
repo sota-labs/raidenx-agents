@@ -16,7 +16,7 @@ def extract_tool_use(input_text: str) -> Tuple[str, str, str]:
     pattern = (
         r"Thought:\s*(.*?)[\n\r]+\s*Action:\s*([^\n\r]+)[\n\r]+\s*Action Input:\s*(\{[^}]+\})"
     )
-    print(f"input_text: {input_text}")
+
     match = re.search(pattern, input_text, re.DOTALL)
     if not match:
         raise ValueError(f"Could not parse output. Please follow the thought-action-input format: {input_text}")

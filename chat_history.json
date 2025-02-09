@@ -2,33 +2,103 @@
   "2104920255": [
     {
       "role": "user",
+      "content": "hi",
+      "time": "2025-02-08 21:32:06"
+    },
+    {
+      "role": "assistant",
+      "content": "Hi there! How can I help you today?\n\n",
+      "time": "2025-02-08 21:32:06"
+    },
+    {
+      "role": "user",
+      "content": "tôi còn bao tiền",
+      "time": "2025-02-08 21:32:23"
+    },
+    {
+      "role": "assistant",
+      "content": "Your current SUI balance is 0.009023535 SUI.",
+      "time": "2025-02-08 21:32:23"
+    },
+    {
+      "role": "user",
+      "content": "địa chỉ ví là gì",
+      "time": "2025-02-08 21:32:41"
+    },
+    {
+      "role": "assistant",
+      "content": "Your wallet address is 0xea1bc45a51e0051b6a7b53c3ce4f0a45d416b985042ff51f73ca8155452daf7f.",
+      "time": "2025-02-08 21:32:41"
+    },
+    {
+      "role": "user",
       "content": "tôi có những token nào",
-      "time": "2025-02-08 00:09:27"
+      "time": "2025-02-08 21:33:01"
     },
     {
       "role": "assistant",
       "content": "You currently hold the following tokens:\\n- PPEI (PEI O N SUI): 537137.665449\\n- BGL (BiggleLove): 31744.063345\\n- SIGMA (Sigma): 783.127149657\\n- LUNA (Lynk's Cat): 13.310222122\\n- ImpakAI (Impak AI): 0.002525074\\n- Viper (Viper): 0.002525074",
-      "time": "2025-02-08 00:09:27"
+      "time": "2025-02-08 21:33:01"
     },
     {
       "role": "user",
       "content": "bán PPEI",
-      "time": "2025-02-08 00:09:44"
+      "time": "2025-02-08 21:33:19"
     },
     {
       "role": "assistant",
-      "content": "What percentage of your PPEI holdings do you want to sell? (e.g., 50 for 50%)",
-      "time": "2025-02-08 00:09:44"
+      "content": "What percentage of your PPEI holdings would you like to sell?  Please specify a value between 0 and 100.",
+      "time": "2025-02-08 21:33:19"
     },
     {
       "role": "user",
-      "content": "2%",
-      "time": "2025-02-08 00:09:54"
+      "content": "10%",
+      "time": "2025-02-08 21:33:27"
     },
     {
       "role": "assistant",
-      "content": "Your sell order for 2% of your PPEI holdings failed due to insufficient liquidity. Please try again later or with a smaller percentage.",
-      "time": "2025-02-08 00:09:54"
+      "content": "Your sell order for 10% of your PPEI holdings failed due to insufficient liquidity in the market. Please try again later or with a smaller percentage.",
+      "time": "2025-02-08 21:33:27"
+    },
+    {
+      "role": "user",
+      "content": "xin chào",
+      "time": "2025-02-08 21:38:40"
+    },
+    {
+      "role": "assistant",
+      "content": "An unexpected error occurred: 'ReActAgent' object has no attribute '_reasoning_steps'",
+      "time": "2025-02-08 21:38:40"
+    },
+    {
+      "role": "user",
+      "content": "tôi có bao tiền",
+      "time": "2025-02-08 21:38:57"
+    },
+    {
+      "role": "assistant",
+      "content": "An unexpected error occurred: 'ReActAgent' object has no attribute '_reasoning_steps'",
+      "time": "2025-02-08 21:38:57"
+    },
+    {
+      "role": "user",
+      "content": "xin chào",
+      "time": "2025-02-08 21:44:09"
+    },
+    {
+      "role": "assistant",
+      "content": "Hello! How can I help you today?\n",
+      "time": "2025-02-08 21:44:09"
+    },
+    {
+      "role": "user",
+      "content": "tôi có bao tiền",
+      "time": "2025-02-08 21:44:27"
+    },
+    {
+      "role": "assistant",
+      "content": "Your current SUI balance is 0.009023535.",
+      "time": "2025-02-08 21:44:27"
     }
   ]
 }
