@@ -29,15 +29,21 @@ from tools import (
 
 from prompts.react import REACT_CHAT_SYSTEM_HEADER_CUSTOM
 from LLM.llm_settings_manager import LLMSettingsManager
+from utils.tool_history import ToolHistoryLogger
 
 llm_manager = LLMSettingsManager()
 # llm = llm_manager.get_llm("anthropic", model="claude-3-5-sonnet-20241022")
 llm = llm_manager.get_llm("gemini", model="models/gemini-1.5-pro")
 
-
+tool_logger = ToolHistoryLogger()
 
 class CustomReActChatFormatter(ReActChatFormatter):
     """ReAct chat formatter."""
+
+    @property 
+    def reasoning_steps(self):
+        """Get the current reasoning steps."""
+        return self._current_reasoning
 
     def __init__(
         self,
@@ -55,6 +61,7 @@ class CustomReActChatFormatter(ReActChatFormatter):
         """
         super().__init__(system_header=system_header, context=context)
         self._kwargs = kwargs
+        self._current_reasoning = []
 
     def format(
         self,
@@ -64,7 +71,7 @@ class CustomReActChatFormatter(ReActChatFormatter):
         **kwargs,
     ) -> List[ChatMessage]:
         """Format chat history into list of ChatMessage."""
-        current_reasoning = current_reasoning or []
+        self._current_reasoning = current_reasoning or []
 
         format_args = {
             "tool_desc": "\n".join(get_react_tool_descriptions(tools)),
@@ -77,7 +84,7 @@ class CustomReActChatFormatter(ReActChatFormatter):
         combined_args = {**format_args, **self._kwargs}
         fmt_sys_header = self.system_header.format(**combined_args)
         reasoning_history = []
-        for reasoning_step in current_reasoning:
+        for reasoning_step in self.reasoning_steps:
             if isinstance(reasoning_step, ObservationReasoningStep):
                 message = ChatMessage(
                     role=MessageRole.USER,
@@ -313,8 +320,20 @@ def react_chat(
     )
     agent.update_prompts({"agent_worker:system_prompt": react_system_prompt})
     response = agent.chat(query)
-    response = str(response)
+    
+    # # Lấy danh sách các tool đã sử dụng
+    # used_tools = []
+    # for step in formatter.reasoning_steps:
+    #     if hasattr(step, 'action') and step.action:
+    #         used_tools.append({
+    #             'tool_name': step.action,
+    #             'tool_input': step.action_input
+    #         })
+    
+    # # Lưu lịch sử sử dụng tool vào file
+    # tool_logger.save_tool_history(query, used_tools, str(response))
 
+    response = str(response)
     agent.reset()
     return response
 

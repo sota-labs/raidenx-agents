@@ -1,0 +1,13 @@
+{
+  "timestamp": "20250208_214435",
+  "query": "tôi có bao tiền",
+  "used_tools": [
+    {
+      "tool_name": "get_wallet_balance",
+      "tool_input": {
+        "jwt_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyMTA0OTIwMjU1IiwidXNlck5hbWUiOiJIYXJyeSIsImRpc3BsYXlOYW1lIjoiSGFycnkiLCJpYXAiOm51bGwsImlhdCI6MTczOTA2OTA2NywiZXhwIjoxNzQxNjYxMDY3fQ.m3kMC0wbx63JuyZxqhcZvzupzYAY4k0TWOnSOIJ_8Sk"
+      }
+    }
+  ],
+  "response": "Your current SUI balance is 0.009023535."
+}
