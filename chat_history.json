@@ -1,1 +1,64 @@
-{}
+{
+  "5627558166": [
+    {
+      "role": "user",
+      "content": "hi",
+      "time": "2025-02-09 23:43:54"
+    },
+    {
+      "role": "assistant",
+      "content": "Hello! How can I assist you today?",
+      "time": "2025-02-09 23:43:54"
+    },
+    {
+      "role": "user",
+      "content": "I want to buy a token",
+      "time": "2025-02-09 23:44:45"
+    },
+    {
+      "role": "assistant",
+      "content": "Sure, I can help with that. Which token do you want to buy, and how much SUI do you want to spend?",
+      "time": "2025-02-09 23:44:45"
+    },
+    {
+      "role": "user",
+      "content": "Dy7M5B3Z5GnyhyHKkcHRFpYxw6eyiF1gqsDTBi\nT4t4oQ",
+      "time": "2025-02-09 23:45:14"
+    },
+    {
+      "role": "assistant",
+      "content": "I couldn't find a token with the address you provided. Please provide a valid token address.",
+      "time": "2025-02-09 23:45:14"
+    },
+    {
+      "role": "user",
+      "content": "0x70afa4f061fb32549aaeca743f7be093a790451 2669964b263b96fffd63978cc::suidi::SUIDIE",
+      "time": "2025-02-09 23:45:29"
+    },
+    {
+      "role": "assistant",
+      "content": "How much SUI do you want to spend to buy this token?",
+      "time": "2025-02-09 23:45:29"
+    },
+    {
+      "role": "user",
+      "content": "0.000003",
+      "time": "2025-02-09 23:45:52"
+    },
+    {
+      "role": "assistant",
+      "content": "There was an error fetching pair information for the token. Please try again later.",
+      "time": "2025-02-09 23:45:52"
+    },
+    {
+      "role": "user",
+      "content": "hi",
+      "time": "2025-02-09 23:57:47"
+    },
+    {
+      "role": "assistant",
+      "content": "Hello! How can I help you today?",
+      "time": "2025-02-09 23:57:47"
+    }
+  ]
+}

@@ -90,10 +90,10 @@ def buy_token(token_address: str, amount: float, wallet_address: str, jwt_token:
         explorer_url = f"https://suivision.xyz/txblock/{status['hash']}"
         message = (
             f"✅ I've successfully purchased the token for you:\n"
-            f"💰 Spent: {status['amountIn']} SUI\n"
-            f"📈 Received: {status['amountOut']} tokens\n" 
+            f"💰 Spent: {float(status['amountIn']):.8f} SUI\n"
+            f"📈 Received: {float(status['amountOut']):.3f} tokens\n" 
             f"👛 To wallet: {wallet_address}\n"
-            f"🔍 Transaction: {explorer_url}"
+            f"🔍 Transaction: [View on Explorer]({explorer_url})"
         )
         
         # messenger = TelegramMessenger()

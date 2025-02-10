@@ -86,11 +86,11 @@ def sell_token(token_address: str, percent: float, wallet_address: str, jwt_toke
         explorer_url = f"https://suivision.xyz/txblock/{status['hash']}"
         message = (
             f"✅ Sale successful:\n"
-            f"💰 Sold: {status['amountIn']} tokens\n"
-            f"📈 Received: {status['amountOut']} SUI\n"
-            f"📊 Percentage: {status['sellPercent']}%\n"
+            f"💰 Sold: {float(status['amountIn']):.3f} tokens\n"
+            f"📈 Received: {float(status['amountOut']):.8f} SUI\n"
+            f"📊 Percentage: {float(status['sellPercent']):.3f}%\n"
             f"👛 From wallet: {wallet_address}\n"
-            f"🔍 Transaction: {explorer_url}"
+            f"🔍 Transaction: [View on Explorer]({explorer_url})"
         )
         
         # messenger = TelegramMessenger()
