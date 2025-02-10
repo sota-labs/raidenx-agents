@@ -9,3 +9,11 @@ services:
       - ./:/app
     env_file:
       - .env
+    networks:
+      - raidenx-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+networks:
+  raidenx-network:
+    driver: bridge

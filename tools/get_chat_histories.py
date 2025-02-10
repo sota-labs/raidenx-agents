@@ -43,14 +43,14 @@ def fetch_thread_messages(thread_id: str) -> dict:
     """
     try:
         url = f"{settings.agent.api_url}/api/v1/backend/thread/{thread_id}/messages"
-        headers = {
-            "X-API-KEY": settings.agent.api_key
-        }
+        headers = {"X-API-KEY": settings.agent.api_key}
         response = requests.get(url, headers=headers)
         data = response.json()
         
-        if 'docs' in data:
-            data['docs'] = sorted(data['docs'], key=lambda x: x['createdAt'])
+        if data:
+            data = sorted(data, key=lambda x: x['createdAt'])
+            if data[-1]['role'] == 'user':
+                data.pop()
             
         return data
     except requests.exceptions.RequestException as e:
@@ -91,7 +91,7 @@ def fetch_thread_messages(thread_id: str) -> dict:
 #     return chat_messages   
     
     
-# messages = fetch_thread_messages("67a34762cb3fce146d63ba27")
+# messages = fetch_thread_messages("67a9f3fde5ef040ddfe84feb")
 # print(messages)
 # chat_history_message = convert_dict_to_chat_messages(messages)
 # print(chat_history_message)
