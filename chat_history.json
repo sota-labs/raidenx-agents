@@ -1,14 +1,1 @@
-{
-  "2104920255": [
-    {
-      "role": "user",
-      "content": "0x4cf08813756dfa7519cb480a1a1a3472b5b4ec067592a8bee0f826808d218158::tardi::TARDI",
-      "time": "2025-02-10 01:03:17"
-    },
-    {
-      "role": "assistant",
-      "content": "Here is the information for the token with address `0x4cf08813756dfa7519cb480a1a1a3472b5b4ec067592a8bee0f826808d218158::tardi::TARDI`:\n\n**Name:** Tardi (TARDI)\n**Contract Address:** `0x4cf08813756dfa7519cb480a1a1a3472b5b4ec067592a8bee0f826808d218158::tardi::TARDI`\n**Platform:** Cetus\n**Age:** 6d, 10h, 52m\n**Market Cap:** $4699.95K\n**Liquidity:** $564806.72K\n**Current Price:** $0.0047\n\n**Trading Activity:**\n*   5M: Price Change: -0.69%, Volume: $0.26K, Buy/Sell: 4/4\n*   1H: Price Change: 0.04%, Volume: $2.57K, Buy/Sell: 35/38\n*   6H: Price Change: 2.49%, Volume: $14.70K, Buy/Sell: 229/209\n*   24H: Price Change: -2.09%, Volume: $72.87K, Buy/Sell: 930/844",
-      "time": "2025-02-10 01:03:17"
-    }
-  ]
-}
+{}

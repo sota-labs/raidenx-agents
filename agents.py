@@ -35,7 +35,7 @@ from utils.tool_history import ToolHistoryLogger
 
 llm_manager = LLMSettingsManager()
 
-llm = llm_manager.get_llm("gemini", model="models/gemini-2.0-flash")
+llm = llm_manager.get_llm("gemini", model="models/gemini-1.5-pro")
 
 tool_logger = ToolHistoryLogger()
 
@@ -132,150 +132,83 @@ def custom_failure_handler(callback_manager, exception):
 react_system_prompt = PromptTemplate(REACT_CHAT_SYSTEM_HEADER_CUSTOM)
 
 tools = [
-    # FunctionTool.from_defaults(
-    #     fn=get_positions_by_token,
-    #     name="get_token_position",
-    #     description=(
-    #         "Check token balance in wallets before executing a sell order. Returns detailed information including:"
-    #         "- Token name"
-    #         "- Token symbol"
-    #         "- Token contract address"
-    #         "- Token balance"
-    #         "- Wallet address holding the token"
-    #         """Input args: 
-    #             token (str): User's token
-    #             token_address (str): Contract address of the token to check"""
-    #         "Use this tool when:"
-    #         "- Need to verify token balance before executing a sell order"
-    #         "- Need to identify which wallet contains the tokens to sell"
-    #         "- Need to check available token amount for selling"
-    #     ),
-    # ),
     FunctionTool.from_defaults(
         fn=get_trending_pairs,
         name="get_trending_pairs", 
         description=(
-            "📊 TRENDING PAIRS INFORMATION 📊\n"
-            "Retrieves a list of trending trading pairs on the market."
+            "Get trending trading pairs on the market."
             """Input args:
                 jwt_token (str): User's authorization token
                 resolution (str, optional): Time frame (default: "5m")
-                limit (int, optional): Maximum number of pairs to return (default: 5)"""
-            "Output: Returns detailed information about trading pairs including:"
-            "- Token basic info: address, name, symbol"
-            "- Price metrics: current USD price, price changes (5m, 1h, 6h, 24h)"
-            "- Market metrics: market cap, liquidity (USD)"
-            "- Trading activity: volume (USD), buy/sell counts"
-            "- Platform info: DEX details, token age"
-            "- Performance indicators: price trends, volume analysis"
-            "\nUse this tool when you want to:"
-            "- View trending tokens in the market"
-            "- Analyze market trends and token performance"
-            "- Find new trading opportunities"
-            "- Monitor detailed token metrics and movements"
-            "- Evaluate trading activity and market sentiment"
+                limit (int, optional): Max pairs to return (default: 5)"""
+            "Output: Price, market cap, liquidity, volume and performance metrics"
         ),
     ),
     FunctionTool.from_defaults(
         fn=get_wallet_balance,
         name="get_wallet_balance",
         description=(
-            "Retrieves wallet addresses and their current balances for a given user."
+            "Check user's wallet balances."
             """Input args: 
-                jwt_token (str): User's authorization token"""
-            "Returns:"
-            "- List of wallet addresses owned by the user"
-            "- Current SUI balance for each wallet"
-            "- Total balance across all wallets"
-            "\nUse this tool when you need to:"
-            "- Check available SUI balance before executing trades"
-            "- Verify which wallet has sufficient funds"
-            "- Get an overview of user's total holdings in SUI"
-            "- Select appropriate wallet for transactions"
+                jwt_token (str): Authorization token"""
+            "Output: List of wallet addresses and their SUI balances"
         ),
     ),
     FunctionTool.from_defaults(
         fn=search_token,
         name="search_token",
         description=(
-            "Retrieves the token address based on the token name, symbol, or ticker."
+            "Find token address by name or symbol."
             """Input args: 
-                query (str): Token name, symbol, or ticker (e.g., 'SUDENG', 'hippo').
-                jwt_token (str): User's authorization token"""
-            "Output: Returns token information including:"
-            "- Token address (contract address)"
-            "- Token name"
-            "- Token symbol"
-            "- Token price"
-            "- Liquidity (liquidityUsd)"
+                query (str): Token name or symbol
+                jwt_token (str): Authorization token"""
+            "Output: Token address, name, symbol, price and liquidity"
         ),
     ),
     FunctionTool.from_defaults(
         fn=buy_token,
         name="buy_token",
         description=(
-            "Status of purchase"
+            "Buy tokens."
             """Input args: 
-                jwt_token (str): User's authorization token
-                token_address (str): The token's contract address.
-                amount (float): The Amount of token in SUI network want to buy.
-                wallet_address (str): The user's wallet address."""
-            "Use this tool in crypto applications when user want to buy an token by token"
+                jwt_token (str): Authorization token
+                token_address (str): Token contract address
+                amount (float): Amount to buy in SUI
+                wallet_address (str): User's wallet address"""
+            "Output: Purchase transaction status"
         ),
     ),
     FunctionTool.from_defaults(
         fn=sell_token,
         name="sell_token",
         description=(
-            "Status of purchase."
+            "Sell tokens."
             """Input args: 
-                jwt_token (str): User's authorization token
-                token_address (str): The token's contract address.
-                percent (float): Percent of token want to sell.
-                wallet_address (str): The user's wallet address."""
-            "Use this tool in crypto applications when user want to sell a token"
+                jwt_token (str): Authorization token
+                token_address (str): Token contract address
+                percent (float): Percentage of tokens to sell
+                wallet_address (str): User's wallet address"""
+            "Output: Sell transaction status"
         ),
     ),
     FunctionTool.from_defaults(
         fn=get_all_positions,
         name="get_all_positions",
         description=(
-            "Get all positions from user's wallets. Returns detailed information including:"
-            "- Token symbol"
-            "- Token name" 
-            "- Token contract address"
-            "- Token balance"
-            "- Wallet address holding the token"
+            "Get all token positions from user's wallets."
             """Input args:
-                jwt_token (str): User's authorization token"""
-            "Use this tool when:"
-            "- Need an overview of all tokens in wallets"
-            "- Want to check balances of multiple tokens at once"
-            "- Analyzing investment portfolio"
-            "- Preparing for multi-token management"
+                jwt_token (str): Authorization token"""
+            "Output: List of tokens with balances and details"
         ),
     ),
     FunctionTool.from_defaults(
         fn=scan_token,
         name="scan_token",
         description=(
-            "Fetch detailed information about a token's trading metrics and statistics."
+            "Analyze token's trading metrics."
             """Input args:
-                token_address (str): The token's contract address"""
-            "Returns detailed token information including:"
-            "- Token name and symbol"
-            "- Platform/DEX information"
-            "- Age of token"
-            "- Market cap and liquidity"
-            "- Current price"
-            "- Price changes over different time periods (5m, 1h, 6h, 24h)"
-            "- Trading volume statistics"
-            "- Buy/Sell transaction counts"
-            "\nUse this tool when you need to:"
-            "- Analyze a token's trading performance"
-            "- Get detailed market metrics"
-            "- Check token's price movements"
-            "- Evaluate trading activity"
+                token_address (str): Token contract address"""
+            "Output: Price, market cap, liquidity, volume and transaction counts"
         ),
     ),
 ]
@@ -288,76 +221,6 @@ def react_chat(
     max_iterations=10,
     jwt_token=None,
 ):
-    # tools_with_auth = [
-    #     FunctionTool.from_defaults(
-    #         fn=lambda *args, **kwargs: get_positions_by_token(*args, **kwargs, token=token),
-    #         name="get_token_position",
-    #         description=(
-    #             "Check specific token holdings in user's wallets. Returns detailed information including: "
-    #             "- Token name"
-    #             "- Token symbol"
-    #             "- Token contract address"
-    #             "- Token balance"
-    #             "- Wallet address holding the token"
-    #             """Input args: 
-    #                 token_address (str): Contract address of the token to check"""
-    #             "Use this tool when:"
-    #             "- Need to verify token balance before selling"
-    #             "- Want to track current token holdings"
-    #             "- Need to identify which wallet contains the token"
-    #             "- Analyzing token positions across wallets"
-    #             "- Preparing for token transactions"
-    #         ),
-    #     ),
-    #     FunctionTool.from_defaults(
-    #         fn=lambda *args, **kwargs: get_wallet_balance(*args, **kwargs, token=token),
-    #         name="get_wallet_balance",
-    #         description=(
-    #             "Retrieves wallet addresses and their current balances for a given user."
-    #             """Input args: 
-    #                 token (str): User's token"""
-    #             "Returns:"
-    #             "- List of wallet addresses owned by the user"
-    #             "- Current SUI balance for each wallet"
-    #             "- Total balance across all wallets"
-    #             "\nUse this tool when you need to:"
-    #             "- Check available SUI balance before executing trades"
-    #             "- Verify which wallet has sufficient funds"
-    #             "- Get an overview of user's total holdings in SUI"
-    #             "- Select appropriate wallet for transactions"
-    #         ),
-    #     ),
-    #     FunctionTool.from_defaults(
-    #         fn=lambda *args, **kwargs: buy_token(*args, **kwargs, token=token),
-    #         name="buy_token",
-    #         description=(
-    #             "Status of purchase"
-    #             """Input args:
-    #                 token_address (str): The token's contract address.
-    #                 amount (float): The Amount of token in SUI network want to buy.
-    #                 wallet_address (str): The user's wallet address."""
-    #             "Use this tool in crypto applications when user want to buy an token by token"
-    #         ),
-    #     ),
-    #     FunctionTool.from_defaults(
-    #         fn=lambda *args, **kwargs: sell_token(*args, **kwargs, token=token),
-    #         name="sell_token",
-    #         description=(
-    #             "Status of purchase."
-    #             """Input args:
-    #                 token_address (str): The token's contract address.
-    #                 percent (float): Percent of token want to sell.
-    #                 wallet_address (str): The user's wallet address."""
-    #             "Use this tool in crypto applications when user want to sell a token"
-    #         ),
-    #     ),
-    # ]
-    
-    # wallet_info = get_wallet_balance(jwt_token=jwt_token)
-    # wallet_address = wallet_info['address']
-    # wallet_balance = wallet_info['balance']
-
-
     formatter = CustomReActChatFormatter(jwt_token=jwt_token)
     agent = ReActAgent.from_tools(
         tools=tools,
@@ -371,18 +234,6 @@ def react_chat(
     agent.update_prompts({"agent_worker:system_prompt": react_system_prompt})
     response = agent.chat(query)
     
-    # # Lấy danh sách các tool đã sử dụng
-    # used_tools = []
-    # for step in formatter.reasoning_steps:
-    #     if hasattr(step, 'action') and step.action:
-    #         used_tools.append({
-    #             'tool_name': step.action,
-    #             'tool_input': step.action_input
-    #         })
-    
-    # # Lưu lịch sử sử dụng tool vào file
-    # tool_logger.save_tool_history(query, used_tools, str(response))
-
     response = str(response)
     agent.reset()
     return response
