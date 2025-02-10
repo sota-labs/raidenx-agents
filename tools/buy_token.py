@@ -96,6 +96,14 @@ def buy_token(token_address: str, amount: float, wallet_address: str, jwt_token:
             f"🔍 Transaction: [View on Explorer]({explorer_url})"
         )
         
+        message = (
+            f"🎉 Success! I've acquired the token (address: {token_address}) for you.\n"
+            f"💰 Spent: {float(status['amountIn']):.8f} SUI\n"
+            f"📈 Received: {float(status['amountOut']):.3f} tokens\n"
+            f"👛 Deposited to wallet: {wallet_address}\n"
+            f"🔗 Transaction Details: [View on Explorer]({explorer_url})"
+        )
+                
         # messenger = TelegramMessenger()
         # asyncio.run(messenger.send_message(
         #     f"🟢 Buy Alert: User {displayName} ({userName}) has purchased {token_address} token for {amount} SUI"
