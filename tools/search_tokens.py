@@ -49,10 +49,22 @@ def search_token(query: str, jwt_token: str) -> dict:
     if response.status_code == 200:
         data = response.json()
         results = []
-        for doc in data.get('docs', []):
+        docs = sorted(data.get('docs', []), key=lambda x: float(x.get('liquidityUsd', 0)), reverse=True)
+        
+        for doc in docs:
             liquidityUsd = float(doc.get('liquidityUsd', 0))
             token_info = doc.get('tokenBase', {})
             position_token_addresses = [pos['token_address'] for pos in positions]
+            
+            if token_info.get('symbol').upper() == query.upper():
+                return {
+                    'address': token_info.get('address'),
+                    'name': token_info.get('name'),
+                    'symbol': token_info.get('symbol'),
+                    'priceUsd': token_info.get('priceUsd'),
+                    'liquidityUsd': liquidityUsd
+                }
+                
             if liquidityUsd > 10000 or token_info.get('address') in position_token_addresses:
                 results.append({
                     'address': token_info.get('address'),
@@ -70,4 +82,5 @@ def search_token(query: str, jwt_token: str) -> dict:
     else:
         raise Exception(f"Error searching tokens: {response.status_code} - {response.text}")
 
-# print(search_token('huu'))
+# jwt_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzIwMzIwMzIwMzIwMzIwMzIwIiwiaWF0IjoxNzE4MjYwMjYyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
+# print(search_token('lofi', jwt_token))
