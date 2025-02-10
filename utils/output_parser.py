@@ -2,6 +2,7 @@
 
 import re
 from typing import Tuple
+import dirtyjson as json
 
 from llama_index.core.agent.react.types import (
     ActionReasoningStep,
@@ -63,13 +64,9 @@ def extract_final_response(input_text: str) -> Tuple[str, str]:
 
     return thought, answer
 
-
+    
 def parse_action_reasoning_step(output: str) -> ActionReasoningStep:
-    """
-    Parse an action reasoning step from the LLM output.
-    """
-    import dirtyjson as json
-
+    """Parse an action reasoning step from the LLM output."""
     thought, action, action_input = extract_tool_use(output)
     json_str = extract_json_str(action_input)
     try:
@@ -100,6 +97,8 @@ class ReActOutputParser(BaseOutputParser):
             Answer: <answer>
             ```
         """
+        # Clean up output by removing extra backticks
+        output = re.sub(r'`{3,}', '', output)
         
         print(f"output-ReActOutputParser: {output}")
         

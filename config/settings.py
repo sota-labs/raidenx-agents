@@ -8,7 +8,7 @@ load_dotenv()
 @dataclass
 class RaidenSettings:
     """Settings for RaidenX API endpoints"""
-    api_common_url: str = os.getenv('RAIDENX_API_COMMON_URL', 'https://api.dextrade.bot')
+    api_common_url: str = os.getenv('RAIDENX_API_COMMON_URL', 'https://api.raidenx.io')
     api_insight_url: str = os.getenv('RAIDENX_API_INSIGHT_URL', 'https://api-insight.dextrade.bot')
     api_orders_url: str = os.getenv('RAIDENX_API_ORDERS_URL', 'https://api-orders.dextrade.bot')
     api_wallets_url: str = os.getenv('RAIDENX_API_WALLETS_URL', 'https://api-wallets.dextrade.bot')

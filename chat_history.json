@@ -1,64 +1,14 @@
 {
-  "5627558166": [
+  "2104920255": [
     {
       "role": "user",
-      "content": "hi",
-      "time": "2025-02-09 23:43:54"
+      "content": "0x4cf08813756dfa7519cb480a1a1a3472b5b4ec067592a8bee0f826808d218158::tardi::TARDI",
+      "time": "2025-02-10 01:03:17"
     },
     {
       "role": "assistant",
-      "content": "Hello! How can I assist you today?",
-      "time": "2025-02-09 23:43:54"
-    },
-    {
-      "role": "user",
-      "content": "I want to buy a token",
-      "time": "2025-02-09 23:44:45"
-    },
-    {
-      "role": "assistant",
-      "content": "Sure, I can help with that. Which token do you want to buy, and how much SUI do you want to spend?",
-      "time": "2025-02-09 23:44:45"
-    },
-    {
-      "role": "user",
-      "content": "Dy7M5B3Z5GnyhyHKkcHRFpYxw6eyiF1gqsDTBi\nT4t4oQ",
-      "time": "2025-02-09 23:45:14"
-    },
-    {
-      "role": "assistant",
-      "content": "I couldn't find a token with the address you provided. Please provide a valid token address.",
-      "time": "2025-02-09 23:45:14"
-    },
-    {
-      "role": "user",
-      "content": "0x70afa4f061fb32549aaeca743f7be093a790451 2669964b263b96fffd63978cc::suidi::SUIDIE",
-      "time": "2025-02-09 23:45:29"
-    },
-    {
-      "role": "assistant",
-      "content": "How much SUI do you want to spend to buy this token?",
-      "time": "2025-02-09 23:45:29"
-    },
-    {
-      "role": "user",
-      "content": "0.000003",
-      "time": "2025-02-09 23:45:52"
-    },
-    {
-      "role": "assistant",
-      "content": "There was an error fetching pair information for the token. Please try again later.",
-      "time": "2025-02-09 23:45:52"
-    },
-    {
-      "role": "user",
-      "content": "hi",
-      "time": "2025-02-09 23:57:47"
-    },
-    {
-      "role": "assistant",
-      "content": "Hello! How can I help you today?",
-      "time": "2025-02-09 23:57:47"
+      "content": "Here is the information for the token with address `0x4cf08813756dfa7519cb480a1a1a3472b5b4ec067592a8bee0f826808d218158::tardi::TARDI`:\n\n**Name:** Tardi (TARDI)\n**Contract Address:** `0x4cf08813756dfa7519cb480a1a1a3472b5b4ec067592a8bee0f826808d218158::tardi::TARDI`\n**Platform:** Cetus\n**Age:** 6d, 10h, 52m\n**Market Cap:** $4699.95K\n**Liquidity:** $564806.72K\n**Current Price:** $0.0047\n\n**Trading Activity:**\n*   5M: Price Change: -0.69%, Volume: $0.26K, Buy/Sell: 4/4\n*   1H: Price Change: 0.04%, Volume: $2.57K, Buy/Sell: 35/38\n*   6H: Price Change: 2.49%, Volume: $14.70K, Buy/Sell: 229/209\n*   24H: Price Change: -2.09%, Volume: $72.87K, Buy/Sell: 930/844",
+      "time": "2025-02-10 01:03:17"
     }
   ]
 }
