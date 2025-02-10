@@ -103,22 +103,19 @@ class ReActOutputParser(BaseOutputParser):
         print(f"output-ReActOutputParser: {output}")
         
         if "Thought:" not in output:
+            # NOTE: handle the case where the agent directly outputs the answer
+            # instead of following the thought-answer format
             return ResponseReasoningStep(
                 thought="(Implicit) I can answer without any more tools!",
                 response=output,
                 is_streaming=is_streaming,
             )
-            
-        if "Answer:" in output or "Action: None" in output:
-            thought, answer = extract_final_response(output)
-            return ResponseReasoningStep(
-                thought=thought, response=answer, is_streaming=is_streaming
-            )
-            
-        if "Action Input:" in output:
+
+        # An "Action" should take priority over an "Answer"
+        if "Action:" in output and "Action: None" not in output:
             return parse_action_reasoning_step(output)
-        
-        if "Thought:" in output:
+
+        if "Answer:" in output:
             thought, answer = extract_final_response(output)
             return ResponseReasoningStep(
                 thought=thought, response=answer, is_streaming=is_streaming

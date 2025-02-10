@@ -34,8 +34,8 @@ def get_trending_pairs(jwt_token: str = "", resolution: str = "5m", limit: int =
                     - 24h (float): 24-hour change
     """
     try:
-        if limit <= 0 or limit > 10:
-            limit = 10
+        if limit <= 0 or limit > 5:
+            limit = 5
             
         valid_resolutions = ["5m", "1h", "6h", "24h"]
         if resolution not in valid_resolutions:

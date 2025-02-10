@@ -72,11 +72,10 @@ def scan_token(token_address: str) -> Optional[Dict[str, Any]]:
         
         output += f"**MCap:** ${mcap/1000:.2f}K | "
         output += f"**Liq:** ${liq:.2f}K\n"
-        output += f"**Current Price:** ${price:.4f}\n\n"
+        output += f"**Current Price:** ${price:.8f}\n\n"
         
-        # Format time-based stats in table format
-        output += "| Time | Price | Volume | Buy/Sell |\n"
-        output += "|------|--------|---------|----------|\n"
+        # Format time-based stats
+        output += "**Time-based Statistics:**\n"
         periods = ["5m", "1h", "6h", "24h"]
         for period in periods:
             price_change = float(percent.get(period, 0))
@@ -84,7 +83,7 @@ def scan_token(token_address: str) -> Optional[Dict[str, Any]]:
             buys = int(buy_txn.get(period, 0))
             sells = int(sell_txn.get(period, 0))
             
-            output += f"| {period.upper()} | {price_change:>6.2f}% | ${vol/1000:.2f}K | {buys}/{sells} |\n"
+            output += f"**{period.upper()}:** Price {price_change:>6.2f}% | Vol ${vol/1000:.2f}K | Txns {buys}/{sells}\n"
         
         return output
         
