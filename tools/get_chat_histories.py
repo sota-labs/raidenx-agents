@@ -50,7 +50,7 @@ def fetch_thread_messages(thread_id: str) -> dict:
         data = response.json()
         
         if 'docs' in data:
-            data['docs'] = sorted(data['docs'], key=lambda x: x['createdAt'])
+            data['docs'] = sorted(data['docs'], key=lambda x: x['createdAt'], reverse=False)
             
         return data
     except requests.exceptions.RequestException as e:
