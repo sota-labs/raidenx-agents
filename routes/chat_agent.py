@@ -231,7 +231,11 @@ async def process_message_webhook(
         chat_id = thread_id
         messages = fetch_thread_messages(thread_id)
         
-        # print(f"Chat History: {messages}")
+        
+        print(f"User Message: {user_message}")
+        print(f"Chat History: {messages}")
+        print(f"thread_id: {thread_id}")
+        print(f"message_id: {message_id}")
 
         if chat_id not in chat_history:
             chat_history[chat_id] = []

@@ -1,1 +1,94 @@
-{}
+{
+  "6409124772": [
+    {
+      "role": "user",
+      "content": "buy me this token 0x90c703e8b511f76593eb7728801240aaccfd3970ae19e5bbc91dbe74c8a9f705::salvador::SALVADOR",
+      "time": "2025-02-10 12:26:03"
+    },
+    {
+      "role": "assistant",
+      "content": "How much SUI would you like to spend?",
+      "time": "2025-02-10 12:26:03"
+    },
+    {
+      "role": "user",
+      "content": "0.0001",
+      "time": "2025-02-10 12:26:10"
+    },
+    {
+      "role": "assistant",
+      "content": "Your purchase is complete. You spent 0.0001 SUI and received 2.205 SALVADOR tokens. You can view the transaction details here: [View on Explorer](https://suivision.xyz/txblock/F47qfzSmMy8Msct1ADzubKeCJoaiw6LjNwNA8FM9JCvQ)",
+      "time": "2025-02-10 12:26:10"
+    },
+    {
+      "role": "user",
+      "content": "sell this token right aways",
+      "time": "2025-02-10 12:26:35"
+    },
+    {
+      "role": "assistant",
+      "content": "What percentage of your SALVADOR tokens would you like to sell? Please provide a value between 0 and 100.\n\n",
+      "time": "2025-02-10 12:26:35"
+    },
+    {
+      "role": "user",
+      "content": "20",
+      "time": "2025-02-10 12:26:54"
+    },
+    {
+      "role": "assistant",
+      "content": "I found two tokens related to \"SALVADOR\":\n1. Republica de El Salvador Meme (0x90c703e8b511f76593eb7728801240aaccfd3970ae19e5bbc91dbe74c8a9f705::salvador::SALVADOR)\n2. Republic of El Salvador Meme (0xf16fc39d6577ef987f086f853186dff1066c7618c4175c1a98b4e690145d64ca::res::RES)\n\nWhich one would you like to sell? Please provide the full address.",
+      "time": "2025-02-10 12:26:54"
+    },
+    {
+      "role": "user",
+      "content": "0x90c703e8b511f76593eb7728801240aaccfd3970ae19e5bbc91dbe74c8a9f705::salvador::SALVADOR",
+      "time": "2025-02-10 12:27:23"
+    },
+    {
+      "role": "assistant",
+      "content": "You have successfully sold 20% of your SALVADOR tokens. You received 0.00006040 SUI.",
+      "time": "2025-02-10 12:27:23"
+    },
+    {
+      "role": "user",
+      "content": "buy me this token 0x67f076f6f814d20db0a28f27192f406ce15be45db3c930a695bd6e78c6140a95::woofy::WOOFY",
+      "time": "2025-02-10 12:28:10"
+    },
+    {
+      "role": "assistant",
+      "content": "How much SUI would you like to spend to buy WOOFY?\n\n",
+      "time": "2025-02-10 12:28:10"
+    },
+    {
+      "role": "user",
+      "content": "no i want sell",
+      "time": "2025-02-10 12:28:16"
+    },
+    {
+      "role": "assistant",
+      "content": "What percentage of your WOOFY tokens would you like to sell? Please provide a value between 0 and 100.\n",
+      "time": "2025-02-10 12:28:16"
+    },
+    {
+      "role": "user",
+      "content": "I wanna sell 0x90c703e8b511f76593eb7728801240aaccfd3970ae19e5bbc91dbe74c8a9f705::salvador::SALVADOR",
+      "time": "2025-02-10 12:28:43"
+    },
+    {
+      "role": "assistant",
+      "content": "What percentage of your SALVADOR tokens would you like to sell? Please provide a value between 0 and 100.\n",
+      "time": "2025-02-10 12:28:43"
+    },
+    {
+      "role": "user",
+      "content": "10",
+      "time": "2025-02-10 12:28:47"
+    },
+    {
+      "role": "assistant",
+      "content": "You have successfully sold 10% of your SALVADOR tokens. You received 0.00002420 SUI.",
+      "time": "2025-02-10 12:28:47"
+    }
+  ]
+}
