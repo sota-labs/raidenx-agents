@@ -17,6 +17,7 @@ class LLMSettingsManager:
         
         self.available_models = {
             "gemini": [
+                "models/gemini-2.0-flash",
                 "models/gemini-1.5-pro",
                 "models/gemini-1.0-pro",
                 "models/gemini-1.5-flash"

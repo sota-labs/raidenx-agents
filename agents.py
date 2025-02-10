@@ -32,8 +32,8 @@ from LLM.llm_settings_manager import LLMSettingsManager
 from utils.tool_history import ToolHistoryLogger
 
 llm_manager = LLMSettingsManager()
-# llm = llm_manager.get_llm("anthropic", model="claude-3-5-sonnet-20241022")
-llm = llm_manager.get_llm("gemini", model="models/gemini-1.5-pro")
+
+llm = llm_manager.get_llm("gemini", model="models/gemini-2.0-flash")
 
 tool_logger = ToolHistoryLogger()
 
