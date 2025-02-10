@@ -25,6 +25,8 @@ from tools import (
     buy_token,
     sell_token,
     get_all_positions,
+    scan_token,
+    get_trending_pairs,
 )
 
 from prompts.react import REACT_CHAT_SYSTEM_HEADER_CUSTOM
@@ -150,6 +152,31 @@ tools = [
     #     ),
     # ),
     FunctionTool.from_defaults(
+        fn=get_trending_pairs,
+        name="get_trending_pairs", 
+        description=(
+            "📊 TRENDING PAIRS INFORMATION 📊\n"
+            "Retrieves a list of trending trading pairs on the market."
+            """Input args:
+                jwt_token (str): User's authorization token
+                resolution (str, optional): Time frame (default: "5m")
+                limit (int, optional): Maximum number of pairs to return (default: 5)"""
+            "Output: Returns detailed information about trading pairs including:"
+            "- Token basic info: address, name, symbol"
+            "- Price metrics: current USD price, price changes (5m, 1h, 6h, 24h)"
+            "- Market metrics: market cap, liquidity (USD)"
+            "- Trading activity: volume (USD), buy/sell counts"
+            "- Platform info: DEX details, token age"
+            "- Performance indicators: price trends, volume analysis"
+            "\nUse this tool when you want to:"
+            "- View trending tokens in the market"
+            "- Analyze market trends and token performance"
+            "- Find new trading opportunities"
+            "- Monitor detailed token metrics and movements"
+            "- Evaluate trading activity and market sentiment"
+        ),
+    ),
+    FunctionTool.from_defaults(
         fn=get_wallet_balance,
         name="get_wallet_balance",
         description=(
@@ -226,6 +253,29 @@ tools = [
             "- Want to check balances of multiple tokens at once"
             "- Analyzing investment portfolio"
             "- Preparing for multi-token management"
+        ),
+    ),
+    FunctionTool.from_defaults(
+        fn=scan_token,
+        name="scan_token",
+        description=(
+            "Fetch detailed information about a token's trading metrics and statistics."
+            """Input args:
+                token_address (str): The token's contract address"""
+            "Returns detailed token information including:"
+            "- Token name and symbol"
+            "- Platform/DEX information"
+            "- Age of token"
+            "- Market cap and liquidity"
+            "- Current price"
+            "- Price changes over different time periods (5m, 1h, 6h, 24h)"
+            "- Trading volume statistics"
+            "- Buy/Sell transaction counts"
+            "\nUse this tool when you need to:"
+            "- Analyze a token's trading performance"
+            "- Get detailed market metrics"
+            "- Check token's price movements"
+            "- Evaluate trading activity"
         ),
     ),
 ]
