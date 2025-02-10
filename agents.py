@@ -158,11 +158,11 @@ tools = [
         fn=search_token,
         name="search_token",
         description=(
-            "Find token address by name or symbol."
+            "Search for token information to assist with buying decisions. "
             """Input args: 
                 query (str): Token name or symbol
                 jwt_token (str): Authorization token"""
-            "Output: Token address, name, symbol, price and liquidity"
+            "Output: Token address, name, symbol, current price, liquidity metrics, and key indicators for pre-purchase evaluation"
         ),
     ),
     FunctionTool.from_defaults(
@@ -195,10 +195,10 @@ tools = [
         fn=get_all_positions,
         name="get_all_positions",
         description=(
-            "Get all token positions from user's wallets."
+            "Get all token positions from user's wallets to review holdings or prepare for selling."
             """Input args:
                 jwt_token (str): Authorization token"""
-            "Output: List of tokens with balances and details"
+            "Output: List of tokens with current balances, values, profit/loss metrics and other details needed for portfolio review or selling decisions"
         ),
     ),
     FunctionTool.from_defaults(
