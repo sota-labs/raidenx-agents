@@ -56,7 +56,7 @@ def extract_final_response(input_text: str) -> Tuple[str, str]:
         answer = match2.group(2).strip()
     elif match3:
         thought = match3.group(1).strip()
-        answer = thought  # Return thought as the answer
+        answer = thought.split(".")[-1].strip() if len(thought.split(".")[-1]) > 3 else thought.split(".")[-2].strip()
     else:
         raise ValueError(
             f"Could not extract final answer from input text: {input_text}"
@@ -116,6 +116,12 @@ class ReActOutputParser(BaseOutputParser):
             return parse_action_reasoning_step(output)
 
         if "Answer:" in output:
+            thought, answer = extract_final_response(output)
+            return ResponseReasoningStep(
+                thought=thought, response=answer, is_streaming=is_streaming
+            )
+            
+        if "Thought:" in output:
             thought, answer = extract_final_response(output)
             return ResponseReasoningStep(
                 thought=thought, response=answer, is_streaming=is_streaming
