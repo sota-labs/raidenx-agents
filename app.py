@@ -7,6 +7,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi import Request
 
 
+from routes.health import router as health_router
 from routes.chat_agent import router as chat_agent_router
 
 app = FastAPI()
@@ -69,6 +70,6 @@ async def redirect():
     return RedirectResponse("/docs")
 
 v1_router.include_router(chat_agent_router, prefix="/chat", tags=["Chat"])
+v1_router.include_router(health_router, prefix="/health", tags=["Health"])
 
 app.include_router(v1_router)
-
