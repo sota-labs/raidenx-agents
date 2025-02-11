@@ -1,4 +1,5 @@
 from typing import List, Optional, Sequence
+import inspect
 
 from llama_index.core import PromptTemplate
 from llama_index.core.agent import ReActAgent
@@ -138,7 +139,6 @@ tools = [
         description=(
             "Get trending trading pairs on the market."
             """Input args:
-                jwt_token (str): User's authorization token
                 resolution (str, optional): Time frame (default: "5m")
                 limit (int, optional): Max pairs to return (default: 5)"""
             "Output: Price, market cap, liquidity, volume and performance metrics"
@@ -149,8 +149,6 @@ tools = [
         name="get_wallet_balance",
         description=(
             "Check user's wallet balances."
-            """Input args: 
-                jwt_token (str): Authorization token"""
             "Output: List of wallet addresses and their SUI balances"
         ),
     ),
@@ -160,8 +158,7 @@ tools = [
         description=(
             "Search for token information to assist with buying decisions. "
             """Input args: 
-                query (str): Token name or symbol
-                jwt_token (str): Authorization token"""
+                query (str): Token name or symbol"""
             "Output: Token address, name, symbol, current price, liquidity metrics, and key indicators for pre-purchase evaluation"
         ),
     ),
@@ -171,7 +168,6 @@ tools = [
         description=(
             "Buy tokens."
             """Input args: 
-                jwt_token (str): Authorization token
                 token_address (str): Token contract address
                 amount (float): Amount to buy in SUI
                 wallet_address (str): User's wallet address"""
@@ -184,7 +180,6 @@ tools = [
         description=(
             "Sell tokens."
             """Input args: 
-                jwt_token (str): Authorization token
                 token_address (str): Token contract address
                 percent (float): Percentage of tokens to sell
                 wallet_address (str): User's wallet address"""
@@ -196,8 +191,6 @@ tools = [
         name="get_all_positions",
         description=(
             "Get all token positions from user's wallets to review holdings or prepare for selling."
-            """Input args:
-                jwt_token (str): Authorization token"""
             "Output: List of tokens with current balances, values, profit/loss metrics and other details needed for portfolio review or selling decisions"
         ),
     ),
@@ -221,9 +214,37 @@ def react_chat(
     max_iterations=10,
     jwt_token=None,
 ):
-    formatter = CustomReActChatFormatter(jwt_token=jwt_token)
+    formatter = CustomReActChatFormatter()
+    
+    tools_with_jwt = []
+    for tool in tools:
+        tool_fn = tool.fn
+        if 'jwt_token' in inspect.signature(tool_fn).parameters:
+            # Create a new function that includes jwt_token in its signature
+            def create_wrapped_fn(original_fn):
+                def wrapped_fn(**kwargs):
+                    kwargs['jwt_token'] = jwt_token
+                    return original_fn(**kwargs)
+                # Copy the original function's signature but remove jwt_token
+                wrapped_fn.__signature__ = inspect.signature(original_fn).replace(
+                    parameters=[
+                        param for name, param in inspect.signature(original_fn).parameters.items()
+                        if name != 'jwt_token'
+                    ]
+                )
+                return wrapped_fn
+                
+            new_tool = FunctionTool.from_defaults(
+                fn=create_wrapped_fn(tool_fn),
+                name=tool.metadata.name,
+                description=tool.metadata.description
+            )
+            tools_with_jwt.append(new_tool)
+        else:
+            tools_with_jwt.append(tool)
+            
     agent = ReActAgent.from_tools(
-        tools=tools,
+        tools=tools_with_jwt,
         llm=llm,
         verbose=True,
         chat_history=chat_history,
@@ -234,36 +255,25 @@ def react_chat(
     agent.update_prompts({"agent_worker:system_prompt": react_system_prompt})
     response = agent.chat(query)
     
-    response = str(response)
+    response_dict = {
+        "response": response.response,
+        "sources": [
+            {
+                "content": str(source.content),
+                "tool_name": str(source.tool_name),
+                "raw_input": source.raw_input,
+                "raw_output": str(source.raw_output)
+            }
+            for source in response.sources
+        ]
+    }
+    
+    response = response_dict["response"]
+    
+    if response_dict["sources"]:
+        if response_dict["sources"][-1]["tool_name"] in ["scan_token", "get_trending_pairs", "get_all_positions", "buy_token", "sell_token"]:
+            response = str(response_dict["sources"][-1]["raw_output"])
+    
+    
     agent.reset()
     return response
-
-# async def react_chat_stream(
-#     query: str,
-#     llm=None,
-#     chat_history: List[ChatMessage] = None,
-#     max_iterations=10,
-#     userId="2104920255",
-#     userName="RaidenX Agent",
-#     displayName="RaidenX Agent",
-# ):
-#     formatter = CustomReActChatFormatter(
-#         userId=userId, userName=userName, displayName=displayName
-#     )
-#     agent = ReActAgent.from_tools(
-#         tools=tools,
-#         llm=llm,
-#         verbose=True,
-#         chat_history=chat_history,
-#         react_chat_formatter=formatter,
-#         max_iterations=max_iterations,
-#         output_parser=ReActOutputParser()
-#     )
-#     agent.update_prompts({"agent_worker:system_prompt": react_system_prompt})
-    
-#     response = agent.stream_chat(query)
-#     print(response)
-#     for token in response.response_gen:
-#         yield str(token)
-
-#     agent.reset()

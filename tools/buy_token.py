@@ -79,7 +79,12 @@ def buy_token(token_address: str, amount: float, wallet_address: str, jwt_token:
         
         result = response.json()
         if not result:
-            return "⚠️ Failed to purchase: Insufficient liquidity in this pair. Please try another token or wait for more liquidity."
+            return "❌ Transaction Failed\n\n" \
+                   "📊 Reason: Insufficient liquidity in this trading pair\n" \
+                   "💡 Solutions:\n" \
+                   "• Please retry once liquidity is added\n" \
+                   "• Or reduce the amount of SUI to spend\n" \
+                   "• Or try trading with a different token"
             
         order_id = result[0]["order"]["id"]
         
@@ -87,21 +92,22 @@ def buy_token(token_address: str, amount: float, wallet_address: str, jwt_token:
         
         print(f"status-buy-token: {status}")
         
+        def format_number(num: float) -> str:
+            if num < 1000:
+                return f"{num:.2f}"
+            elif num < 1000000:
+                return f"{num/1000:.1f}K"
+            else:
+                return f"{num:,.4f}"
+        
         explorer_url = f"https://suivision.xyz/txblock/{status['hash']}"
-        message = (
-            f"✅ I've successfully purchased the token for you:\n"
-            f"💰 Spent: {float(status['amountIn']):.8f} SUI\n"
-            f"📈 Received: {float(status['amountOut']):.3f} tokens\n" 
-            f"👛 To wallet: {wallet_address}\n"
-            f"🔍 Transaction: [View on Explorer]({explorer_url})"
-        )
         
         message = (
-            f"🎉 Success! I've acquired the token (address: {token_address}) for you.\n"
-            f"💰 Spent: {float(status['amountIn']):.8f} SUI\n"
-            f"📈 Received: {float(status['amountOut']):.3f} tokens\n"
-            f"👛 Deposited to wallet: {wallet_address}\n"
-            f"🔗 Transaction Details: [View on Explorer]({explorer_url})"
+            f"**Token Purchase Success**\n"
+            f"💰 Spent: `{float(status['amountIn']):.4f} SUI`\n"
+            f"📈 Received: `{format_number(float(status['amountOut']))} tokens`\n"
+            f"🔗 [View Transaction]({explorer_url})\n"
+            f"👛 `{wallet_address}`"
         )
                 
         # messenger = TelegramMessenger()

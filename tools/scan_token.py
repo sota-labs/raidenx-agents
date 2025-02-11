@@ -8,7 +8,7 @@ import requests
 from typing import Dict, Any, Optional, Tuple, Union
 from config import settings
 
-def scan_token(token_address: str) -> Optional[Dict[str, Any]]:
+def scan_token(token_address: str) -> Optional[str]:
     """
     Fetch detailed information about the top trading pair for a specific token
     
@@ -16,7 +16,7 @@ def scan_token(token_address: str) -> Optional[Dict[str, Any]]:
         token_address (str): Token address
         
     Returns:
-        str: Formatted pair information or None if error occurs
+        str: Formatted markdown string or None if error occurs
     """
     try:
         url = f"{settings.raiden.api_common_url}/api/v1/sui/tokens/{token_address}/top-pair"
@@ -59,31 +59,37 @@ def scan_token(token_address: str) -> Optional[Dict[str, Any]]:
         buy_txn = stats.get("buyTxn", {})
         sell_txn = stats.get("sellTxn", {})
         
-        # Format the output
-        output = f"**{token_name} ({token_symbol})**\n"
-        output += f"`{token_address}`\n\n"
-        
-        output += f"**Platform:** {dex_name} | **Age:** {age}\n"
-        
         # Convert string values to float for formatting
         mcap = float(data.get('marketCapUsd', '0'))
         liq = float(data.get('liquidityUsd', '0'))
         price = float(base_token.get('priceUsd', '0'))
         
-        output += f"**MCap:** ${mcap/1000:.2f}K | "
-        output += f"**Liq:** ${liq:.2f}K\n"
-        output += f"**Current Price:** ${price:.8f}\n\n"
+        # Format numbers based on size
+        def format_number(num: float) -> str:
+            if num < 1000:
+                return f"${num:.2f}"
+            elif num < 1000000:
+                return f"${num/1000:.1f}K"
+            else:
+                return f"${num:,.0f}"
         
-        # Format time-based stats
-        output += "**Time-based Statistics:**\n"
+        # Format the output
+        output = (
+            f"**{token_symbol}** | 💰 ${price:.4f} | ⏰ {age}\n"
+            f"💧 `{format_number(liq)}` | 📊 MCap: `{format_number(mcap)}` | 🏦 {dex_name}\n\n"
+        )
+        
+        # Format time-based stats in one line
+        stats_line = "📈 "
         periods = ["5m", "1h", "6h", "24h"]
         for period in periods:
             price_change = float(percent.get(period, 0))
             vol = float(volume.get(period, 0))
             buys = int(buy_txn.get(period, 0))
             sells = int(sell_txn.get(period, 0))
-            
-            output += f"**{period.upper()}:** Price {price_change:>6.2f}% | Vol ${vol/1000:.2f}K | Txns {buys}/{sells}\n"
+            stats_line += f"{period}: `{price_change:+.2f}%` ({buys}/{sells}) | "
+        
+        output += f"{stats_line.rstrip(' |')}\n`{token_address}`\n\n"
         
         return output
         
@@ -95,7 +101,7 @@ def scan_token(token_address: str) -> Optional[Dict[str, Any]]:
 # if __name__ == "__main__":
 #     sample_token = "0x9467f809de80564fa198b2c9a27557bf4ffcf1aa506f28547661b96d8f84a1dc::prez::PREZ"
     
-#     result = fetch_top_pair(sample_token)
+#     result = scan_token(sample_token)
 #     if result:
 #         print(result)
 #     else:

@@ -7,31 +7,16 @@ sys.path.insert(0, str(project_root))
 import requests
 from config import settings
 
-def get_trending_pairs(jwt_token: str = "", resolution: str = "5m", limit: int = 5) -> dict:
+def get_trending_pairs(resolution: str = "5m", limit: int = 5) -> str:
     """
-    Get a list of trending trading pairs
+    Get a list of trending trading pairs and return as formatted markdown
     
     Args:
         resolution (str): Time frame (default: "5m")
         limit (int): Maximum number of pairs to return (default: 5)
         
     Returns:
-        dict: Dictionary containing list of trading pairs with information:
-            - pairs (list): List of trading pairs:
-                - pairId (str): ID of the trading pair
-                - dex (str): Name of the exchange
-                - tokenBase (dict): Base token information
-                    - address (str): Token contract address
-                    - name (str): Token name
-                    - symbol (str): Token symbol
-                    - priceUsd (float): Token price in USD
-                - liquidityUsd (float): Liquidity in USD
-                - volumeUsd (float): Trading volume in USD
-                - priceChange (dict): Price change percentages for different timeframes
-                    - 5m (float): 5-minute change
-                    - 1h (float): 1-hour change
-                    - 6h (float): 6-hour change
-                    - 24h (float): 24-hour change
+        str: Formatted markdown string containing trending pairs information
     """
     try:
         if limit <= 0 or limit > 5:
@@ -61,41 +46,27 @@ def get_trending_pairs(jwt_token: str = "", resolution: str = "5m", limit: int =
             
             sorted_data = sorted(data, key=lambda x: float(x.get('liquidityUsd', 0)), reverse=True)
             
-            pairs = []
+            markdown_output = f"**Trending Pairs ({resolution})**\n\n"
+            
+            def format_number(num: float) -> str:
+                if num < 1000:
+                    return f"${num:.2f}"
+                elif num < 1000000:
+                    return f"${num/1000:.1f}K"
+                else:
+                    return f"${num:,.0f}"
             
             for pair in sorted_data[:limit]:
                 price_usd = float(pair.get('tokenBase', {}).get('priceUsd', 0))
                 liquidity_usd = float(pair.get('liquidityUsd', 0))
                 volume_usd = float(pair.get('volumeUsd', 0))
                 
-                token_info = (
-                    f"## {pair.get('tokenBase', {}).get('symbol')} | ${'{:,.4f}'.format(price_usd)}\n"
-                    f"`{pair.get('tokenBase', {}).get('address')}`\n\n"
-                    f"📈 Changes: 5m: {'{:.2f}'.format(pair.get('stats', {}).get('percent', {}).get('5m', 0))}% | "
-                    f"1h: {'{:.2f}'.format(pair.get('stats', {}).get('percent', {}).get('1h', 0))}% | "
-                    f"24h: {'{:.2f}'.format(pair.get('stats', {}).get('percent', {}).get('24h', 0))}%\n"
-                    f"💰 Liquidity: ${'{:,.2f}'.format(liquidity_usd)} | Volume: ${'{:,.2f}'.format(volume_usd)}\n"
+                markdown_output += (
+                    f"**{pair.get('tokenBase', {}).get('symbol')}** | 💰 ${price_usd:.4f} | 📈 5m: `{'{:+.2f}%'.format(pair.get('stats', {}).get('percent', {}).get('5m', 0))}` | 1h: `{'{:+.2f}%'.format(pair.get('stats', {}).get('percent', {}).get('1h', 0))}` | 24h: `{'{:+.2f}%'.format(pair.get('stats', {}).get('percent', {}).get('24h', 0))}`\n"
+                    f"💧 Liquidity: `{format_number(liquidity_usd)}` | 📊 Volume: `{format_number(volume_usd)}`\n\n"
                 )
-                
-                pairs.append({
-                    'markdown': token_info,
-                    'tokenBase': {
-                        'address': pair.get('tokenBase', {}).get('address'),
-                        'name': pair.get('tokenBase', {}).get('name'),
-                        'symbol': pair.get('tokenBase', {}).get('symbol'),
-                        'priceUsd': price_usd
-                    },
-                    'liquidityUsd': liquidity_usd,
-                    'volumeUsd': volume_usd,
-                    'priceChange': {
-                        '5m': pair.get('stats', {}).get('percent', {}).get('5m', 0),
-                        '1h': pair.get('stats', {}).get('percent', {}).get('1h', 0),
-                        '6h': pair.get('stats', {}).get('percent', {}).get('6h', 0),
-                        '24h': pair.get('stats', {}).get('percent', {}).get('24h', 0)
-                    }
-                })
             
-            return {'pairs': pairs}
+            return markdown_output
         else:
             raise Exception(f"Error fetching trending pairs: {response.status_code} - {response.text}")
             

@@ -75,7 +75,12 @@ def sell_token(token_address: str, percent: float, wallet_address: str, jwt_toke
         
         result = response.json()
         if not result:
-            return "⚠️ Failed to sell: Insufficient liquidity in this pair. Please try another token or wait for more liquidity."
+            return "❌ Transaction Failed\n\n" \
+                   "📊 Reason: Insufficient liquidity in this trading pair\n" \
+                   "💡 Solutions:\n" \
+                   "• Please retry once liquidity is added\n" \
+                   "• Or reduce the amount of tokens to sell\n" \
+                   "• Or try trading with a different token"
             
         order_id = result[0]["order"]["id"]
         
@@ -86,10 +91,12 @@ def sell_token(token_address: str, percent: float, wallet_address: str, jwt_toke
         explorer_url = f"https://suivision.xyz/txblock/{status['hash']}"
         
         message = (
-            f"🔥 I've successfully sold {float(status['amountIn']):.3f} tokens for {float(status['amountOut']):.8f} SUI!\n"
-            f"📈 Sell Percentage: {float(status['sellPercent']):.3f}%\n"
-            f"📍 Recipient Wallet: {wallet_address}\n"
-            f"🔎 Transaction Details: [View on Explorer]({explorer_url})"
+            f"**Token Sale Success**\n"
+            f"💰 Sold: `{float(status['amountIn']):.4f} tokens`\n"
+            f"📈 Received: `{float(status['amountOut']):.6f} SUI`\n"
+            f"📊 Percentage: `{float(status['sellPercent']):.1f}%`\n"
+            f"🔗 [View Transaction]({explorer_url})\n"
+            f"👛 `{wallet_address}`"
         )
         
         # messenger = TelegramMessenger()

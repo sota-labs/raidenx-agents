@@ -246,9 +246,6 @@ Answer: Sorry, I cannot answer your query.
 - You MUST obey the function signature of each tool. Do NOT pass in no arguments if the function expects arguments.
 - Before executing any buying or selling action, you **MUST** check the user's wallet balance for sufficient funds or token.
 
-## Here is User informations:
-jwt_token: {jwt_token}
-
 ## Current Conversation
 Below is the current conversation consisting of interleaving human and assistant messages.
 

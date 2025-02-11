@@ -6,7 +6,10 @@ sys.path.insert(0, str(project_root))
 
 import requests
 from config import settings
-from tools.get_positions import get_all_positions
+from tools.get_positions import get_all_positions_data
+
+
+
 
 def search_token(query: str, jwt_token: str) -> dict:
     """
@@ -29,7 +32,7 @@ def search_token(query: str, jwt_token: str) -> dict:
     """
     
     try:
-        positions = get_all_positions(jwt_token)
+        positions = get_all_positions_data(jwt_token)     
     except Exception as e:
         positions = []
         print(f"Error getting positions: {str(e)}")
@@ -75,7 +78,7 @@ def search_token(query: str, jwt_token: str) -> dict:
                 })
                 
         if not results:
-            return f'No tokens found for {query}'
+            return {'tokens': [], 'message': f'No tokens found for {query}'}
         
         results.sort(key=lambda x: float(x['liquidityUsd'] or 0), reverse=True)
         return {'tokens': results[0:5]}
@@ -83,4 +86,6 @@ def search_token(query: str, jwt_token: str) -> dict:
         raise Exception(f"Error searching tokens: {response.status_code} - {response.text}")
 
 # jwt_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzIwMzIwMzIwMzIwMzIwMzIwIiwiaWF0IjoxNzE4MjYwMjYyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
-# print(search_token('lofi', jwt_token))
+# print(search_token('ppei', jwt_token))
+
+
