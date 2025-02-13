@@ -63,6 +63,8 @@ async def handle_message(event):
                 bot_response = f"An error occurred: {str(e)}"
         except Exception as e:
             bot_response = f"An unexpected error occurred: {str(e)}"
+        
+        bot_response = bot_response["response"]
 
         chat_history[chat_id].append(
             {"role": "assistant", "content": bot_response, "time": current_time}

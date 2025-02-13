@@ -76,17 +76,20 @@ class WebhookResponse(BaseModel):
         status (str): Status of the webhook request
         message_id (str): ID of the message being processed
         thread_id (str): ID of the thread
+        action (str, optional): Action được trả về từ bot
     """
     status: str
     message_id: str
     thread_id: str
+    action: str | None = None
 
     class Config:
         json_schema_extra = {
             "example": {
                 "status": "processing",
                 "message_id": "msg_123",
-                "thread_id": "thread_123"
+                "thread_id": "thread_123",
+                "action": "buy_token"
             }
         }
 
@@ -99,6 +102,7 @@ class WebhookTriggerRequest(BaseModel):
     """
     answer: str
     messageId: str
+    action: str | None = None
 
 class WebhookTriggerResponse(BaseModel):
     """Response model for webhook trigger
@@ -109,6 +113,8 @@ class WebhookTriggerResponse(BaseModel):
     """
     status: str
     messageId: str
+
+VALID_ACTIONS = {"buy_token", "sell_token"}
 
 @router.post("/threads/messages/sync", response_model=AgentResponse)
 async def create_message_sync(
@@ -131,11 +137,15 @@ async def create_message_sync(
         try:
             chat_history = load_chat_history()
         except Exception as e:
+            print(f"Error loading chat history: {str(e)}")
             raise HTTPException(status_code=500, detail="Failed to load chat history")
             
         chat_id = thread_id
-        messages = fetch_thread_messages(thread_id)
-        
+        try:
+            messages = fetch_thread_messages(thread_id)
+        except Exception as e:
+            print(f"Error fetching thread messages: {str(e)}")
+            messages = []
 
         if chat_id not in chat_history:
             chat_history[chat_id] = []
@@ -148,25 +158,29 @@ async def create_message_sync(
             "thread_id": thread_id
         })
         
-        # last_five_messages = chat_history[chat_id][-10:]
-        
-        last_five_messages = messages[-10:]
-
+        last_five_messages = messages[-10:] if messages else []
         chat_history_message = convert_dict_to_chat_messages(last_five_messages)
         
         try:
-            bot_response = react_chat(
+            bot_response_dict = react_chat(
                 query=user_message,
                 llm=llm,
                 chat_history=chat_history_message,
                 jwt_token=jwt_token
             )
+            
+            if isinstance(bot_response_dict, dict):
+                bot_response = bot_response_dict.get("response", "")
+            else:
+                bot_response = str(bot_response_dict)
+            
         except Exception as e:
+            print(f"Error in react_chat: {str(e)}")
             raise HTTPException(status_code=500, detail=f"Chat processing failed: {str(e)}")
         
         chat_history[chat_id].append({
             "role": "assistant", 
-            "content": bot_response, 
+            "content": bot_response,
             "time": current_time,
             "message_id": message_id,
             "thread_id": thread_id
@@ -190,6 +204,7 @@ async def create_message_sync(
     except HTTPException as he:
         raise he
     except Exception as e:
+        print(f"Unexpected error: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
 @router.post("/threads/messages", response_model=WebhookResponse)
@@ -198,7 +213,7 @@ async def create_message_async(
     session: dict = Depends(verify_token),
     authorization: str = Header(None, description="Bearer token")
 ):    
-    asyncio.create_task(
+    task = asyncio.create_task(
         process_message_webhook(
             request=request,
             session=session,
@@ -210,7 +225,8 @@ async def create_message_async(
     return WebhookResponse(
         status="processing",
         message_id=request.message_id,
-        thread_id=request.thread_id
+        thread_id=request.thread_id,
+        action=None 
     )
 
 async def process_message_webhook(
@@ -253,29 +269,34 @@ async def process_message_webhook(
 
         chat_history_message = convert_dict_to_chat_messages(last_five_messages)
         
-        bot_response = react_chat(
+        bot_response_dict = react_chat(
             query=user_message,
             llm=llm,
             chat_history=chat_history_message,
             jwt_token=jwt_token
         )
+
+        bot_response = bot_response_dict["response"]
+        action = bot_response_dict.get("action")
+        action_response = action if action in VALID_ACTIONS else None
         
-        chat_history[chat_id].append({
-            "role": "assistant", 
-            "content": bot_response, 
-            "time": current_time,
-            "message_id": message_id,
-            "thread_id": thread_id
-        })
+        # chat_history[chat_id].append({
+        #     "role": "assistant", 
+        #     "content": bot_response,
+        #     "time": current_time,
+        #     "message_id": message_id,
+        #     "thread_id": thread_id
+        # })
 
-        if len(chat_history[chat_id]) > 20:
-            chat_history[chat_id] = chat_history[chat_id][-20:]
+        # if len(chat_history[chat_id]) > 20:
+        #     chat_history[chat_id] = chat_history[chat_id][-20:]
 
-        save_chat_history(chat_history)
+        # save_chat_history(chat_history)
         
         webhook_response = WebhookTriggerRequest(
             answer=bot_response,
-            messageId=message_id
+            messageId=message_id,
+            action=action_response
         )
         
         async with aiohttp.ClientSession() as session:
@@ -308,72 +329,3 @@ async def process_message_webhook(
             )
             response_text = await response.text()
             print(f"Error Webhook Response: Status={response.status}, Body={response_text}")
-
-
-# @router.post("/agent-stream")
-# async def generate_bot_response_stream(
-#     request: AgentRequest,
-#     session: dict = Depends(verify_token)
-# ):
-#     chat_id = session["userId"]
-#     user = session["userName"]
-    
-#     user_message = request.content
-#     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-#     chat_history = load_chat_history()
-
-#     if chat_id not in chat_history:
-#         chat_history[chat_id] = []
-
-#     chat_history[chat_id].append(
-#         {"role": "user", "content": user_message, "time": current_time}
-#     )
-#     last_five_messages = chat_history[chat_id][-10:]
-#     chat_history_message = convert_dict_to_chat_messages(last_five_messages)
-    
-#     async def process_stream():
-#         full_response = ""
-#         buffer = ""
-        
-#         async for token in react_chat_stream(
-#             query=user_message,
-#             llm=llm,
-#             chat_history=chat_history_message,
-#             userId=chat_id,
-#             userName=user,
-#             displayName=user,
-#         ):
-#             full_response += token
-#             buffer += token
-            
-#             while buffer:
-#                 char = buffer[0]
-#                 buffer = buffer[1:]
-#                 yield f"data: {char}\n\n"
-#                 await asyncio.sleep(0.01)  # 10ms delay
-        
-#         # Send [DONE] signal
-#         yield "data: [DONE]\n\n"
-        
-#         # Save the complete response to chat history
-#         chat_history[chat_id].append(
-#             {"role": "assistant", "content": full_response, "time": current_time}
-#         )
-
-#         if len(chat_history[chat_id]) > 20:
-#             chat_history[chat_id] = chat_history[chat_id][-20:]
-
-#         save_chat_history(chat_history)
-    
-#     return StreamingResponse(
-#         process_stream(),
-#         media_type='text/event-stream',
-#         headers={
-#             'Cache-Control': 'no-cache',
-#             'Connection': 'keep-alive',
-#             'Access-Control-Allow-Origin': '*',
-#             'Access-Control-Allow-Methods': 'POST',
-#             'Access-Control-Allow-Headers': 'Content-Type',
-#         }
-#     )
-    

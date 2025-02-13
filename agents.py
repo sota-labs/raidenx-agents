@@ -270,10 +270,18 @@ def react_chat(
     
     response = response_dict["response"]
     
+    action = None
+    
     if response_dict["sources"]:
         if response_dict["sources"][-1]["tool_name"] in ["scan_token", "get_trending_pairs", "get_all_positions", "buy_token", "sell_token"]:
             response = str(response_dict["sources"][-1]["raw_output"])
+            action = response_dict["sources"][-1]["tool_name"]
+            
     
+    response = {
+            "response": response,
+            "action": action
+    }
     
     agent.reset()
     return response
