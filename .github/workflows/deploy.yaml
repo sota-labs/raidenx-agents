@@ -47,7 +47,7 @@ jobs:
           git config --global user.name "GitOps"
           git clone --branch main https://GitOps:$CICD_TOKEN@$K8S_REPO manifest
           cd manifest
-          sed -i "s15|newTag:.*|newTag: ${{ env.IMAGE_TAG}}|g" ./applications/api/overlays/${{ inputs.env }}/kustomization.yaml
+          sed -i "15s|newTag:.*|newTag: ${{ env.IMAGE_TAG}}|g" ./applications/api/overlays/${{ inputs.env }}/kustomization.yaml
           git add  ./applications/api/overlays/${{ inputs.env }}/kustomization.yaml
           git commit -m "GitOps deploy image ${{ env.IMAGE_TAG }} to personal-agents ${{ env.ENV }}"
           git push
